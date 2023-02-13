@@ -24,7 +24,7 @@
 </head>
 
 <body class="sidebar-mini layout-fixed" style="height: auto;">
-    <div class="wrapper">
+    <div class="wrapper" >
         <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
             <!-- Left navbar links -->
             <ul class="navbar-nav">

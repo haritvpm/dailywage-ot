@@ -77,82 +77,8 @@
 
                                     <a class="dropdown-item" href="{{ route('frontend.profile.index') }}">{{ __('My profile') }}</a>
 
-                                    @can('user_management_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.userManagement.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('permission_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.permissions.index') }}">
-                                            {{ trans('cruds.permission.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('role_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.roles.index') }}">
-                                            {{ trans('cruds.role.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('user_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.users.index') }}">
-                                            {{ trans('cruds.user.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('session_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.sessions.index') }}">
-                                            {{ trans('cruds.session.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('calender_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.calenders.index') }}">
-                                            {{ trans('cruds.calender.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('employee_access')
-                                        <a class="dropdown-item disabled" href="#">
-                                            {{ trans('cruds.employee.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('category_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.categories.index') }}">
-                                            {{ trans('cruds.category.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('daily_wage_employee_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.daily-wage-employees.index') }}">
-                                            {{ trans('cruds.dailyWageEmployee.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('designation_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.designations.index') }}">
-                                            {{ trans('cruds.designation.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('section_access')
-                                        <a class="dropdown-item ml-3" href="{{ route('frontend.sections.index') }}">
-                                            {{ trans('cruds.section.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('session_duty_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.session-duties.index') }}">
-                                            {{ trans('cruds.sessionDuty.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('session_duty_item_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.session-duty-items.index') }}">
-                                            {{ trans('cruds.sessionDutyItem.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('single_day_duty_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.single-day-duties.index') }}">
-                                            {{ trans('cruds.singleDayDuty.title') }}
-                                        </a>
-                                    @endcan
-                                    @can('single_day_duty_item_access')
-                                        <a class="dropdown-item" href="{{ route('frontend.single-day-duty-items.index') }}">
-                                            {{ trans('cruds.singleDayDutyItem.title') }}
-                                        </a>
-                                    @endcan
-
+                                  
+                                  
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
@@ -195,6 +121,8 @@
                 </div>
             @endif
             @yield('content')
+          
+         
         </main>
     </div>
 </body>
