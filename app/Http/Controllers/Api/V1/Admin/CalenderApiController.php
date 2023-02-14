@@ -15,7 +15,7 @@ class CalenderApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('calender_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+      //  abort_if(Gate::denies('calender_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new CalenderResource(Calender::with(['session'])->get());
     }

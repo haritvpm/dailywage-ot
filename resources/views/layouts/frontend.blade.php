@@ -52,6 +52,12 @@
                                     {{ __('Dashboard') }}
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('frontend.main') }}">
+                                  Forms
+                                </a>
+                            </li>
+
                         @endguest
                     </ul>
 

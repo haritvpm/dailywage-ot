@@ -1,29 +1,25 @@
 import { ref } from 'vue'
 import axios from 'axios'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
-export default function useCompanies() {
+export default function useDailyWageForm() {
     const company = ref([])
-    const companies = ref([])
+    const calender = ref([])
 
     const errors = ref('')
-    // const router = useRouter()
+    const router = useRouter()
 
-    const getCompanies = async () => {
-        let response = await axios.get('/api/companies')
-        companies.value = response.data.data
+
+    const getCalender = async (id) => {
+        let response = await axios.get(`/api/v1/calenders`)
+        calender.value = response.data.data
     }
 
-    const getCompany = async (id) => {
-        let response = await axios.get(`/api/companies/${id}`)
-        company.value = response.data.data
-    }
-
-    const storeCompany = async (data) => {
+    const storeDuty = async (data) => {
         errors.value = ''
         try {
             await axios.post('/api/companies', data)
-            // await router.push({ name: 'companies.index' })
+            await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -38,7 +34,7 @@ export default function useCompanies() {
         errors.value = ''
         try {
             await axios.patch(`/api/companies/${id}`, company.value)
-            // await router.push({ name: 'companies.index' })
+            // await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -51,10 +47,10 @@ export default function useCompanies() {
     return {
         errors,
         company,
-        companies,
-        getCompany,
-        getCompanies,
-        storeCompany,
+        calender,
+        getCalender,
+
+        storeDuty,
         updateCompany
     }
 }
