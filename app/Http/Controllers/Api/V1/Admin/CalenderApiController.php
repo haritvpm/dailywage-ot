@@ -10,14 +10,20 @@ use App\Models\Calender;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Carbon\Carbon;
 class CalenderApiController extends Controller
 {
     public function index()
     {
       //  abort_if(Gate::denies('calender_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $dates = Calender::with(['session'])->get()
+            ->map(function ($d) {
+                return Carbon::createFromFormat('d/m/Y', $d->date)->format('Y/m/d');
+                
+            });
 
-        return new CalenderResource(Calender::with(['session'])->get());
+
+        return new CalenderResource($dates );
     }
 
     public function store(StoreCalenderRequest $request)
