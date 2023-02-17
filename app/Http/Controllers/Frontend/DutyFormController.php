@@ -26,6 +26,16 @@ class DutyFormController extends Controller
         return view('frontend.dutyForms.index', compact('dutyForms'));
     }
 
+    public function main()
+    {
+      
+        $dutyForms = DutyForm::with(['date', 'session', 'employee', 'owned_by', 'created_by'])->get();
+        $session = Session::latest()->first()->name;
+     
+
+        return view('frontend.main', compact('session'));
+    }
+
     public function create()
     {
         abort_if(Gate::denies('duty_form_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

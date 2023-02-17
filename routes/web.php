@@ -67,6 +67,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
   //  Route::view('/{any}', 'frontend.home')->where('any', '.*');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::view('/duty', 'frontend.main')->name('main');;
+    Route::get('/duty',  'DutyFormController@main')->name('main');;
 
 /* 
     Route::get('/home', 'HomeController@index')->name('home');

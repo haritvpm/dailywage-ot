@@ -35,6 +35,9 @@
                             {{ trans('cruds.session.fields.session') }}
                         </th>
                         <th>
+                            {{ trans('cruds.session.fields.status') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -56,6 +59,9 @@
                             </td>
                             <td>
                                 {{ $session->session ?? '' }}
+                            </td>
+                            <td>
+                                {{ App\Models\Session::STATUS_SELECT[$session->status] ?? '' }}
                             </td>
                             <td>
                                 @can('session_show')

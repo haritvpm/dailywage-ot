@@ -173,6 +173,8 @@ return [
             'assembly_helper'   => ' ',
             'session'           => 'Session',
             'session_helper'    => ' ',
+            'status'            => 'Status',
+            'status_helper'     => ' ',
         ],
     ],
     'calender' => [

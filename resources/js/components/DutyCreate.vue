@@ -24,39 +24,125 @@
             no-today :format="format" :enable-time-picker="false">
         </Datepicker>
 
-        <!--   <template v-for="item in calender">
-            <tr class="bg-white">
-                <td class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                    {{ item }}
-                </td>
 
-            </tr>
-        </template>
 
- -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th rowspan="2">
+                        Sl.
+                    </th>
+                    <th rowspan="2">
+                        Name
+                    </th>
+
+                    <th class="text-center" colspan="2">
+                        Morning
+                    </th>
+
+                    <th class="text-center" colspan="2">
+                        Evening
+                    </th>
+                    <th rowspan="2">
+                        Total Hours
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>
+                        From
+                    </th>
+                    <th>
+                        To
+
+                    </th>
+                    <th>
+                        From
+                    </th>
+                    <th>
+                        To
+
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody class="bg-white divide-y divide-gray-200 divide-solid">
+                <template v-for="item in form.emp" :key="item.id">
+                    <tr class="bg-white">
+                        <td>
+                            {{ item.id }}
+                        </td>
+                        <td>
+                            {{ item.name }} {{ item.desig }} {{ item.ten }}
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" :name="item + item.id" v-model="item.morning_from">
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" :name="item + item.id" v-model="item.morning_to">
+
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" :name="item + item.id" v-model="item.eve_from">
+
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" :name="item + item.id" v-model="item.eve_to">
+
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" :name="item + item.id" v-model="item.total">
+
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+
+
         <div class="form-group">
             <button class="btn btn-danger" type="submit">
                 Save
             </button>
         </div>
-    </form>
-
-
-
+</form>
 </template>
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, computed } from 'vue'
+const { errors, calender, employees, getCalender, storeDuty, getUserSectionEmployees } = useDailyWageForm()
 
 const form = reactive({
     type: 'oneday-multiemp',
     date: '',
-
+    emp: [],
     website: ''
 })
 
-const { errors, calender, getCalender, storeDuty } = useDailyWageForm()
-onMounted(getCalender)
+onMounted(async () => {
+    await getCalender();
+    await getUserSectionEmployees();
+    //  console.log(employees.value)
+
+    for (let i = 0; i < employees.value.length; i++) {
+        form.emp.push({
+            id: employees.value[i].id,
+            name: employees.value[i].name,
+            ten: employees.value[i].ten,
+            desig: employees.value[i].designation.title,
+            morning_from: '',
+            morning_to: '',
+            eve_from: '',
+            eve_to: '',
+            total: '',
+        })
+    }
+
+})
+
+
 /*
 const allowedDates = computed(() => {
 
@@ -72,6 +158,7 @@ const format = (date) => {
     return `Date is ${day}/${month}/${year}`;
 }
 const saveDuty = async () => {
-    await storeDuty({ ...form })
+    console.log(form)
+    //await storeDuty({ ...form })
 }
 </script>

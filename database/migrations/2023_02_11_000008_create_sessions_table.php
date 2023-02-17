@@ -13,6 +13,7 @@ class CreateSessionsTable extends Migration
             $table->string('name')->unique();
             $table->integer('assembly')->nullable();
             $table->integer('session')->nullable();
+
             $table->timestamps();
         });
     }

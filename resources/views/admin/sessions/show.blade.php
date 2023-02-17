@@ -47,6 +47,14 @@
                             {{ $session->session }}
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.session.fields.status') }}
+                        </th>
+                        <td>
+                            {{ App\Models\Session::STATUS_SELECT[$session->status] ?? '' }}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div class="form-group">
@@ -58,6 +66,22 @@
     </div>
 </div>
 
-
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.relatedData') }}
+    </div>
+    <ul class="nav nav-tabs" role="tablist" id="relationship-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="#session_calenders" role="tab" data-toggle="tab">
+                {{ trans('cruds.calender.title') }}
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane" role="tabpanel" id="session_calenders">
+            @includeIf('admin.sessions.relationships.sessionCalenders', ['calenders' => $session->sessionCalenders])
+        </div>
+    </div>
+</div>
 
 @endsection
