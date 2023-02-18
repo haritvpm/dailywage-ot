@@ -8,6 +8,7 @@
         </div>
     </div>
 
+    {{ props.user }}
 
     <form @submit.prevent="saveDuty">
 
@@ -26,9 +27,9 @@
 
 
 
-        <table class="table table-bordered">
+        <table class="table table-sm table-striped table-bordered">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th rowspan="2">
                         Sl.
                     </th>
@@ -36,19 +37,20 @@
                         Name
                     </th>
 
-                    <th class="text-center" colspan="2">
+                    <th colspan="2">
                         Morning
                     </th>
 
-                    <th class="text-center" colspan="2">
+                    <th colspan="2">
                         Evening
                     </th>
-                    <th rowspan="2">
+                    <th style="width: 5%" rowspan="2">
                         Total Hours
                     </th>
+
                 </tr>
 
-                <tr>
+                <tr class="text-center">
                     <th>
                         From
                     </th>
@@ -67,52 +69,78 @@
                 </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-200 divide-solid">
-                <template v-for="item in form.emp" :key="item.id">
+            <tbody>
+                <template v-for="(item, index) in form.emp" :key="index">
                     <tr class="bg-white">
                         <td>
-                            {{ item.id }}
+                            {{ index + 1 }}
                         </td>
                         <td>
-                            {{ item.name }} {{ item.desig }} {{ item.ten }}
+                            {{ item.name }}
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.id" v-model="item.morning_from">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.morning_from">
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.id" v-model="item.morning_to">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.morning_to">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.id" v-model="item.eve_from">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.eve_from">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.id" v-model="item.eve_to">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.eve_to">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.id" v-model="item.total">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.total">
+
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
+                                    aria-hidden="true"></i></button>
 
                         </td>
                     </tr>
                 </template>
+
             </tbody>
+            <tfoot class="border-0">
+                <tr>
+                    <td colspan="4">
+
+                    </td>
+                    <td colspan="3">
+                        <v-select v-model="selectedEmp" label="displayname" :options="employees"></v-select>
+                    </td>
+                    <td colspan="1">
+                        <button class="btn btn-primary" @click="addRow"><i class="fa fa-plus" aria-hidden="true"></i>
+                        </button>
+
+                    </td>
+                </tr>
+            </tfoot>
         </table>
 
 
 
-        <div class="form-group">
+
+
+
+        <div class="form-group mt-1">
             <button class="btn btn-danger" type="submit">
                 Save
             </button>
         </div>
-</form>
+    </form>
 </template>
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
-import { onMounted, reactive, computed } from 'vue'
-const { errors, calender, employees, getCalender, storeDuty, getUserSectionEmployees } = useDailyWageForm()
+import { onMounted, reactive, ref, computed } from 'vue'
+const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
+const props = defineProps(['user'])
+const selectedEmp = ref()
 
 const form = reactive({
     type: 'oneday-multiemp',
@@ -123,21 +151,21 @@ const form = reactive({
 
 onMounted(async () => {
     await getCalender();
-    await getUserSectionEmployees();
-    //  console.log(employees.value)
+    await getEmployees();
+    // console.log(props.user)
 
     for (let i = 0; i < employees.value.length; i++) {
-        form.emp.push({
-            id: employees.value[i].id,
-            name: employees.value[i].name,
-            ten: employees.value[i].ten,
-            desig: employees.value[i].designation.title,
-            morning_from: '',
-            morning_to: '',
-            eve_from: '',
-            eve_to: '',
-            total: '',
-        })
+        if (employees.value[i].in_usersection) {
+            form.emp.push({
+                id: employees.value[i].id,
+                name: employees.value[i].displayname,
+                morning_from: '',
+                morning_to: '',
+                eve_from: '',
+                eve_to: '',
+                total: '',
+            })
+        }
     }
 
 })
@@ -161,4 +189,21 @@ const saveDuty = async () => {
     console.log(form)
     //await storeDuty({ ...form })
 }
+
+const addRow = () => {
+
+    form.emp.push({
+        id: selectedEmp.value.id,
+        name: selectedEmp.value.displayname,
+        morning_from: '',
+        morning_to: '',
+        eve_from: '',
+        eve_to: '',
+        total: '',
+    })
+};
+const removeRow = (n) => {
+    form.emp.splice(n, 1);
+};
+
 </script>

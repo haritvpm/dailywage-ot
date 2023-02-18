@@ -5,6 +5,9 @@ import DutyCreate from './components/DutyCreate.vue'
 import router from './router'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+
 
 const app = createApp({
     components: {
@@ -12,5 +15,6 @@ const app = createApp({
     }
 })
 app.component('Datepicker', Datepicker);
+app.component('v-select', vSelect);
 
 app.use(router).mount('#app')

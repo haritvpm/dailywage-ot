@@ -15,8 +15,8 @@ export default function useDailyWageForm() {
         let response = await axios.get(`/api/v1/calenders`)
         calender.value = response.data.data
     }
-    const getUserSectionEmployees = async (id) => {
-        let response = await axios.get(`/api/v1/sections`)
+    const getEmployees = async (id) => {
+        let response = await axios.get(`/api/v1/daily-wage-employees`)
         employees.value = response.data.data
     }
 
@@ -55,7 +55,7 @@ export default function useDailyWageForm() {
         calender,
         employees,
         getCalender,
-        getUserSectionEmployees,
+        getEmployees,
 
         storeDuty,
         updateCompany

@@ -1,9 +1,8 @@
 <template>
-
     <div class="flex mb-4 place-content-end">
         <div class="px-4 py-2 text-white bg-indigo-600 cursor-pointer hover:bg-indigo-700">
 
-            <router-link :to="{ name: 'duty.create' }" class="btn btn-success">Create company</router-link>
+            <router-link :to="{ name: 'duty.create' }" class="btn btn-success">Create Form</router-link>
 
         </div>
     </div>

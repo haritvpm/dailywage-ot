@@ -16,16 +16,16 @@ class SectionApiController extends Controller
     public function index()
     {
        // abort_if(Gate::denies('section_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-       // return new SectionResource(Section::with(['user', 'created_by'])->get());
+       return new SectionResource(Section::with(['user', 'created_by'])->get());
 
-       $section =  Section::where( 'user_id' , auth()->user()->id)->first();
+      /* $section =  Section::where( 'user_id' , auth()->user()->id)->first();
 
         $emp = null;
         if( $section ){
             $emp =  $section->sectionDailyWageEmployees()->with(['designation', 'category'])->get();
         }
       
-        return new SectionResource($emp);
+        return new SectionResource($emp);*/
     }
    
 
