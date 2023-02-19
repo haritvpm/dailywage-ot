@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import DutyIndex from './../components/DutyIndex'
 import DutyCreate from './../components/DutyCreate'
+import DutyEdit from './../components/DutyEdit.vue'
 
 const routes = [
     {
@@ -13,6 +14,12 @@ const routes = [
         path: '/duty/create',
         name: 'duty.create',
         component: DutyCreate
+    },
+    {
+        path: '/duty/:id/edit',
+        name: 'duty.edit',
+        component: DutyEdit,
+        props: true
     },
 ];
 

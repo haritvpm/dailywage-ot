@@ -16,14 +16,22 @@ class CalenderApiController extends Controller
     public function index()
     {
       //  abort_if(Gate::denies('calender_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $dates = Calender::with(['session'])->get()
+        $dates = Calender::with(['session'])
+            ->whereHas('session', function($s){
+                $s->where('status','active');
+            })
+            ->get()
             ->map(function ($d) {
-                return Carbon::createFromFormat('d/m/Y', $d->date)->format('Y/m/d');
+                //return Carbon::createFromFormat('d/m/Y', $d->date)->format('Y/m/d');
+                return [ 'id' =>  $d->id, 
+                        'date'=> Carbon::createFromFormat('d/m/Y', $d->date)->format('M d,Y')];
+                //return  Carbon::createFromFormat('d/m/Y', $d)->format('M d, Y');
                 
             });
-
-
+        
+        dump($dates);
         return new CalenderResource($dates );
+
     }
 
     public function store(StoreCalenderRequest $request)

@@ -8,17 +8,61 @@
     </div>
 
 
-    <h1>{{ title }}</h1>
+    <div>
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        FormType
+                    </th>
+                    <th>
+                        Date(s)
+                    </th>
+                    <th>
+                        CreatedBy
+                    </th>
+                    <th>
+                        @
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <template v-for="item in duties" :key="item.id">
+                    <tr>
+                        <td>
+                            {{ item.id }}
+                        </td>
+                        <td>
+                            {{ item.form_type }}
+                        </td>
+                        <td>
+                            {{ item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session' }}
+                        </td>
+                        <td>
+                            {{ item.created_by.name }}
+                        </td>
+                        <td>
+                            {{ item.owned_by.name }}
+                        </td>
+                        <td>
+                            <router-link :to="{ name: 'duty.edit', params: { id: item.id } }"
+                                class="mr-2 ">Edit</router-link>
+                            <button @click="deleteCompany(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
 </template>
-<script>
-export default {
-    data() {
-        return {
-            title: 'create To Install Vue 3 in Laravel 8 From Scratch'
-        }
-    },
-    mounted() {
-        console.log('Component mounted.')
-    }
-}
+<script setup>
+import useDailyWageForm from './../composables/dailyform'
+import { onMounted, reactive, ref, computed } from 'vue'
+const { errors, calender, duties, getCalender, getDuties } = useDailyWageForm()
+
+onMounted(getDuties)
 </script>

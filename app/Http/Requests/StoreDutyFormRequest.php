@@ -11,7 +11,7 @@ class StoreDutyFormRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('duty_form_create');
+        return 1;//Gate::allows('duty_form_create');
     }
 
     public function rules()
@@ -20,10 +20,15 @@ class StoreDutyFormRequest extends FormRequest
             'total_hours' => [
                 'numeric',
             ],
-            'section_name' => [
-                'string',
-                'nullable',
-            ],
+            
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success'   => false,
+            'message'   => 'Validation errors',
+            'data'      => $validator->errors()
+        ]));
     }
 }

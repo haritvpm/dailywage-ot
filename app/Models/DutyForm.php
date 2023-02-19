@@ -13,8 +13,8 @@ class DutyForm extends Model
     use HasFactory;
 
     public const FORM_TYPE_SELECT = [
-        'singleday_multiemp'     => 'singleday_multiemp',
-        'wholesession_singleemp' => 'wholesession_singleemp',
+        'oneday-multiemp'     => 'oneday-multiemp',
+        'alldays-oneemp' => 'alldays-oneemp',
     ];
 
     public $table = 'duty_forms';
@@ -33,7 +33,6 @@ class DutyForm extends Model
         'total_hours',
         'created_at',
         'owned_by_id',
-        'section_name',
         'updated_at',
         'deleted_at',
         'created_by_id',

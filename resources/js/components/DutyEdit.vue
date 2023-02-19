@@ -21,8 +21,8 @@
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
         <!--    <Datepicker v-show="form.type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                no-today :format="format" :enable-time-picker="false">
-                                            </Datepicker> -->
+                                                    no-today :format="format" :enable-time-picker="false">
+                                                </Datepicker> -->
         <v-select v-model="form.date" label="date" :options="calender"></v-select>
 
 
@@ -136,7 +136,7 @@
     </form>
 </template>
 <script setup>
-import useDailyWageForm from './../composables/dailyform'
+import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 // const props = defineProps(['user'])

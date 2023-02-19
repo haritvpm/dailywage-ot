@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <h2>{{$session}}</h2>
-            <router-view user= {{ Auth::user() }}/>
+            <router-view/>
         </div>
     </div>
 </div>
