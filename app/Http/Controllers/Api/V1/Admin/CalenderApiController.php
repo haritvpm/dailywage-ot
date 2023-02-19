@@ -29,7 +29,7 @@ class CalenderApiController extends Controller
                 
             });
         
-        dump($dates);
+        // dump($dates);
         return new CalenderResource($dates );
 
     }

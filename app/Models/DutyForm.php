@@ -67,4 +67,9 @@ class DutyForm extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+    public function dutyItems()
+    {
+        return $this->hasMany(DutyFormItem::class, 'form_id', 'id');
+    }
+
 }

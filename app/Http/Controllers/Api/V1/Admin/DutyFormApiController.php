@@ -12,15 +12,18 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\Session;
 use App\Models\User;
+use App\Models\DutyFormItem;
 
 
 class DutyFormApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $duty = DutyForm::with(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by'])->get();
+        dump($duty);
 
-        return new DutyFormResource(DutyForm::with(['date', 'session', 'employee', 'owned_by', 'created_by'])->get());
+        return new DutyFormResource( $duty);
     }
 
     public function store(Request $request)
@@ -58,6 +61,28 @@ class DutyFormApiController extends Controller
         ]
        );
 
+       if('oneday-multiemp' === $request->type){
+            
+            $requestData = $request->dutyItems;
+
+
+            $dutyItems = [];
+            foreach ($requestData as $item) {
+                $dutyItems[] = new DutyFormItem([
+                    'employee_id' => $item['id'],
+                    'fn_from' => $item['fn_from'],
+                    'fn_to' => $item['fn_to'],
+                    'an_from' => $item['an_from'],
+                    'an_to' => $item['an_to'],
+                    'total_hours' => $item['total_hours'],
+                ]);
+            }
+
+            $dutyForm->dutyItems()->saveMany($dutyItems);
+        
+       }
+      
+
         return (new DutyFormResource($dutyForm))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -65,9 +90,9 @@ class DutyFormApiController extends Controller
 
     public function show(DutyForm $dutyForm)
     {
-        abort_if(Gate::denies('duty_form_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       // abort_if(Gate::denies('duty_form_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new DutyFormResource($dutyForm->load(['date', 'session', 'employee', 'owned_by', 'created_by']));
+        return new DutyFormResource($dutyForm->load(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by']));
     }
 
     public function update(UpdateDutyFormRequest $request, DutyForm $dutyForm)
@@ -81,7 +106,8 @@ class DutyFormApiController extends Controller
 
     public function destroy(DutyForm $dutyForm)
     {
-        abort_if(Gate::denies('duty_form_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       // abort_if(Gate::denies('duty_form_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $dutyForm->dutyItems()->delete();
 
         $dutyForm->delete();
 

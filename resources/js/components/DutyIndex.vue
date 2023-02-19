@@ -51,7 +51,7 @@
                         <td>
                             <router-link :to="{ name: 'duty.edit', params: { id: item.id } }"
                                 class="mr-2 ">Edit</router-link>
-                            <button @click="deleteCompany(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
+                            <button @click="deleteDuty(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
                         </td>
                     </tr>
                 </template>
@@ -61,8 +61,8 @@
 </template>
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
-import { onMounted, reactive, ref, computed } from 'vue'
-const { errors, calender, duties, getCalender, getDuties } = useDailyWageForm()
+import { onMounted, ref, computed } from 'vue'
+const { errors, duties, getDuties, deleteDuty } = useDailyWageForm()
 
 onMounted(getDuties)
 </script>

@@ -6,6 +6,7 @@ export default function useDailyWageForm() {
     const duties = ref([])
     const calender = ref([])
     const employees = ref([])
+    const duty = ref([])
 
     const errors = ref('')
     const router = useRouter()
@@ -21,7 +22,10 @@ export default function useDailyWageForm() {
         let response = await axios.get(`/api/v1/daily-wage-employees`)
         employees.value = response.data.data
     }
-
+    const getDuty = async (id) => {
+        let response = await axios.get('/api/v1/duty-forms/' + id)
+        duty.value = response.data.data;
+    }
     const getDuties = async (id) => {
         let response = await axios.get(`/api/v1/duty-forms`)
         duties.value = response.data.data
@@ -37,18 +41,16 @@ export default function useDailyWageForm() {
                 //for (const key in e.response.data.errors) 
                 {
                     errors.value = e.response.data.errors
-                    console.log(errors.value)
-
                 }
             }
         }
 
     }
 
-    const updateCompany = async (id) => {
+    const updateDuty = async (id) => {
         errors.value = ''
         try {
-            await axios.patch(`/api/companies/${id}`, company.value)
+            await axios.patch(`/api/v1/duty-forms/${id}`, duty.value)
             //await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
@@ -58,25 +60,26 @@ export default function useDailyWageForm() {
             }
         }
     }
-    const deleteCompany = async (id) => {
+    const deleteDuty = async (id) => {
         if (!window.confirm('You sure?')) {
             return
         }
-        //    await destroyCompany(id)
-        //  await getCompanies()
+        await axios.delete(`/api/v1/duty-forms/${id}`, id)
+        await getDuties()
     }
 
     return {
         errors,
+        duty,
         duties,
         calender,
         employees,
         getCalender,
         getEmployees,
         getDuties,
-
+        getDuty,
         storeDuty,
-        updateCompany,
-        deleteCompany,
+        updateDuty,
+        deleteDuty,
     }
 }

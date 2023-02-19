@@ -12,18 +12,18 @@
     <form @submit.prevent="saveDuty">
 
         <div class="form-group">
-            <div>Picked: {{ form.type }}</div>
+            <div>Picked: {{ duty.form_type }}</div>
 
-            <input type="radio" id="oneday-multiemp" value="oneday-multiemp" v-model="form.type" />
+            <input type="radio" id="oneday-multiemp" value="oneday-multiemp" v-model="duty.form_type" />
             <label for="oneday-multiemp">oneday-multiemp</label>
 
-            <input type="radio" id="alldays-oneemp" value="alldays-oneemp" v-model="form.type" />
+            <input type="radio" id="alldays-oneemp" value="alldays-oneemp" v-model="duty.form_type" />
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
-        <!--    <Datepicker v-show="form.type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                    no-today :format="format" :enable-time-picker="false">
-                                                </Datepicker> -->
-        <v-select v-model="form.date" label="date" :options="calender"></v-select>
+        <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
+                                                                                            no-today :format="format" :enable-time-picker="false">
+                                                                                        </Datepicker> -->
+        <v-select v-model="duty.date" label="date" :options="calender"></v-select>
 
 
 
@@ -70,31 +70,31 @@
             </thead>
 
             <tbody>
-                <template v-for="(item, index) in form.emp" :key="index">
+                <template v-for="(item, index) in duty.duty_items" :key="index">
                     <tr class="bg-white">
                         <td>
                             {{ index + 1 }}
                         </td>
                         <td>
-                            {{ item.name }}
+                            {{ item.employee_id }}
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.morning_from">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_from">
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.morning_to">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_to">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.eve_from">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_from">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.eve_to">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_to">
 
                         </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.total">
+                            <input class="form-control" type="text" :name="item + item.index" v-model="item.total_hours">
 
                         </td>
                         <td>
@@ -138,35 +138,46 @@
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
-// const props = defineProps(['user'])
+const { errors, duty, calender, employees, getDuty, getCalender, updateDuty, getEmployees } = useDailyWageForm()
+
+const props = defineProps({
+    id: {
+        required: true,
+        type: String
+    }
+})
+
 const selectedEmp = ref()
 
-const form = reactive({
+/* const form = reactive({
     type: 'oneday-multiemp',
     date: '',
     emp: [],
     website: ''
 })
-
+ */
 onMounted(async () => {
+
+
     await getCalender();
     await getEmployees();
-    console.log(calender)
 
-    for (let i = 0; i < employees.value.length; i++) {
-        if (employees.value[i].in_usersection) {
-            form.emp.push({
-                id: employees.value[i].id,
-                name: employees.value[i].displayname,
-                morning_from: '',
-                morning_to: '',
-                eve_from: '',
-                eve_to: '',
-                total: '',
-            })
-        }
-    }
+    await getDuty(props.id);
+
+    /* 
+        for (let i = 0; i < employees.value.length; i++) {
+            if (employees.value[i].in_usersection) {
+                duty.emp.push({
+                    id: employees.value[i].id,
+                    name: employees.value[i].displayname,
+                    morning_from: '',
+                    morning_to: '',
+                    eve_from: '',
+                    eve_to: '',
+                    total: '',
+                })
+            }
+        } */
 
 })
 
@@ -186,13 +197,14 @@ const format = (date) => {
     return `Date is ${day}/${month}/${year}`;
 }
 const saveDuty = async () => {
-    // console.log(form)
-    await storeDuty({ ...form })
+    // console.log(form)    
+
+    await updateDuty(props.id)
 }
 
 const addRow = () => {
 
-    form.emp.push({
+    duty.emp.push({
         id: selectedEmp.value.id,
         name: selectedEmp.value.displayname,
         morning_from: '',
@@ -203,7 +215,7 @@ const addRow = () => {
     })
 };
 const removeRow = (n) => {
-    form.emp.splice(n, 1);
+    duty.emp.splice(n, 1);
 };
 
 </script>
