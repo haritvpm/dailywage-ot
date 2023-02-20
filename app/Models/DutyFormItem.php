@@ -6,6 +6,7 @@ use \DateTimeInterface;
 use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class DutyFormItem extends Model
 {
@@ -35,6 +36,13 @@ class DutyFormItem extends Model
         'created_by_id',
     ];
 
+    protected $casts = [
+        'fn_from' => 'datetime:H.i',
+        'fn_to' => 'datetime:H.i',
+        'an_from' => 'datetime:H.i',
+        'an_to' => 'datetime:H.i',
+    ];
+
     public function form()
     {
         return $this->belongsTo(DutyForm::class, 'form_id');
@@ -57,6 +65,10 @@ class DutyFormItem extends Model
 
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d H:i');
     }
+    /* public function getFnFromAttribute($value)
+    {
+        return Carbon::createFromFormat('H:i:s', $value)->format('h.i');
+    } */
 }

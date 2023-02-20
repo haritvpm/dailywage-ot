@@ -12,6 +12,7 @@ export default function useDailyWageForm() {
     const router = useRouter()
 
 
+
     const getCalender = async (id) => {
         let response = await axios.get(`/api/v1/calenders`)
 
@@ -81,5 +82,7 @@ export default function useDailyWageForm() {
         storeDuty,
         updateDuty,
         deleteDuty,
+
+
     }
 }

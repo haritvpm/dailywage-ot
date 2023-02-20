@@ -28,16 +28,16 @@ class DutyFormApiController extends Controller
 
     public function store(Request $request)
     {
-        dump($request->all());
+       dump($request->all());
        
-        $session = Session::latest()->where('status', 'active')->first();
+       $session = Session::latest()->where('status', 'active')->first();
 
        // dump( $session);
        $user = auth()->user();
 
        $errors = [];
 
-       if('oneday-multiemp' === $request->type){
+       if('oneday-multiemp' === $request->form_type){
 
             if (!$request->date) {
                 $errors[] = 'Date is needed';
@@ -45,15 +45,15 @@ class DutyFormApiController extends Controller
          
        }
 
-    if (count($errors)) {
-        $responseArr = array('errors' => $errors );
-        return response()->json($responseArr, 422);
-    }
+        if (count($errors)) {
+            $responseArr = array('errors' => $errors );
+            return response()->json($responseArr, 422);
+        }
     
      
        $dutyForm = DutyForm::create(
         [
-            'form_type' => $request->type,
+            'form_type' => $request->form_type,
             'date_id' =>  $request->date['id'],
             'session_id' => $session->id,
             'owned_by_id' => auth()->user()->id,
@@ -61,9 +61,9 @@ class DutyFormApiController extends Controller
         ]
        );
 
-       if('oneday-multiemp' === $request->type){
+       if('oneday-multiemp' === $request->form_type){
             
-            $requestData = $request->dutyItems;
+            $requestData = $request->duty_items;
 
 
             $dutyItems = [];
@@ -95,9 +95,54 @@ class DutyFormApiController extends Controller
         return new DutyFormResource($dutyForm->load(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by']));
     }
 
-    public function update(UpdateDutyFormRequest $request, DutyForm $dutyForm)
+    public function update(Request $request, DutyForm $dutyForm)
     {
-        $dutyForm->update($request->all());
+        dump($request->all());
+
+        
+       $errors = [];
+
+       if('oneday-multiemp' === $request->form_type){
+
+            if (!$request->date) {
+                $errors[] = 'Date is needed';
+            }
+         
+       }
+
+        if (count($errors)) {
+            $responseArr = array('errors' => $errors );
+            return response()->json($responseArr, 422);
+        }
+    
+
+        $dutyForm->update( [
+            'form_type' => $request->form_type,
+            'date_id' =>  $request->date['id'],
+        ]);
+
+        if('oneday-multiemp' === $request->form_type){
+            
+            $requestData = $request->duty_items;
+
+
+            $dutyItems = [];
+            foreach ($requestData as $item) {
+                $dutyItems[] = new DutyFormItem([
+                    'employee_id' => $item['employee_id'],
+                    'fn_from' => $item['fn_from'],
+                    'fn_to' => $item['fn_to'],
+                    'an_from' => $item['an_from'],
+                    'an_to' => $item['an_to'],
+                    'total_hours' => $item['total_hours'],
+                ]);
+            }
+
+            $dutyForm->dutyItems()->delete();
+            $dutyForm->dutyItems()->saveMany($dutyItems);
+        
+       }
+
 
         return (new DutyFormResource($dutyForm))
             ->response()

@@ -23347,14 +23347,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getEmployees = _useDailyWageForm.getEmployees;
     // const props = defineProps(['user'])
     var selectedEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)();
+    var empid_to_displayname = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(new Map());
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
-      type: 'oneday-multiemp',
+      form_type: 'oneday-multiemp',
       date: '',
       duty_items: [],
       website: ''
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var i;
+      var i, _i;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -23364,16 +23365,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 4;
             return getEmployees();
           case 4:
-            console.log(calender);
+            // console.log(calender)
+
             for (i = 0; i < employees.value.length; i++) {
-              if (employees.value[i].in_usersection) {
-                form.dutyItems.push({
-                  id: employees.value[i].id,
-                  name: employees.value[i].displayname,
-                  morning_from: '',
-                  morning_to: '',
-                  eve_from: '',
-                  eve_to: '',
+              empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname);
+            }
+            for (_i = 0; _i < employees.value.length; _i++) {
+              if (employees.value[_i].in_usersection) {
+                form.duty_items.push({
+                  employee_id: employees.value[_i].id,
+                  fn_from: '',
+                  fn_to: '',
+                  an_from: '',
+                  an_to: '',
                   total: ''
                 });
               }
@@ -23416,15 +23420,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
     }();
     var addRow = function addRow() {
+      for (var i = 0; i < form.duty_items.length; i++) {
+        if (form.duty_items[i].employee_id == selectedEmp.value.id) {
+          return;
+        }
+      }
       form.duty_items.push({
-        id: selectedEmp.value.id,
-        name: selectedEmp.value.displayname,
-        morning_from: '',
-        morning_to: '',
-        eve_from: '',
-        eve_to: '',
+        employee_id: selectedEmp.value.id,
+        fn_from: '',
+        fn_to: '',
+        an_from: '',
+        an_to: '',
         total: ''
       });
+      selectedEmp.value = '';
     };
     var removeRow = function removeRow(n) {
       form.duty_items.splice(n, 1);
@@ -23437,6 +23446,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       storeDuty: storeDuty,
       getEmployees: getEmployees,
       selectedEmp: selectedEmp,
+      empid_to_displayname: empid_to_displayname,
       form: form,
       format: format,
       saveDuty: saveDuty,
@@ -23501,15 +23511,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       updateDuty = _useDailyWageForm.updateDuty,
       getEmployees = _useDailyWageForm.getEmployees;
     var selectedEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)();
-
-    /* const form = reactive({
-        type: 'oneday-multiemp',
-        date: '',
-        emp: [],
-        website: ''
-    })
-     */
+    var empid_to_displayname = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(new Map());
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var i;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -23522,6 +23526,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 6;
             return getDuty(props.id);
           case 6:
+            for (i = 0; i < employees.value.length; i++) {
+              empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname);
+            }
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -23546,9 +23554,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              // console.log(form)    
+
+              alert('up');
+              _context2.next = 3;
               return updateDuty(props.id);
-            case 2:
+            case 3:
             case "end":
               return _context2.stop();
           }
@@ -23559,18 +23570,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
     }();
     var addRow = function addRow() {
-      duty.emp.push({
-        id: selectedEmp.value.id,
+      for (var i = 0; i < duty.value.duty_items.length; i++) {
+        if (duty.value.duty_items[i].employee_id == selectedEmp.value.id) {
+          return;
+        }
+      }
+      duty.value.duty_items.push({
+        employee_id: selectedEmp.value.id,
         name: selectedEmp.value.displayname,
-        morning_from: '',
-        morning_to: '',
-        eve_from: '',
-        eve_to: '',
+        fn_from: '',
+        fn_to: '',
+        an_from: '',
+        an_to: '',
         total: ''
       });
+      selectedEmp.value = '';
     };
     var removeRow = function removeRow(n) {
-      duty.emp.splice(n, 1);
+      duty.value.duty_items.splice(n, 1);
     };
     var __returned__ = {
       errors: errors,
@@ -23583,6 +23600,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getEmployees: getEmployees,
       props: props,
       selectedEmp: selectedEmp,
+      empid_to_displayname: empid_to_displayname,
       format: format,
       saveDuty: saveDuty,
       addRow: addRow,
@@ -23720,12 +23738,16 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_18 = {
   colspan: "3"
 };
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_19 = {
+  colspan: "1"
+};
+var _hoisted_20 = ["disabled", "onClick"];
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa fa-plus",
   "aria-hidden": "true"
 }, null, -1 /* HOISTED */);
-var _hoisted_20 = [_hoisted_19];
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_22 = [_hoisted_21];
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "form-group mt-1"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "btn btn-danger",
@@ -23756,7 +23778,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.form.form_type = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.form.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                            </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.form.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                            </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.form.date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.form.date = $event;
@@ -23767,7 +23789,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index,
       "class": "bg-white"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.empid_to_displayname.get(item.employee_id)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "form-control",
       type: "text",
       name: item + item.index,
@@ -23815,12 +23837,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     label: "displayname",
     options: $setup.employees
-  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-    colspan: "1"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    disabled: !$setup.selectedEmp,
     "class": "btn btn-primary",
-    onClick: $setup.addRow
-  }, _hoisted_20)])])])]), _hoisted_21], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.addRow, ["prevent"])
+  }, _hoisted_22, 8 /* PROPS */, _hoisted_20)])])])]), _hoisted_23], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -23892,12 +23913,16 @@ var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 var _hoisted_18 = {
   colspan: "3"
 };
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_19 = {
+  colspan: "1"
+};
+var _hoisted_20 = ["disabled", "onClick"];
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa fa-plus",
   "aria-hidden": "true"
 }, null, -1 /* HOISTED */);
-var _hoisted_20 = [_hoisted_19];
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_22 = [_hoisted_21];
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "form-group mt-1"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "btn btn-danger",
@@ -23928,7 +23953,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.duty.form_type = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                            no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                        </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                                                                                                                                    no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                                                                                                                                                </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.duty.date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.duty.date = $event;
@@ -23939,7 +23964,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index,
       "class": "bg-white"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.employee_id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.empid_to_displayname.get(item.employee_id)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "form-control",
       type: "text",
       name: item + item.index,
@@ -23987,12 +24012,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     label: "displayname",
     options: $setup.employees
-  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-    colspan: "1"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    disabled: !$setup.selectedEmp,
     "class": "btn btn-primary",
-    onClick: $setup.addRow
-  }, _hoisted_20)])])])]), _hoisted_21], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+    onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.addRow, ["prevent"])
+  }, _hoisted_22, 8 /* PROPS */, _hoisted_20)])])])]), _hoisted_23], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),

@@ -21,8 +21,8 @@
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                                no-today :format="format" :enable-time-picker="false">
-                                                            </Datepicker> -->
+                                                                                                                                no-today :format="format" :enable-time-picker="false">
+                                                                                                                            </Datepicker> -->
         <v-select v-model="form.date" label="date" :options="calender"></v-select>
 
 
@@ -76,7 +76,7 @@
                             {{ index + 1 }}
                         </td>
                         <td>
-                            {{ item.name }}
+                            {{ empid_to_displayname.get(item.employee_id) }}
                         </td>
                         <td>
                             <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_from">
@@ -115,7 +115,8 @@
                         <v-select v-model="selectedEmp" label="displayname" :options="employees"></v-select>
                     </td>
                     <td colspan="1">
-                        <button class="btn btn-primary" @click="addRow"><i class="fa fa-plus" aria-hidden="true"></i>
+                        <button :disabled="!selectedEmp" class="btn btn-primary" @click.prevent="addRow"><i
+                                class="fa fa-plus" aria-hidden="true"></i>
                         </button>
 
                     </td>
@@ -141,9 +142,10 @@ import { onMounted, reactive, ref, computed } from 'vue'
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 // const props = defineProps(['user'])
 const selectedEmp = ref()
+const empid_to_displayname = ref(new Map())
 
 const form = reactive({
-    type: 'oneday-multiemp',
+    form_type: 'oneday-multiemp',
     date: '',
     duty_items: [],
     website: ''
@@ -152,17 +154,20 @@ const form = reactive({
 onMounted(async () => {
     await getCalender();
     await getEmployees();
-    console.log(calender)
+    // console.log(calender)
+
+    for (let i = 0; i < employees.value.length; i++) {
+        empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname)
+    }
 
     for (let i = 0; i < employees.value.length; i++) {
         if (employees.value[i].in_usersection) {
-            form.dutyItems.push({
-                id: employees.value[i].id,
-                name: employees.value[i].displayname,
-                morning_from: '',
-                morning_to: '',
-                eve_from: '',
-                eve_to: '',
+            form.duty_items.push({
+                employee_id: employees.value[i].id,
+                fn_from: '',
+                fn_to: '',
+                an_from: '',
+                an_to: '',
                 total: '',
             })
         }
@@ -192,15 +197,22 @@ const saveDuty = async () => {
 
 const addRow = () => {
 
+    for (let i = 0; i < form.duty_items.length; i++) {
+        if (form.duty_items[i].employee_id == selectedEmp.value.id) {
+            return
+        }
+    }
+
     form.duty_items.push({
-        id: selectedEmp.value.id,
-        name: selectedEmp.value.displayname,
-        morning_from: '',
-        morning_to: '',
-        eve_from: '',
-        eve_to: '',
+        employee_id: selectedEmp.value.id,
+        fn_from: '',
+        fn_to: '',
+        an_from: '',
+        an_to: '',
         total: '',
     })
+
+    selectedEmp.value = ''
 };
 const removeRow = (n) => {
     form.duty_items.splice(n, 1);

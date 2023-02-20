@@ -21,8 +21,8 @@
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                                                            no-today :format="format" :enable-time-picker="false">
-                                                                                        </Datepicker> -->
+                                                                                                                                                                                                                                                                    no-today :format="format" :enable-time-picker="false">
+                                                                                                                                                                                                                                                                </Datepicker> -->
         <v-select v-model="duty.date" label="date" :options="calender"></v-select>
 
 
@@ -76,7 +76,7 @@
                             {{ index + 1 }}
                         </td>
                         <td>
-                            {{ item.employee_id }}
+                            {{ empid_to_displayname.get(item.employee_id) }}
                         </td>
                         <td>
                             <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_from">
@@ -115,7 +115,8 @@
                         <v-select v-model="selectedEmp" label="displayname" :options="employees"></v-select>
                     </td>
                     <td colspan="1">
-                        <button class="btn btn-primary" @click="addRow"><i class="fa fa-plus" aria-hidden="true"></i>
+                        <button :disabled="!selectedEmp" class="btn btn-primary" @click.prevent="addRow"><i
+                                class="fa fa-plus" aria-hidden="true"></i>
                         </button>
 
                     </td>
@@ -148,14 +149,9 @@ const props = defineProps({
 })
 
 const selectedEmp = ref()
+const empid_to_displayname = ref(new Map())
 
-/* const form = reactive({
-    type: 'oneday-multiemp',
-    date: '',
-    emp: [],
-    website: ''
-})
- */
+
 onMounted(async () => {
 
 
@@ -164,20 +160,14 @@ onMounted(async () => {
 
     await getDuty(props.id);
 
-    /* 
-        for (let i = 0; i < employees.value.length; i++) {
-            if (employees.value[i].in_usersection) {
-                duty.emp.push({
-                    id: employees.value[i].id,
-                    name: employees.value[i].displayname,
-                    morning_from: '',
-                    morning_to: '',
-                    eve_from: '',
-                    eve_to: '',
-                    total: '',
-                })
-            }
-        } */
+
+
+    for (let i = 0; i < employees.value.length; i++) {
+
+        empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname)
+    }
+
+
 
 })
 
@@ -199,23 +189,34 @@ const format = (date) => {
 const saveDuty = async () => {
     // console.log(form)    
 
+    alert('up');
     await updateDuty(props.id)
 }
 
 const addRow = () => {
 
-    duty.emp.push({
-        id: selectedEmp.value.id,
+
+    for (let i = 0; i < duty.value.duty_items.length; i++) {
+        if (duty.value.duty_items[i].employee_id == selectedEmp.value.id) {
+            return
+        }
+    }
+
+    duty.value.duty_items.push({
+        employee_id: selectedEmp.value.id,
         name: selectedEmp.value.displayname,
-        morning_from: '',
-        morning_to: '',
-        eve_from: '',
-        eve_to: '',
+        fn_from: '',
+        fn_to: '',
+        an_from: '',
+        an_to: '',
         total: '',
     })
+
+    selectedEmp.value = ''
+
 };
 const removeRow = (n) => {
-    duty.emp.splice(n, 1);
+    duty.value.duty_items.splice(n, 1);
 };
 
 </script>
