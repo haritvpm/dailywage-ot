@@ -36,12 +36,12 @@ class DutyFormItem extends Model
         'created_by_id',
     ];
 
-    protected $casts = [
-        'fn_from' => 'datetime:H.i',
-        'fn_to' => 'datetime:H.i',
-        'an_from' => 'datetime:H.i',
-        'an_to' => 'datetime:H.i',
-    ];
+     protected $casts = [
+        'fn_from' => 'datetime:H:i',
+        'fn_to' => 'datetime:H:i',
+        'an_from' => 'datetime:H:i',
+        'an_to' => 'datetime:H:i',
+    ];  
 
     public function form()
     {
@@ -67,8 +67,17 @@ class DutyFormItem extends Model
     {
         return $date->format('Y-m-d H:i');
     }
-    /* public function getFnFromAttribute($value)
+    /*
+    public function getFnFromAttribute($value)
     {
-        return Carbon::createFromFormat('H:i:s', $value)->format('h.i');
-    } */
+       
+        // return str_replace(":",".", $value);
+        return Carbon::createFromFormat('h:i:s', $value)->format('h.i');
+    } 
+    /*
+    public function setFnFromAttribute($value)
+    {
+        // return str_replace(".",":", $value);
+        return Carbon::createFromFormat('h.i', $value)->format('h:i');
+    }   */
 }

@@ -35,6 +35,8 @@ export default function useDailyWageForm() {
 
         errors.value = ''
         try {
+
+
             await axios.post('/api/v1/duty-forms', data)
             //  await router.push({ name: 'duty.index' })
         } catch (e) {

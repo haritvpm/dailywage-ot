@@ -69,7 +69,7 @@ class DutyFormApiController extends Controller
             $dutyItems = [];
             foreach ($requestData as $item) {
                 $dutyItems[] = new DutyFormItem([
-                    'employee_id' => $item['id'],
+                    'employee_id' => $item['employee_id'],
                     'fn_from' => $item['fn_from'],
                     'fn_to' => $item['fn_to'],
                     'an_from' => $item['an_from'],

@@ -23351,8 +23351,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
       form_type: 'oneday-multiemp',
       date: '',
-      duty_items: [],
-      website: ''
+      duty_items: []
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var i, _i;
@@ -23378,7 +23377,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   fn_to: '',
                   an_from: '',
                   an_to: '',
-                  total: ''
+                  total_hours: ''
                 });
               }
             }
@@ -23404,12 +23403,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var i;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              // console.log(form)
+
+              for (i = 0; i < form.duty_items.length; i++) {
+                form.duty_items[i].fn_from = form.duty_items[i].fn_from.replaceAll('.', ':');
+                form.duty_items[i].fn_to = form.duty_items[i].fn_to.replaceAll('.', ':');
+                form.duty_items[i].an_from = form.duty_items[i].an_from.replaceAll('.', ':');
+                form.duty_items[i].an_to = form.duty_items[i].an_to.replaceAll('.', ':');
+              }
+              _context2.next = 3;
               return storeDuty(_objectSpread({}, form));
-            case 2:
+            case 3:
             case "end":
               return _context2.stop();
           }
@@ -23431,7 +23439,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         fn_to: '',
         an_from: '',
         an_to: '',
-        total: ''
+        total_hours: ''
       });
       selectedEmp.value = '';
     };
@@ -23582,7 +23590,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         fn_to: '',
         an_from: '',
         an_to: '',
-        total: ''
+        total_hours: ''
       });
       selectedEmp.value = '';
     };
@@ -23778,7 +23786,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.form.form_type = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.form.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                            </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.form.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                            </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.form.date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.form.date = $event;
@@ -23953,7 +23961,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.duty.form_type = $event;
     })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                                                                                                                                    no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                                                                                                                                                </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                                                                                                                                        no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                                                                                                                                                    </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.duty.date,
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $setup.duty.date = $event;

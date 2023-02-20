@@ -21,8 +21,8 @@
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                                                                                                no-today :format="format" :enable-time-picker="false">
-                                                                                                                            </Datepicker> -->
+                                                                                                                                                no-today :format="format" :enable-time-picker="false">
+                                                                                                                                            </Datepicker> -->
         <v-select v-model="form.date" label="date" :options="calender"></v-select>
 
 
@@ -148,7 +148,7 @@ const form = reactive({
     form_type: 'oneday-multiemp',
     date: '',
     duty_items: [],
-    website: ''
+
 })
 
 onMounted(async () => {
@@ -168,7 +168,7 @@ onMounted(async () => {
                 fn_to: '',
                 an_from: '',
                 an_to: '',
-                total: '',
+                total_hours: '',
             })
         }
     }
@@ -192,6 +192,14 @@ const format = (date) => {
 }
 const saveDuty = async () => {
     // console.log(form)
+
+    for (let i = 0; i < form.duty_items.length; i++) {
+        form.duty_items[i].fn_from = form.duty_items[i].fn_from.replaceAll('.', ':');
+        form.duty_items[i].fn_to = form.duty_items[i].fn_to.replaceAll('.', ':');
+        form.duty_items[i].an_from = form.duty_items[i].an_from.replaceAll('.', ':');
+        form.duty_items[i].an_to = form.duty_items[i].an_to.replaceAll('.', ':');
+    }
+
     await storeDuty({ ...form })
 }
 
@@ -209,7 +217,7 @@ const addRow = () => {
         fn_to: '',
         an_from: '',
         an_to: '',
-        total: '',
+        total_hours: '',
     })
 
     selectedEmp.value = ''

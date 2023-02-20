@@ -21,8 +21,8 @@
             <label for="alldays-oneemp">alldays-oneemp</label>
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                                                                                                                                                                                                                                    no-today :format="format" :enable-time-picker="false">
-                                                                                                                                                                                                                                                                </Datepicker> -->
+                                                                                                                                                                                                                                                                        no-today :format="format" :enable-time-picker="false">
+                                                                                                                                                                                                                                                                    </Datepicker> -->
         <v-select v-model="duty.date" label="date" :options="calender"></v-select>
 
 
@@ -209,7 +209,7 @@ const addRow = () => {
         fn_to: '',
         an_from: '',
         an_to: '',
-        total: '',
+        total_hours: '',
     })
 
     selectedEmp.value = ''
