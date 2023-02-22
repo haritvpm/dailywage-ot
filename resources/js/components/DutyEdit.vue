@@ -78,25 +78,9 @@
                         <td>
                             {{ empid_to_displayname.get(item.employee_id) }}
                         </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_from">
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_to">
+                        <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
+                            v-model:an_to="item.an_to" v-model:total_hours="item.total_hours" />
 
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_from">
-
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_to">
-
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.total_hours">
-
-                        </td>
                         <td>
                             <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
                                     aria-hidden="true"></i></button>
@@ -131,7 +115,7 @@
 
         <div class="form-group mt-1">
             <button class="btn btn-danger" type="submit">
-                Save
+                Update
             </button>
         </div>
     </form>
@@ -189,7 +173,7 @@ const format = (date) => {
 const saveDuty = async () => {
     // console.log(form)    
 
-    alert('up');
+
     await updateDuty(props.id)
 }
 

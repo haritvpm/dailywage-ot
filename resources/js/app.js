@@ -7,6 +7,7 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import TimeInput from './components/TimeInput.vue'
 
 
 const app = createApp({
@@ -16,5 +17,6 @@ const app = createApp({
 })
 app.component('Datepicker', Datepicker);
 app.component('v-select', vSelect);
+app.component('time-input', TimeInput);
 
 app.use(router).mount('#app')

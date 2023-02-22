@@ -44,7 +44,7 @@
                     <th colspan="2">
                         Evening
                     </th>
-                    <th style="width: 5%" rowspan="2">
+                    <th style="width: 8%" rowspan="2">
                         Total Hours
                     </th>
 
@@ -78,24 +78,12 @@
                         <td>
                             {{ empid_to_displayname.get(item.employee_id) }}
                         </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_from">
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.fn_to">
 
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_from">
+                        <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
+                            v-model:an_to="item.an_to" @total_hours="ontotalhours(index)" />
 
-                        </td>
                         <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.an_to">
-
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" :name="item + item.index" v-model="item.total_hours">
-
+                            <input readonly class="form-control" type="text" v-model='item.total_hours' />
                         </td>
                         <td>
                             <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
@@ -190,15 +178,45 @@ const format = (date) => {
 
     return `Date is ${day}/${month}/${year}`;
 }
+
+const ontotalhours = (index) => {
+
+    var splitted1 = form.duty_items[index].fn_from.split(":");
+    var splitted2 = form.duty_items[index].fn_to.split(":");
+
+    if (splitted1.length == 2) {
+        splitted1[0] = splitted1[0].padStart(2, '0');
+    }
+
+    if (splitted2.length == 2) {
+        splitted2[0] = splitted2[0].padStart(2, '0');
+    }
+
+    if (parseInt(splitted1[0]) > parseInt(splitted2[0])) {
+        splitted2[0] = parseInt(splitted2[0]) + 12;
+    }
+
+
+    var time1 = splitted1[0] + ':' + splitted1[1];
+    var time2 = splitted2[0] + ':' + splitted2[1];
+    console.log(time1)
+    console.log(time2)
+    var startTime = moment(time1, "HH:mm")
+    var end = moment(time2, "HH:mm")
+    var res = '';
+    var duration = moment.duration(end.diff(startTime));
+
+    res = duration.hours() + ':' + duration.minutes().toString().padStart(2, 0);
+
+    if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
+        form.duty_items[index].total_hours = res;
+    else
+        form.duty_items[index].total_hours = '';
+};
+
 const saveDuty = async () => {
     // console.log(form)
 
-    for (let i = 0; i < form.duty_items.length; i++) {
-        form.duty_items[i].fn_from = form.duty_items[i].fn_from.replaceAll('.', ':');
-        form.duty_items[i].fn_to = form.duty_items[i].fn_to.replaceAll('.', ':');
-        form.duty_items[i].an_from = form.duty_items[i].an_from.replaceAll('.', ':');
-        form.duty_items[i].an_to = form.duty_items[i].an_to.replaceAll('.', ':');
-    }
 
     await storeDuty({ ...form })
 }
