@@ -44,7 +44,7 @@
                     <th colspan="2">
                         Evening
                     </th>
-                    <th style="width: 5%" rowspan="2">
+                    <th style="width: 8%" rowspan="2">
                         Total Hours
                     </th>
 
@@ -79,8 +79,10 @@
                             {{ empid_to_displayname.get(item.employee_id) }}
                         </td>
                         <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
-                            v-model:an_to="item.an_to" v-model:total_hours="item.total_hours" />
-
+                            v-model:an_to="item.an_to" @total_hours="ontotalhours(index)" />
+                        <td>
+                            <input readonly class="form-control" type="text" v-model='item.total_hours' />
+                        </td>
                         <td>
                             <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
                                     aria-hidden="true"></i></button>
@@ -123,6 +125,8 @@
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
+import { getTimeDuration } from './../shared/utility';
+
 const { errors, duty, calender, employees, getDuty, getCalender, updateDuty, getEmployees } = useDailyWageForm()
 
 const props = defineProps({
@@ -170,6 +174,20 @@ const format = (date) => {
 
     return `Date is ${day}/${month}/${year}`;
 }
+const ontotalhours = (index) => {
+
+    var duration = getTimeDuration(duty.value.duty_items[index].fn_from, duty.value.duty_items[index].fn_to)
+    var duration2 = getTimeDuration(duty.value.duty_items[index].an_from, duty.value.duty_items[index].an_to)
+
+    var duration = duration.add(duration2);
+
+    var res = duration.hours() + '.' + duration.minutes().toString().padStart(2, 0);
+
+    if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
+        duty.value.duty_items[index].total_hours = res;
+    else
+        duty.value.duty_items[index].total_hours = '';
+};
 const saveDuty = async () => {
     // console.log(form)    
 

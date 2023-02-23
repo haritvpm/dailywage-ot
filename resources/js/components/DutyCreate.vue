@@ -12,22 +12,29 @@
     <form @submit.prevent="saveDuty">
 
         <div class="form-group">
-            <div>Picked: {{ form.form_type }}</div>
 
-            <input type="radio" id="oneday-multiemp" value="oneday-multiemp" v-model="form.form_type" />
-            <label for="oneday-multiemp">oneday-multiemp</label>
+            <div class="form-check">
 
-            <input type="radio" id="alldays-oneemp" value="alldays-oneemp" v-model="form.form_type" />
-            <label for="alldays-oneemp">alldays-oneemp</label>
+                <input class="form-check-input" type="radio" id="oneday-multiemp" value="oneday-multiemp"
+                    v-model="form.form_type" />
+                <label class="form-check-label" for="oneday-multiemp">For Single Day</label>
+            </div>
+
+            <div class="form-check">
+
+                <input class="form-check-input" type="radio" id="alldays-oneemp" value="alldays-oneemp"
+                    v-model="form.form_type" />
+                <label class="form-check-label" for="alldays-oneemp">For Whole Session</label>
+            </div>
+
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
                                                                                                                                                 no-today :format="format" :enable-time-picker="false">
                                                                                                                                             </Datepicker> -->
-        <v-select v-model="form.date" label="date" :options="calender"></v-select>
+        <v-select v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" label="date"
+            :options="calender"></v-select>
 
-
-
-        <table class="table table-sm table-striped table-bordered">
+        <table v-show="form.form_type == 'oneday-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
             <thead>
                 <tr class="text-center">
                     <th rowspan="2">
@@ -72,7 +79,7 @@
             <tbody>
                 <template v-for="(item, index) in form.duty_items" :key="index">
                     <tr class="bg-white">
-                        <td>
+                        <td class="text-center">
                             {{ index + 1 }}
                         </td>
                         <td>
@@ -80,7 +87,7 @@
                         </td>
 
                         <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
-                            v-model:an_to="item.an_to" @total_hours="ontotalhours(index)" />
+                            v-model:an_to="item.an_to" @total_hours="ontotalhours_singleday(index)" />
 
                         <td>
                             <input readonly class="form-control" type="text" v-model='item.total_hours' />
@@ -113,9 +120,85 @@
         </table>
 
 
+        <!-- whole session -->
+        <v-select v-show="form.form_type == 'alldays-oneemp'" v-model="form.employee" label="displayname"
+            :options="sectionEmp"></v-select>
 
+        <table v-show="form.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th rowspan="2">
+                        Sl.
+                    </th>
+                    <th rowspan="2">
+                        Date
+                    </th>
 
+                    <th colspan="2">
+                        Morning
+                    </th>
 
+                    <th colspan="2">
+                        Evening
+                    </th>
+                    <th style="width: 8%" rowspan="2">
+                        Total Hours
+                    </th>
+
+                </tr>
+
+                <tr class="text-center">
+                    <th>
+                        From
+                    </th>
+                    <th>
+                        To
+
+                    </th>
+                    <th>
+                        From
+                    </th>
+                    <th>
+                        To
+
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <template v-for="(item, index) in form.dates" :key="index">
+                    <tr class="bg-white">
+                        <td class="text-center">
+                            {{ index + 1 }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.date.date }}
+                        </td>
+
+                        <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
+                            v-model:an_to="item.an_to" @total_hours="ontotalhours_wholesession(index)" />
+
+                        <td>
+                            <input readonly class="form-control" type="text" v-model='item.total_hours' />
+                        </td>
+
+                    </tr>
+                </template>
+
+            </tbody>
+            <tfoot class="border-0">
+                <tr>
+                    <td colspan="6">
+
+                    </td>
+                    <td class="text-center">
+                        fdgfd
+                    </td>
+
+                </tr>
+            </tfoot>
+        </table>
 
         <div class="form-group mt-1">
             <button class="btn btn-danger" type="submit">
@@ -127,16 +210,20 @@
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
+import { getTimeDuration, ontotalhours } from './../shared/utility';
+
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 // const props = defineProps(['user'])
 const selectedEmp = ref()
 const empid_to_displayname = ref(new Map())
+const sectionEmp = ref([])
 
 const form = reactive({
     form_type: 'oneday-multiemp',
     date: '',
     duty_items: [],
-
+    employee: '',
+    dates: [],
 })
 
 onMounted(async () => {
@@ -150,6 +237,11 @@ onMounted(async () => {
 
     for (let i = 0; i < employees.value.length; i++) {
         if (employees.value[i].in_usersection) {
+            sectionEmp.value.push({
+                id: employees.value[i].id,
+                displayname: employees.value[i].displayname,
+            })
+
             form.duty_items.push({
                 employee_id: employees.value[i].id,
                 fn_from: '',
@@ -159,6 +251,16 @@ onMounted(async () => {
                 total_hours: '',
             })
         }
+    }
+    for (let i = 0; i < calender.value.length; i++) {
+        form.dates.push({
+            date: calender.value[i],
+            fn_from: '',
+            fn_to: '',
+            an_from: '',
+            an_to: '',
+            total_hours: '',
+        })
     }
 
 })
@@ -179,39 +281,15 @@ const format = (date) => {
     return `Date is ${day}/${month}/${year}`;
 }
 
-const ontotalhours = (index) => {
-
-    var splitted1 = form.duty_items[index].fn_from.split(":");
-    var splitted2 = form.duty_items[index].fn_to.split(":");
-
-    if (splitted1.length == 2) {
-        splitted1[0] = splitted1[0].padStart(2, '0');
-    }
-
-    if (splitted2.length == 2) {
-        splitted2[0] = splitted2[0].padStart(2, '0');
-    }
-
-    if (parseInt(splitted1[0]) > parseInt(splitted2[0])) {
-        splitted2[0] = parseInt(splitted2[0]) + 12;
-    }
 
 
-    var time1 = splitted1[0] + ':' + splitted1[1];
-    var time2 = splitted2[0] + ':' + splitted2[1];
-    console.log(time1)
-    console.log(time2)
-    var startTime = moment(time1, "HH:mm")
-    var end = moment(time2, "HH:mm")
-    var res = '';
-    var duration = moment.duration(end.diff(startTime));
 
-    res = duration.hours() + ':' + duration.minutes().toString().padStart(2, 0);
+const ontotalhours_singleday = (index) => {
+    ontotalhours(form.duty_items[index])
+};
 
-    if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
-        form.duty_items[index].total_hours = res;
-    else
-        form.duty_items[index].total_hours = '';
+const ontotalhours_wholesession = (index) => {
+    ontotalhours(form.dates[index])
 };
 
 const saveDuty = async () => {

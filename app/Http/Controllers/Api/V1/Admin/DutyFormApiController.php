@@ -43,6 +43,11 @@ class DutyFormApiController extends Controller
                 $errors[] = 'Date is needed';
             }
          
+       } else {
+
+            if (!$request->employee) {
+                $errors[] = 'Employee is needed';
+            }
        }
 
         if (count($errors)) {
@@ -54,19 +59,19 @@ class DutyFormApiController extends Controller
        $dutyForm = DutyForm::create(
         [
             'form_type' => $request->form_type,
-            'date_id' =>  $request->date['id'],
+            'date_id' =>  $request->date ? $request->date['id'] : null,
             'session_id' => $session->id,
             'owned_by_id' => auth()->user()->id,
+            'employee_id' =>  $request->employee['id'],
 
         ]
        );
 
+       $dutyItems = [];
+
        if('oneday-multiemp' === $request->form_type){
             
             $requestData = $request->duty_items;
-
-
-            $dutyItems = [];
             foreach ($requestData as $item) {
                 $dutyItems[] = new DutyFormItem([
                     'employee_id' => $item['employee_id'],
@@ -77,11 +82,22 @@ class DutyFormApiController extends Controller
                     'total_hours' => $item['total_hours'],
                 ]);
             }
-
-            $dutyForm->dutyItems()->saveMany($dutyItems);
+       } else {
         
+            $requestData = $request->dates;
+            foreach ($requestData as $item) {
+                $dutyItems[] = new DutyFormItem([
+                    'date_id' => $item['date']['id'],
+                    'fn_from' => $item['fn_from'],
+                    'fn_to' => $item['fn_to'],
+                    'an_from' => $item['an_from'],
+                    'an_to' => $item['an_to'],
+                    'total_hours' => $item['total_hours'],
+                ]);
+            }
        }
       
+       $dutyForm->dutyItems()->saveMany($dutyItems);
 
         return (new DutyFormResource($dutyForm))
             ->response()
