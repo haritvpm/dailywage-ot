@@ -28,6 +28,13 @@ class DailyWageEmployee extends Model
         'updated_at',
         'deleted_at',
     ];
+    protected $appends = array('displayname');
+
+    public function getDisplaynameAttribute()
+    {
+        return  $this->ten . '-' . $this->name . ' (' . $this->designation->title . ')';
+     
+    }
 
     public function designation()
     {

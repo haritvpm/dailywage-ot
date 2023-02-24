@@ -23349,7 +23349,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getEmployees = _useDailyWageForm.getEmployees;
     // const props = defineProps(['user'])
     var selectedEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)();
-    var empid_to_displayname = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(new Map());
     var sectionEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)([]);
     var form = (0,vue__WEBPACK_IMPORTED_MODULE_1__.reactive)({
       form_type: 'oneday-multiemp',
@@ -23359,7 +23358,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       dates: []
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var i, _i, _i2;
+      var i, _i;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -23369,19 +23368,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 4;
             return getEmployees();
           case 4:
-            // console.log(calender)
+            // console.log(employees)
 
             for (i = 0; i < employees.value.length; i++) {
-              empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname);
-            }
-            for (_i = 0; _i < employees.value.length; _i++) {
-              if (employees.value[_i].in_usersection) {
+              if (employees.value[i].in_usersection) {
                 sectionEmp.value.push({
-                  id: employees.value[_i].id,
-                  displayname: employees.value[_i].displayname
+                  id: employees.value[i].id,
+                  displayname: employees.value[i].displayname
                 });
                 form.duty_items.push({
-                  employee_id: employees.value[_i].id,
+                  employee_id: employees.value[i].id,
+                  employee_name: employees.value[i].displayname,
                   fn_from: '',
                   fn_to: '',
                   an_from: '',
@@ -23390,9 +23387,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
               }
             }
-            for (_i2 = 0; _i2 < calender.value.length; _i2++) {
+            for (_i = 0; _i < calender.value.length; _i++) {
               form.dates.push({
-                date: calender.value[_i2],
+                date: calender.value[_i],
                 fn_from: '',
                 fn_to: '',
                 an_from: '',
@@ -23400,7 +23397,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 total_hours: ''
               });
             }
-          case 7:
+          case 6:
           case "end":
             return _context.stop();
         }
@@ -23443,9 +23440,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref3.apply(this, arguments);
       };
     }();
+    // a computed ref
+    var grandtotal_hours = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
+      return (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(form.dates);
+    });
     var addRow = function addRow() {
       for (var i = 0; i < form.duty_items.length; i++) {
         if (form.duty_items[i].employee_id == selectedEmp.value.id) {
+          alert('Already exists');
           return;
         }
       }
@@ -23470,13 +23472,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       storeDuty: storeDuty,
       getEmployees: getEmployees,
       selectedEmp: selectedEmp,
-      empid_to_displayname: empid_to_displayname,
       sectionEmp: sectionEmp,
       form: form,
       format: format,
       ontotalhours_singleday: ontotalhours_singleday,
       ontotalhours_wholesession: ontotalhours_wholesession,
       saveDuty: saveDuty,
+      grandtotal_hours: grandtotal_hours,
       addRow: addRow,
       removeRow: removeRow,
       get useDailyWageForm() {
@@ -23486,8 +23488,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       reactive: vue__WEBPACK_IMPORTED_MODULE_1__.reactive,
       ref: vue__WEBPACK_IMPORTED_MODULE_1__.ref,
       computed: vue__WEBPACK_IMPORTED_MODULE_1__.computed,
-      get getTimeDuration() {
-        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.getTimeDuration;
+      get sumDurations() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations;
       },
       get ontotalhours() {
         return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours;
@@ -23546,9 +23548,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       updateDuty = _useDailyWageForm.updateDuty,
       getEmployees = _useDailyWageForm.getEmployees;
     var selectedEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)();
-    var empid_to_displayname = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)(new Map());
+    var sectionEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)([]);
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-      var i;
+      var i, _i;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -23558,13 +23560,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 4;
             return getEmployees();
           case 4:
-            _context.next = 6;
-            return getDuty(props.id);
-          case 6:
+            //console.log(employees)
+
+            console.log(duty);
             for (i = 0; i < employees.value.length; i++) {
-              empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname);
+              if (employees.value[i].in_usersection) {
+                sectionEmp.value.push({
+                  id: employees.value[i].id,
+                  displayname: employees.value[i].displayname
+                });
+              }
             }
-          case 7:
+            _context.next = 8;
+            return getDuty(props.id);
+          case 8:
+            for (_i = 0; _i < sectionEmp.value.length; _i++) {
+              if (duty.employee_id == sectionEmp.value[_i].id) {
+                duty.employee.value == sectionEmp.value[_i];
+              }
+            }
+          case 9:
           case "end":
             return _context.stop();
         }
@@ -23584,14 +23599,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var year = date.getFullYear();
       return "Date is ".concat(day, "/").concat(month, "/").concat(year);
     };
-    var ontotalhours = function ontotalhours(index) {
-      var duration = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.getTimeDuration)(duty.value.duty_items[index].fn_from, duty.value.duty_items[index].fn_to);
-      var duration2 = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.getTimeDuration)(duty.value.duty_items[index].an_from, duty.value.duty_items[index].an_to);
-      var duration = duration.add(duration2);
-      var res = duration.hours() + '.' + duration.minutes().toString().padStart(2, 0);
-      if (!res.includes("NaN") && !res.includes("-"))
-        //no negative time diff when time is like 9:3
-        duty.value.duty_items[index].total_hours = res;else duty.value.duty_items[index].total_hours = '';
+
+    // a computed ref
+    var grandtotal_hours = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
+      return (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(duty.value.duty_items);
+    });
+    var ontotalhours_ = function ontotalhours_(index) {
+      (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours)(duty.value.duty_items[index]);
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -23641,9 +23655,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getEmployees: getEmployees,
       props: props,
       selectedEmp: selectedEmp,
-      empid_to_displayname: empid_to_displayname,
+      sectionEmp: sectionEmp,
       format: format,
-      ontotalhours: ontotalhours,
+      grandtotal_hours: grandtotal_hours,
+      ontotalhours_: ontotalhours_,
       saveDuty: saveDuty,
       addRow: addRow,
       removeRow: removeRow,
@@ -23654,8 +23669,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       reactive: vue__WEBPACK_IMPORTED_MODULE_1__.reactive,
       ref: vue__WEBPACK_IMPORTED_MODULE_1__.ref,
       computed: vue__WEBPACK_IMPORTED_MODULE_1__.computed,
-      get getTimeDuration() {
-        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.getTimeDuration;
+      get sumDurations() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations;
+      },
+      get ontotalhours() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours;
       }
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -23875,14 +23893,16 @@ var _hoisted_25 = {
   "class": "text-center"
 };
 var _hoisted_26 = ["onUpdate:modelValue"];
-var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", {
+var _hoisted_27 = {
   "class": "border-0"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+};
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "6"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+}, null, -1 /* HOISTED */);
+var _hoisted_29 = {
   "class": "text-center"
-}, " fdgfd ")])], -1 /* HOISTED */);
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "form-group mt-1"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "btn btn-danger",
@@ -23927,7 +23947,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index,
       "class": "bg-white"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.empid_to_displayname.get(item.employee_id)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_time_input, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.employee_name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_time_input, {
       fn_from: item.fn_from,
       "onUpdate:fn_from": function onUpdateFn_from($event) {
         return item.fn_from = $event;
@@ -24010,7 +24030,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return item.total_hours = $event;
       }
     }, null, 8 /* PROPS */, _hoisted_26), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])])]);
-  }), 128 /* KEYED_FRAGMENT */))]), _hoisted_27], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.form.form_type == 'alldays-oneemp']]), _hoisted_28], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.grandtotal_hours), 1 /* TEXT */)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.form.form_type == 'alldays-oneemp']]), _hoisted_30], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24033,18 +24053,9 @@ var _hoisted_1 = {
 };
 var _hoisted_2 = ["onSubmit"];
 var _hoisted_3 = {
-  "class": "form-group"
-};
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": "oneday-multiemp"
-}, "oneday-multiemp", -1 /* HOISTED */);
-var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": "alldays-oneemp"
-}, "alldays-oneemp", -1 /* HOISTED */);
-var _hoisted_6 = {
   "class": "table table-sm table-striped table-bordered"
 };
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
   "class": "text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   rowspan: "2"
@@ -24062,32 +24073,69 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 }, " Total Hours ")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
   "class": "text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " From "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " To "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " From "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " To ")])], -1 /* HOISTED */);
-var _hoisted_8 = ["onUpdate:modelValue"];
-var _hoisted_9 = ["onClick"];
-var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_5 = ["onUpdate:modelValue"];
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa fa-trash",
   "aria-hidden": "true"
 }, null, -1 /* HOISTED */);
-var _hoisted_11 = [_hoisted_10];
-var _hoisted_12 = {
+var _hoisted_8 = [_hoisted_7];
+var _hoisted_9 = {
   "class": "border-0"
 };
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   colspan: "4"
 }, null, -1 /* HOISTED */);
-var _hoisted_14 = {
+var _hoisted_11 = {
   colspan: "3"
 };
-var _hoisted_15 = {
+var _hoisted_12 = {
   colspan: "1"
 };
-var _hoisted_16 = ["disabled", "onClick"];
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
+var _hoisted_13 = ["disabled", "onClick"];
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("i", {
   "class": "fa fa-plus",
   "aria-hidden": "true"
 }, null, -1 /* HOISTED */);
-var _hoisted_18 = [_hoisted_17];
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_15 = [_hoisted_14];
+var _hoisted_16 = {
+  "class": "mt-1 table table-sm table-striped table-bordered"
+};
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  "class": "text-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  rowspan: "2"
+}, " Sl. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  rowspan: "2"
+}, " Date "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  colspan: "2"
+}, " Morning "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  colspan: "2"
+}, " Evening "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  style: {
+    "width": "8%"
+  },
+  rowspan: "2"
+}, " Total Hours ")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
+  "class": "text-center"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " From "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " To "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " From "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " To ")])], -1 /* HOISTED */);
+var _hoisted_18 = {
+  "class": "text-center"
+};
+var _hoisted_19 = {
+  "class": "text-center"
+};
+var _hoisted_20 = ["onUpdate:modelValue"];
+var _hoisted_21 = {
+  "class": "border-0"
+};
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  colspan: "6"
+}, null, -1 /* HOISTED */);
+var _hoisted_23 = {
+  "class": "text-center"
+};
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "form-group mt-1"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   "class": "btn btn-danger",
@@ -24105,32 +24153,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(v), 1 /* TEXT */)]);
   }), 128 /* KEYED_FRAGMENT */))])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" {{ props.user }} "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.saveDuty, ["prevent"])
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, "Picked: " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.duty.form_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "radio",
-    id: "oneday-multiemp",
-    value: "oneday-multiemp",
-    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $setup.duty.form_type = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "radio",
-    id: "alldays-oneemp",
-    value: "alldays-oneemp",
-    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
-      return $setup.duty.form_type = $event;
-    })
-  }, null, 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelRadio, $setup.duty.form_type]]), _hoisted_5]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                                                                                                                                        no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                                                                                                                                                    </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("    <Datepicker v-show=\"form.form_type == 'oneday-multiemp'\" v-model=\"form.date\" auto-apply :allowed-dates=\"calender\"\n                                                                                                                                                                                                                                                                        no-today :format=\"format\" :enable-time-picker=\"false\">\n                                                                                                                                                                                                                                                                    </Datepicker> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.duty.date,
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $setup.duty.date = $event;
     }),
     label: "date",
     options: $setup.calender
-  }, null, 8 /* PROPS */, ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.duty.duty_items, function (item, index) {
+  }, null, 8 /* PROPS */, ["modelValue", "options"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'oneday-multiemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.duty.duty_items, function (item, index) {
+    var _item$employee;
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index,
       "class": "bg-white"
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.empid_to_displayname.get(item.employee_id)), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_time_input, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_item$employee = item.employee) === null || _item$employee === void 0 ? void 0 : _item$employee.displayname), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_time_input, {
       fn_from: item.fn_from,
       "onUpdate:fn_from": function onUpdateFn_from($event) {
         return item.fn_from = $event;
@@ -24148,7 +24183,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return item.an_to = $event;
       },
       onTotal_hours: function onTotal_hours($event) {
-        return $setup.ontotalhours(index);
+        return $setup.ontotalhours_(index);
       }
     }, null, 8 /* PROPS */, ["fn_from", "onUpdate:fn_from", "fn_to", "onUpdate:fn_to", "an_from", "onUpdate:an_from", "an_to", "onUpdate:an_to", "onTotal_hours"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       readonly: "",
@@ -24157,24 +24192,64 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return item.total_hours = $event;
       }
-    }, null, 8 /* PROPS */, _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, null, 8 /* PROPS */, _hoisted_5), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "btn btn-danger",
       onClick: function onClick($event) {
         return $setup.removeRow(index);
       }
-    }, _hoisted_11, 8 /* PROPS */, _hoisted_9)])]);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+    }, _hoisted_8, 8 /* PROPS */, _hoisted_6)])]);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.selectedEmp,
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $setup.selectedEmp = $event;
     }),
     label: "displayname",
     options: $setup.employees
-  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, null, 8 /* PROPS */, ["modelValue", "options"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     disabled: !$setup.selectedEmp,
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.addRow, ["prevent"])
-  }, _hoisted_18, 8 /* PROPS */, _hoisted_16)])])])]), _hoisted_19], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+  }, _hoisted_15, 8 /* PROPS */, _hoisted_13)])])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'oneday-multiemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" whole session "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+    modelValue: $setup.duty.employee,
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+      return $setup.duty.employee = $event;
+    }),
+    label: "displayname",
+    options: $setup.sectionEmp
+  }, null, 8 /* PROPS */, ["modelValue", "options"]), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.duty.duty_items, function (item, index) {
+    var _item$date;
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+      key: index,
+      "class": "bg-white"
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_item$date = item.date) === null || _item$date === void 0 ? void 0 : _item$date.date), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_time_input, {
+      fn_from: item.fn_from,
+      "onUpdate:fn_from": function onUpdateFn_from($event) {
+        return item.fn_from = $event;
+      },
+      fn_to: item.fn_to,
+      "onUpdate:fn_to": function onUpdateFn_to($event) {
+        return item.fn_to = $event;
+      },
+      an_from: item.an_from,
+      "onUpdate:an_from": function onUpdateAn_from($event) {
+        return item.an_from = $event;
+      },
+      an_to: item.an_to,
+      "onUpdate:an_to": function onUpdateAn_to($event) {
+        return item.an_to = $event;
+      },
+      onTotal_hours: function onTotal_hours($event) {
+        return $setup.ontotalhours_(index);
+      }
+    }, null, 8 /* PROPS */, ["fn_from", "onUpdate:fn_from", "fn_to", "onUpdate:fn_to", "an_from", "onUpdate:an_from", "an_to", "onUpdate:an_to", "onTotal_hours"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      readonly: "",
+      "class": "form-control",
+      type: "text",
+      "onUpdate:modelValue": function onUpdateModelValue($event) {
+        return item.total_hours = $event;
+      }
+    }, null, 8 /* PROPS */, _hoisted_20), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])])]);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.grandtotal_hours), 1 /* TEXT */)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), _hoisted_24], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24641,7 +24716,8 @@ var routes = [{
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getTimeDuration": () => (/* binding */ getTimeDuration),
-/* harmony export */   "ontotalhours": () => (/* binding */ ontotalhours)
+/* harmony export */   "ontotalhours": () => (/* binding */ ontotalhours),
+/* harmony export */   "sumDurations": () => (/* binding */ sumDurations)
 /* harmony export */ });
 function getTimeDuration(from, to) {
   var splitted1 = from.split(":");
@@ -24672,6 +24748,22 @@ var ontotalhours = function ontotalhours(obj) {
   if (!res.includes("NaN") && !res.includes("-"))
     //no negative time diff when time is like 9:3
     obj.total_hours = res;else obj.total_hours = '';
+};
+var sumDurations = function sumDurations(obj) {
+  var tot = moment.duration(0, 'seconds');
+  for (var i = 0; i < (obj === null || obj === void 0 ? void 0 : obj.length); i++) {
+    if (obj[i].total_hours.length) {
+      var splitted = obj[i].total_hours.split(".");
+      if (splitted.length == 2) {
+        tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
+        tot.add(moment.duration(parseInt(splitted[1]), 'minutes'));
+      }
+    }
+  }
+  var res = tot.asHours().toString().split(".")[0] + '.' + tot.minutes().toString().padStart(2, 0);
+  if (!res.includes("NaN") && !res.includes("-"))
+    //no negative time diff when time is like 9:3
+    return res;else return '';
 };
 
 

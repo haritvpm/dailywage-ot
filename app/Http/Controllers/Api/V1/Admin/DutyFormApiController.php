@@ -108,7 +108,7 @@ class DutyFormApiController extends Controller
     {
        // abort_if(Gate::denies('duty_form_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new DutyFormResource($dutyForm->load(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by']));
+        return new DutyFormResource($dutyForm->load(['dutyItems', 'dutyItems.date','dutyItems.employee', 'date', 'session', 'employee', 'owned_by', 'created_by']));
     }
 
     public function update(Request $request, DutyForm $dutyForm)
@@ -117,30 +117,38 @@ class DutyFormApiController extends Controller
 
         
        $errors = [];
-
        if('oneday-multiemp' === $request->form_type){
 
-            if (!$request->date) {
-                $errors[] = 'Date is needed';
-            }
-         
-       }
+        if (!$request->date) {
+            $errors[] = 'Date is needed';
+        }
+            
+        } else {
+
+                if (!$request->employee) {
+                    $errors[] = 'Employee is needed';
+                }
+        }
 
         if (count($errors)) {
             $responseArr = array('errors' => $errors );
             return response()->json($responseArr, 422);
         }
     
-
-        $dutyForm->update( [
-            'form_type' => $request->form_type,
-            'date_id' =>  $request->date['id'],
-        ]);
+        if('oneday-multiemp' === $request->form_type){
+            $dutyForm->update( [
+                // 'form_type' => $request->form_type,
+                'date_id' =>  $request->date['id'],
+            ]);
+        } else {
+            $dutyForm->update( [
+                 'employee_id' =>  $request->employee['id'],
+            ]);
+        }
+        $requestData = $request->duty_items;
 
         if('oneday-multiemp' === $request->form_type){
-            
-            $requestData = $request->duty_items;
-
+         
 
             $dutyItems = [];
             foreach ($requestData as $item) {
@@ -156,6 +164,24 @@ class DutyFormApiController extends Controller
 
             $dutyForm->dutyItems()->delete();
             $dutyForm->dutyItems()->saveMany($dutyItems);
+        
+       } else {
+
+        //todo update each row not delete entire items
+        $dutyItems = [];
+        foreach ($requestData as $item) {
+            $dutyItems[] = new DutyFormItem([
+                'date_id' => $item['date_id'],
+                'fn_from' => $item['fn_from'],
+                'fn_to' => $item['fn_to'],
+                'an_from' => $item['an_from'],
+                'an_to' => $item['an_to'],
+                'total_hours' => $item['total_hours'],
+            ]);
+        }
+
+        $dutyForm->dutyItems()->delete();
+        $dutyForm->dutyItems()->saveMany($dutyItems);
         
        }
 

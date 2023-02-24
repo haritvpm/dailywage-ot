@@ -83,7 +83,7 @@
                             {{ index + 1 }}
                         </td>
                         <td>
-                            {{ empid_to_displayname.get(item.employee_id) }}
+                            {{ item.employee_name }}
                         </td>
 
                         <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
@@ -193,7 +193,7 @@
 
                     </td>
                     <td class="text-center">
-                        fdgfd
+                        {{ grandtotal_hours }}
                     </td>
 
                 </tr>
@@ -210,12 +210,11 @@
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { getTimeDuration, ontotalhours } from './../shared/utility';
+import { sumDurations, ontotalhours } from './../shared/utility';
 
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 // const props = defineProps(['user'])
 const selectedEmp = ref()
-const empid_to_displayname = ref(new Map())
 const sectionEmp = ref([])
 
 const form = reactive({
@@ -229,11 +228,8 @@ const form = reactive({
 onMounted(async () => {
     await getCalender();
     await getEmployees();
-    // console.log(calender)
+    // console.log(employees)
 
-    for (let i = 0; i < employees.value.length; i++) {
-        empid_to_displayname.value.set(employees.value[i].id, employees.value[i].displayname)
-    }
 
     for (let i = 0; i < employees.value.length; i++) {
         if (employees.value[i].in_usersection) {
@@ -244,6 +240,7 @@ onMounted(async () => {
 
             form.duty_items.push({
                 employee_id: employees.value[i].id,
+                employee_name: employees.value[i].displayname,
                 fn_from: '',
                 fn_to: '',
                 an_from: '',
@@ -298,11 +295,18 @@ const saveDuty = async () => {
 
     await storeDuty({ ...form })
 }
+// a computed ref
+const grandtotal_hours = computed(() => {
+
+    return sumDurations(form.dates)
+
+})
 
 const addRow = () => {
 
     for (let i = 0; i < form.duty_items.length; i++) {
         if (form.duty_items[i].employee_id == selectedEmp.value.id) {
+            alert('Already exists')
             return
         }
     }

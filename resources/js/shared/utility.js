@@ -43,4 +43,26 @@ const ontotalhours = (obj) => {
         obj.total_hours = '';
 
 };
-export { getTimeDuration, ontotalhours };
+
+const sumDurations = (obj) => {
+    let tot = moment.duration(0, 'seconds');
+
+    for (let i = 0; i < obj?.length; i++) {
+        if (obj[i].total_hours.length) {
+            var splitted = obj[i].total_hours.split(".");
+            if (splitted.length == 2) {
+                tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
+                tot.add(moment.duration(parseInt(splitted[1]), 'minutes'));
+            }
+        }
+    }
+    var res = tot.asHours().toString().split(".")[0] + '.' + tot.minutes().toString().padStart(2, 0);
+
+    if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
+        return res;
+    else
+        return '';
+
+};
+
+export { getTimeDuration, ontotalhours, sumDurations };

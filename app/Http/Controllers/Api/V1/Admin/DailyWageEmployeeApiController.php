@@ -27,7 +27,7 @@ class DailyWageEmployeeApiController extends Controller
           $emps->map( function ($emp, $key) use ($section) {
             
             $emp->in_usersection = $emp->section->id == $section->id;
-            $emp->displayname = $emp->ten . '-' . $emp->name . ' (' . $emp->designation->title . ')';
+            //$emp->displayname = $emp->ten . '-' . $emp->name . ' (' . $emp->designation->title . ')';
 
           });
        }
