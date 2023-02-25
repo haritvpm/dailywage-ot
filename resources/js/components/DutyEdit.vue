@@ -234,15 +234,15 @@ onMounted(async () => {
 
 
     await getDuty(props.id);
-    for (let i = 0; i < sectionEmp.value.length; i++) {
+    /*
+     for (let i = 0; i < sectionEmp.value.length; i++) {
+ 
+         if (duty.employee_id == sectionEmp.value[i].id) {
+             duty.employee.value == sectionEmp.value[i]
+         }
+     }
+ */
 
-        if (duty.employee_id == sectionEmp.value[i].id) {
-            duty.employee.value == sectionEmp.value[i]
-        }
-    }
-
-    //grandtotal_hours.value = sumDurations(duty.value.duty_items)
-    // duty.total_hours = sumDurations(duty.duty_items)
 })
 
 

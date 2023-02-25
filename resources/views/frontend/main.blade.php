@@ -3,8 +3,8 @@
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <h2>{{$session}}</h2>
-            <router-view/>
+        
+            <router-view :session={{$session}} />
         </div>
     </div>
 </div>
@@ -14,8 +14,7 @@
 @parent
 <script>
     var session = {{ Js::from($session) }};
-  
-console.log()
+
 </script>
 <script src="{{ mix('js/app.js') }}"></script>
 
