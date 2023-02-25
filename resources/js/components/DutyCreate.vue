@@ -213,7 +213,14 @@ import { onMounted, reactive, ref, computed } from 'vue'
 import { sumDurations, ontotalhours } from './../shared/utility';
 
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
-// const props = defineProps(['user'])
+const props = defineProps({
+
+    session: {
+        required: false,
+
+    },
+})
+
 const selectedEmp = ref()
 const sectionEmp = ref([])
 

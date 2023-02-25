@@ -10,7 +10,7 @@
     <!-- {{ props.user }} -->
 
 
-
+    <h5 class="text-center">Overtime Duty Statement</h5>
     <table class=" mt-1 table table-sm table-striped table-bordered">
 
         <tbody>
@@ -211,7 +211,7 @@
 
 
     <form @submit.prevent="printDuty">
-        <div class="form-group mt-1">
+        <div class="d-print-none form-group mt-1">
             <button class="btn btn-danger" type="submit">
                 Print
             </button>
@@ -246,7 +246,7 @@ onMounted(async () => {
 
 
 const printDuty = async () => {
-    // console.log(form)    
+    window.print();
     //  await updateDuty(props.id)
 }
 

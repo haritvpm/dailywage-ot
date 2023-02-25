@@ -202,7 +202,11 @@ const props = defineProps({
     id: {
         required: true,
         type: String
-    }
+    },
+    session: {
+        required: false,
+
+    },
 })
 
 const selectedEmp = ref()
