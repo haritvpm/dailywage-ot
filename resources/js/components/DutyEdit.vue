@@ -173,8 +173,8 @@
                     <td colspan="6">
 
                     </td>
-                    <td class="text-center">
-                        {{ grandtotal_hours }}
+                    <td v-if="duty.form_type == 'alldays-oneemp'" class="text-center">
+                        {{ duty.total_hours ?? '' }}
                     </td>
 
                 </tr>
@@ -207,6 +207,7 @@ const props = defineProps({
 
 const selectedEmp = ref()
 const sectionEmp = ref([])
+// const grandtotal_hours = ref('')
 
 onMounted(async () => {
 
@@ -239,6 +240,9 @@ onMounted(async () => {
             duty.employee.value == sectionEmp.value[i]
         }
     }
+
+    //grandtotal_hours.value = sumDurations(duty.value.duty_items)
+    // duty.total_hours = sumDurations(duty.duty_items)
 })
 
 
@@ -258,14 +262,16 @@ const format = (date) => {
 }
 
 // a computed ref
-const grandtotal_hours = computed(() => {
-    return sumDurations(duty.value.duty_items)
-})
+// const grandtotal_hours = computed(() => {
+//     return sumDurations(duty.value.duty_items)
+// })
 
 
 const ontotalhours_ = (index) => {
 
     ontotalhours(duty.value.duty_items[index])
+
+    duty.value.total_hours = sumDurations(duty.value.duty_items)
 
 };
 const saveDuty = async () => {

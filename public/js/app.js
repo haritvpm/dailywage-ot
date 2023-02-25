@@ -23355,7 +23355,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       date: '',
       duty_items: [],
       employee: '',
-      dates: []
+      dates: [],
+      total_hours: ''
     });
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var i, _i;
@@ -23422,6 +23423,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
     var ontotalhours_wholesession = function ontotalhours_wholesession(index) {
       (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours)(form.dates[index]);
+      form.total_hours = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(form.dates);
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -23441,9 +23443,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       };
     }();
     // a computed ref
-    var grandtotal_hours = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
-      return (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(form.dates);
-    });
+    /*
+    const grandtotal_hours = computed(() => {
+        return sumDurations(form.dates)
+    })*/
+
     var addRow = function addRow() {
       for (var i = 0; i < form.duty_items.length; i++) {
         if (form.duty_items[i].employee_id == selectedEmp.value.id) {
@@ -23478,7 +23482,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       ontotalhours_singleday: ontotalhours_singleday,
       ontotalhours_wholesession: ontotalhours_wholesession,
       saveDuty: saveDuty,
-      grandtotal_hours: grandtotal_hours,
       addRow: addRow,
       removeRow: removeRow,
       get useDailyWageForm() {
@@ -23549,6 +23552,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       getEmployees = _useDailyWageForm.getEmployees;
     var selectedEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)();
     var sectionEmp = (0,vue__WEBPACK_IMPORTED_MODULE_1__.ref)([]);
+    // const grandtotal_hours = ref('')
+
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       var i, _i;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -23579,6 +23584,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 duty.employee.value == sectionEmp.value[_i];
               }
             }
+
+            //grandtotal_hours.value = sumDurations(duty.value.duty_items)
+            // duty.total_hours = sumDurations(duty.duty_items)
           case 9:
           case "end":
             return _context.stop();
@@ -23601,11 +23609,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
 
     // a computed ref
-    var grandtotal_hours = (0,vue__WEBPACK_IMPORTED_MODULE_1__.computed)(function () {
-      return (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(duty.value.duty_items);
-    });
+    // const grandtotal_hours = computed(() => {
+    //     return sumDurations(duty.value.duty_items)
+    // })
+
     var ontotalhours_ = function ontotalhours_(index) {
       (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours)(duty.value.duty_items[index]);
+      duty.value.total_hours = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(duty.value.duty_items);
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
@@ -23657,7 +23667,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       selectedEmp: selectedEmp,
       sectionEmp: sectionEmp,
       format: format,
-      grandtotal_hours: grandtotal_hours,
       ontotalhours_: ontotalhours_,
       saveDuty: saveDuty,
       addRow: addRow,
@@ -24030,7 +24039,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return item.total_hours = $event;
       }
     }, null, 8 /* PROPS */, _hoisted_26), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])])]);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.grandtotal_hours), 1 /* TEXT */)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.form.form_type == 'alldays-oneemp']]), _hoisted_30], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_27, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_28, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.form.total_hours), 1 /* TEXT */)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.form.form_type == 'alldays-oneemp']]), _hoisted_30], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24133,6 +24142,7 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   colspan: "6"
 }, null, -1 /* HOISTED */);
 var _hoisted_23 = {
+  key: 0,
   "class": "text-center"
 };
 var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -24143,6 +24153,7 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 }, " Update ")], -1 /* HOISTED */);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _$setup$duty$total_ho;
   var _component_v_select = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-select");
   var _component_time_input = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("time-input");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.errors, function (v, k) {
@@ -24249,7 +24260,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         return item.total_hours = $event;
       }
     }, null, 8 /* PROPS */, _hoisted_20), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.total_hours]])])]);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.grandtotal_hours), 1 /* TEXT */)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), _hoisted_24], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_22, $setup.duty.form_type == 'alldays-oneemp' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$setup$duty$total_ho = $setup.duty.total_hours) !== null && _$setup$duty$total_ho !== void 0 ? _$setup$duty$total_ho : ''), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), _hoisted_24], 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_2)], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24749,17 +24760,23 @@ var ontotalhours = function ontotalhours(obj) {
     //no negative time diff when time is like 9:3
     obj.total_hours = res;else obj.total_hours = '';
 };
-var sumDurations = function sumDurations(obj) {
+var sumDurations = function sumDurations(obje) {
   var tot = moment.duration(0, 'seconds');
-  for (var i = 0; i < (obj === null || obj === void 0 ? void 0 : obj.length); i++) {
-    if (obj[i].total_hours.length) {
-      var splitted = obj[i].total_hours.split(".");
+  obje.forEach(function (obj) {
+    //        console.log(obj.total_hours)
+    if (obj.total_hours) {
+      var splitted = obj.total_hours.toString().split(".");
+      //   console.log(splitted)
       if (splitted.length == 2) {
         tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
         tot.add(moment.duration(parseInt(splitted[1]), 'minutes'));
+      } else {
+        tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
       }
+    } else {
+      //console.log(obj.total_hours.value)
     }
-  }
+  });
   var res = tot.asHours().toString().split(".")[0] + '.' + tot.minutes().toString().padStart(2, 0);
   if (!res.includes("NaN") && !res.includes("-"))
     //no negative time diff when time is like 9:3

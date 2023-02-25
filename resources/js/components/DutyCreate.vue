@@ -193,7 +193,7 @@
 
                     </td>
                     <td class="text-center">
-                        {{ grandtotal_hours }}
+                        {{ form.total_hours }}
                     </td>
 
                 </tr>
@@ -223,6 +223,7 @@ const form = reactive({
     duty_items: [],
     employee: '',
     dates: [],
+    total_hours: '',
 })
 
 onMounted(async () => {
@@ -287,6 +288,7 @@ const ontotalhours_singleday = (index) => {
 
 const ontotalhours_wholesession = (index) => {
     ontotalhours(form.dates[index])
+    form.total_hours = sumDurations(form.dates)
 };
 
 const saveDuty = async () => {
@@ -296,11 +298,11 @@ const saveDuty = async () => {
     await storeDuty({ ...form })
 }
 // a computed ref
+/*
 const grandtotal_hours = computed(() => {
-
     return sumDurations(form.dates)
+})*/
 
-})
 
 const addRow = () => {
 

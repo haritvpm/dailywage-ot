@@ -63,6 +63,7 @@ class DutyFormApiController extends Controller
             'session_id' => $session->id,
             'owned_by_id' => auth()->user()->id,
             'employee_id' =>  $request->employee['id'],
+            'total_hours'  => $request->total_hours ? $request->total_hours : null,
 
         ]
        );
@@ -143,6 +144,7 @@ class DutyFormApiController extends Controller
         } else {
             $dutyForm->update( [
                  'employee_id' =>  $request->employee['id'],
+                 'total_hours'=>  $request->total_hours,
             ]);
         }
         $requestData = $request->duty_items;
@@ -167,21 +169,27 @@ class DutyFormApiController extends Controller
         
        } else {
 
-        //todo update each row not delete entire items
-        $dutyItems = [];
-        foreach ($requestData as $item) {
-            $dutyItems[] = new DutyFormItem([
-                'date_id' => $item['date_id'],
-                'fn_from' => $item['fn_from'],
-                'fn_to' => $item['fn_to'],
-                'an_from' => $item['an_from'],
-                'an_to' => $item['an_to'],
-                'total_hours' => $item['total_hours'],
-            ]);
-        }
+            //todo update each row not delete entire items
+            //$dutyItems = [];
+            foreach ($requestData as $item) {
+                $dutyFormItem = DutyFormItem::find( $item['id'] );
+                $dutyFormItem->update
+                /*
+                $dutyItems[] = new DutyFormItem*/
+                    (
+                    [
+                    'date_id' => $item['date_id'],
+                    'fn_from' => $item['fn_from'],
+                    'fn_to' => $item['fn_to'],
+                    'an_from' => $item['an_from'],
+                    'an_to' => $item['an_to'],
+                    'total_hours' => $item['total_hours'],
+                    ]
+                );
+            }
 
-        $dutyForm->dutyItems()->delete();
-        $dutyForm->dutyItems()->saveMany($dutyItems);
+          //  $dutyForm->dutyItems()->delete();
+          //  $dutyForm->dutyItems()->saveMany($dutyItems);
         
        }
 
