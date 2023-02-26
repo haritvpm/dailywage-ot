@@ -1,19 +1,18 @@
 require('./bootstrap');
 import { createApp } from 'vue'
 import DutyIndex from './components/DutyIndex.vue'
-import DutyCreate from './components/DutyCreate.vue'
-import DutyView from './components/DutyView.vue'
 import router from './router'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import TimeInput from './components/TimeInput.vue'
+// import DutyCreate from './components/DutyCreate.vue'
 
 
 const app = createApp({
     components: {
-        DutyIndex, DutyCreate, DutyView
+        DutyIndex
     }
 })
 app.component('Datepicker', Datepicker);

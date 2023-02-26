@@ -38,7 +38,7 @@ export default function useDailyWageForm() {
 
 
             await axios.post('/api/v1/duty-forms', data)
-            //  await router.push({ name: 'duty.index' })
+            await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 //for (const key in e.response.data.errors) 
@@ -54,7 +54,7 @@ export default function useDailyWageForm() {
         errors.value = ''
         try {
             await axios.patch(`/api/v1/duty-forms/${id}`, duty.value)
-            //await router.push({ name: 'duty.index' })
+            await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -71,6 +71,20 @@ export default function useDailyWageForm() {
         await getDuties()
     }
 
+    const submitDuty = async (id) => {
+        errors.value = ''
+        try {
+            await axios.post(`/api/v1/duty-forms/${id}`, id)
+            await router.push({ name: 'duty.index' })
+        } catch (e) {
+            if (e.response.status === 422) {
+                for (const key in e.response.data.errors) {
+                    errors.value = e.response.data.errors
+                }
+            }
+        }
+    }
+
     return {
         errors,
         duty,
@@ -84,7 +98,7 @@ export default function useDailyWageForm() {
         storeDuty,
         updateDuty,
         deleteDuty,
-
+        submitDuty,
 
     }
 }

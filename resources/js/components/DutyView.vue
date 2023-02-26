@@ -210,17 +210,26 @@
     </table>
 
 
-    <form @submit.prevent="printDuty">
+    <div>
         <div class="d-print-none form-group mt-1">
-            <button class="btn btn-danger" type="submit">
+            <button @click="printDuty" class="btn btn-warning">
                 Print
             </button>
+            <button @click="editDuty" class="btn btn-primary">
+                Edit
+            </button>
+
+            <button @click="submitDuty" class="btn btn-danger" type="submit">
+                Submit
+            </button>
+
         </div>
-    </form>
+    </div>
 </template>
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, } from 'vue'
+import router from "../router";
 
 const { errors, duty, getDuty } = useDailyWageForm()
 
@@ -250,5 +259,17 @@ const printDuty = async () => {
     //  await updateDuty(props.id)
 }
 
+const submitDuty = async () => {
+    await submitDuty(props.id)
+}
 
+const editDuty = async () => {
+
+    router.push({
+        name: 'duty.edit',
+        params: {
+            id: props.id
+        }
+    });
+}
 </script>
