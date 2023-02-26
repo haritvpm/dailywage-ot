@@ -6,6 +6,7 @@
             <a class="btn btn-success" href="{{ route('admin.sections.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.section.title_singular') }}
             </a>
+          
         </div>
     </div>
 @endcan

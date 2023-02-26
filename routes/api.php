@@ -1,6 +1,28 @@
 <?php
 
 Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:sanctum']], function () {
+    // Users
+    Route::apiResource('users', 'UsersApiController');
+
     // Category
     Route::apiResource('categories', 'CategoryApiController');
+
+    // Designation
+    Route::apiResource('designations', 'DesignationApiController');
+
+    // Section
+    Route::apiResource('sections', 'SectionApiController');
+
+    // Daily Wage Employee
+    Route::apiResource('daily-wage-employees', 'DailyWageEmployeeApiController');
+
+    // Session
+    Route::apiResource('sessions', 'SessionApiController', ['except' => ['destroy']]);
+
+    // Calender
+    Route::apiResource('calenders', 'CalenderApiController');
+
+    // Duty Form
+    Route::post('duty-forms/{id}/submit', 'DutyFormApiController@submit');
+    Route::apiResource('duty-forms', 'DutyFormApiController');
 });

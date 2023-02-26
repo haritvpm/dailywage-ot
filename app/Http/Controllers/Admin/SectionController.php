@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\CsvImportTrait;
 use App\Http\Requests\MassDestroySectionRequest;
 use App\Http\Requests\StoreSectionRequest;
 use App\Http\Requests\UpdateSectionRequest;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SectionController extends Controller
 {
+    use CsvImportTrait;
+
     public function index()
     {
         abort_if(Gate::denies('section_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -77,7 +80,11 @@ class SectionController extends Controller
 
     public function massDestroy(MassDestroySectionRequest $request)
     {
-        Section::whereIn('id', request('ids'))->delete();
+        $sections = Section::find(request('ids'));
+
+        foreach ($sections as $section) {
+            $section->delete();
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

@@ -71,7 +71,11 @@ class DesignationController extends Controller
 
     public function massDestroy(MassDestroyDesignationRequest $request)
     {
-        Designation::whereIn('id', request('ids'))->delete();
+        $designations = Designation::find(request('ids'));
+
+        foreach ($designations as $designation) {
+            $designation->delete();
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
