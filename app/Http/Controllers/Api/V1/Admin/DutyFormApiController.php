@@ -115,7 +115,7 @@ class DutyFormApiController extends Controller
     public function update(Request $request, DutyForm $dutyForm)
     {
         // dump($request->all());
-
+       abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
         
        $errors = [];
        if('oneday-multiemp' === $request->form_type){
