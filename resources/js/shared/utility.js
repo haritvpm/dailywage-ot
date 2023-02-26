@@ -62,7 +62,8 @@ const sumDurations = (obje) => {
             //   console.log(splitted)
             if (splitted.length == 2) {
                 tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
-                tot.add(moment.duration(parseInt(splitted[1]), 'minutes'));
+                splitted[1] = splitted[1].padEnd(2,0) //3 -> 30
+                tot.add(moment.duration(parseInt(), 'minutes'));
             } else {
                 tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
 
