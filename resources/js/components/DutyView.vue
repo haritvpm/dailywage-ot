@@ -212,14 +212,16 @@
 
     <div>
         <div class="d-print-none form-group mt-1">
-            <button @click="printDuty" class="btn btn-warning">
+            <button @click="printDuty" class="mr-1 btn btn-warning">
                 Print
             </button>
-            <button @click="editDuty" class="btn btn-primary">
+
+
+            <button v-if="props.user_id == duty.owned_by_id" @click="editDuty" class="mr-1 btn btn-primary">
                 Edit
             </button>
-
-            <button @click="submitDuty" class="btn btn-danger" type="submit">
+            <button v-if="props.user_id == duty.owned_by_id" @click="sendToHouseKeeping" class="btn btn-danger"
+                type="submit">
                 Submit
             </button>
 
@@ -231,7 +233,7 @@ import useDailyWageForm from '../composables/dailyform'
 import { onMounted, } from 'vue'
 import router from "../router";
 
-const { errors, duty, getDuty } = useDailyWageForm()
+const { errors, duty, getDuty, submitDuty } = useDailyWageForm()
 
 const props = defineProps({
     id: {
@@ -240,7 +242,9 @@ const props = defineProps({
     },
     session: {
         required: false,
-
+    },
+    user_id: {
+        required: false,
     },
 })
 
@@ -259,7 +263,7 @@ const printDuty = async () => {
     //  await updateDuty(props.id)
 }
 
-const submitDuty = async () => {
+const sendToHouseKeeping = async () => {
     await submitDuty(props.id)
 }
 

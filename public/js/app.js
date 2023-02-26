@@ -23780,6 +23780,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     session: {
       required: false
+    },
+    user_id: {
+      required: false
     }
   },
   setup: function setup(__props, _ref) {
@@ -23789,7 +23792,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _useDailyWageForm = (0,_composables_dailyform__WEBPACK_IMPORTED_MODULE_0__["default"])(),
       errors = _useDailyWageForm.errors,
       duty = _useDailyWageForm.duty,
-      getDuty = _useDailyWageForm.getDuty;
+      getDuty = _useDailyWageForm.getDuty,
+      submitDuty = _useDailyWageForm.submitDuty;
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
@@ -23819,7 +23823,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref3.apply(this, arguments);
       };
     }();
-    var submitDuty = /*#__PURE__*/function () {
+    var sendToHouseKeeping = /*#__PURE__*/function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
@@ -23832,7 +23836,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee3);
       }));
-      return function submitDuty() {
+      return function sendToHouseKeeping() {
         return _ref4.apply(this, arguments);
       };
     }();
@@ -23861,9 +23865,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       errors: errors,
       duty: duty,
       getDuty: getDuty,
+      submitDuty: submitDuty,
       props: props,
       printDuty: printDuty,
-      submitDuty: submitDuty,
+      sendToHouseKeeping: sendToHouseKeeping,
       editDuty: editDuty,
       get useDailyWageForm() {
         return _composables_dailyform__WEBPACK_IMPORTED_MODULE_0__["default"];
@@ -24582,6 +24587,9 @@ var _hoisted_21 = {
   key: 0,
   "class": "text-center"
 };
+var _hoisted_22 = {
+  "class": "d-print-none form-group mt-1"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$setup$duty$date, _$setup$duty$employee, _$setup$duty$created_, _$setup$duty$total_ho;
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.errors, function (v, k) {
@@ -24601,19 +24609,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index,
       "class": "text-center"
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index + 1), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_item$date = item.date) === null || _item$date === void 0 ? void 0 : _item$date.date), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.fn_from), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.fn_to), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.an_from), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.an_to), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.total_hours), 1 /* TEXT */)]);
-  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_20, $setup.duty.form_type == 'alldays-oneemp' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$setup$duty$total_ho = $setup.duty.total_hours) !== null && _$setup$duty$total_ho !== void 0 ? _$setup$duty$total_ho : ''), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "d-print-none form-group mt-1"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }), 128 /* KEYED_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tfoot", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_20, $setup.duty.form_type == 'alldays-oneemp' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_$setup$duty$total_ho = $setup.duty.total_hours) !== null && _$setup$duty$total_ho !== void 0 ? _$setup$duty$total_ho : ''), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'alldays-oneemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     onClick: $setup.printDuty,
-    "class": "btn btn-warning"
-  }, " Print "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    "class": "mr-1 btn btn-warning"
+  }, " Print "), $setup.props.user_id == $setup.duty.owned_by_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
     onClick: $setup.editDuty,
-    "class": "btn btn-primary"
-  }, " Edit "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    onClick: $setup.submitDuty,
+    "class": "mr-1 btn btn-primary"
+  }, " Edit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.props.user_id == $setup.duty.owned_by_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    onClick: $setup.sendToHouseKeeping,
     "class": "btn btn-danger",
     type: "submit"
-  }, " Submit ")])])], 64 /* STABLE_FRAGMENT */);
+  }, " Submit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24967,7 +24975,7 @@ function useDailyWageForm() {
             errors.value = '';
             _context8.prev = 1;
             _context8.next = 4;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id), id);
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id, "/submit"), id);
           case 4:
             _context8.next = 6;
             return router.push({

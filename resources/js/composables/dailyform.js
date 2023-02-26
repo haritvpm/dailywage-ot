@@ -74,7 +74,7 @@ export default function useDailyWageForm() {
     const submitDuty = async (id) => {
         errors.value = ''
         try {
-            await axios.post(`/api/v1/duty-forms/${id}`, id)
+            await axios.post(`/api/v1/duty-forms/${id}/submit`, id)
             await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {

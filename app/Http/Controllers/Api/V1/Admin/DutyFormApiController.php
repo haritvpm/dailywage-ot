@@ -21,14 +21,14 @@ class DutyFormApiController extends Controller
     {
         //abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $duty = DutyForm::with(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by'])->get();
-        dump($duty);
+        // dump($duty);
 
         return new DutyFormResource( $duty);
     }
 
     public function store(Request $request)
     {
-       dump($request->all());
+    //    dump($request->all());
        
        $session = Session::latest()->where('status', 'active')->first();
 
@@ -114,7 +114,7 @@ class DutyFormApiController extends Controller
 
     public function update(Request $request, DutyForm $dutyForm)
     {
-        dump($request->all());
+        // dump($request->all());
 
         
        $errors = [];
@@ -207,5 +207,25 @@ class DutyFormApiController extends Controller
         $dutyForm->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function submit(Request $request)
+    {
+       // dump($request->all());
+
+       $dutyForm = DutyForm::find($request->id);
+
+       $admin = User::with(['roles' => function($q){
+            $q->where('title', 'Admin');
+        }])->first();
+
+        //dump( $dutyForm->id);
+       $dutyForm->update( [
+             'owned_by_id' => $admin->id,
+        ]);
+
+        return (new DutyFormResource($dutyForm))
+            ->response()
+            ->setStatusCode(Response::HTTP_ACCEPTED);
     }
 }
