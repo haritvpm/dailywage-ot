@@ -62,7 +62,7 @@ class DutyFormApiController extends Controller
             'date_id' =>  $request->date ? $request->date['id'] : null,
             'session_id' => $session->id,
             'owned_by_id' => auth()->user()->id,
-            'employee_id' =>  $request->employee['id'],
+            'employee_id' =>  $request->employee ?  $request->employee['id'] :null ,
             'total_hours'  => $request->total_hours ? $request->total_hours : null,
 
         ]
