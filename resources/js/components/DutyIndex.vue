@@ -51,9 +51,9 @@
                         <td>
                             <router-link :to="{ name: 'duty.view', params: { id: item.id } }"
                                 class="mr-2 ">View</router-link>
-                            <router-link :to="{ name: 'duty.edit', params: { id: item.id } }"
+                            <router-link  v-if="props.user_id == item.owned_by_id" :to="{ name: 'duty.edit', params: { id: item.id } }"
                                 class="mr-2 ">Edit</router-link>
-                            <button @click="deleteDuty(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
+                            <button  v-if="props.user_id == item.owned_by_id"  @click="deleteDuty(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
                         </td>
                     </tr>
                 </template>
@@ -71,6 +71,9 @@ const props = defineProps({
     session: {
         required: false,
 
+    },
+    user_id: {
+        required: false,
     },
 })
 

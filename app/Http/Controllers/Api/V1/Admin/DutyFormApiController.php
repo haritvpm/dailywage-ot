@@ -202,6 +202,8 @@ class DutyFormApiController extends Controller
     public function destroy(DutyForm $dutyForm)
     {
        // abort_if(Gate::denies('duty_form_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+       abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $dutyForm->dutyItems()->delete();
 
         $dutyForm->delete();
