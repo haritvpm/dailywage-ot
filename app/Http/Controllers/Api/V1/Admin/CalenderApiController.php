@@ -20,6 +20,7 @@ class CalenderApiController extends Controller
             ->whereHas('session', function($s){
                 $s->where('status','active');
             })
+            ->orderby('date')
             ->get()
             ->map(function ($d) {
                 //return Carbon::createFromFormat('d/m/Y', $d->date)->format('Y/m/d');

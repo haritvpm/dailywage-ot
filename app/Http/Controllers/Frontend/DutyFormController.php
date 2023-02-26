@@ -30,10 +30,10 @@ class DutyFormController extends Controller
     {
       
         $dutyForms = DutyForm::with(['date', 'session', 'employee', 'owned_by', 'created_by'])->get();
-        $session = Session::latest()->first()->name;
+       // $session = Session::latest()->first();
         $user = auth()->user();
 
-        return view('frontend.main', compact('session', 'user'));
+        return view('frontend.main', compact( 'user'));
     }
 
     public function create()

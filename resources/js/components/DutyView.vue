@@ -10,20 +10,13 @@
     <!-- {{ props.user }} -->
 
 
-    <h5 class="text-center">Overtime Duty Statement</h5>
-    <table class=" mt-1 table table-sm table-striped table-bordered">
+    <h6 class="text-center">Overtime Duty Statement</h6>
+    <div class="text-center">KLA: <b>{{ props.session.assembly }}</b> Session: <b>{{ props.session.session }}</b></div>
+
+    <table class=" mt-1 table table-sm table-borderless">
 
         <tbody>
-            <tr>
-                <td>
-                    Session
-                </td>
-                <td>
-                    {{ props.session }}
-                </td>
-
-
-            </tr>
+           
             <tr>
                 <td>
                     For
@@ -212,15 +205,15 @@
 
     <div>
         <div class="d-print-none form-group mt-1">
-            <button @click="printDuty" class="mr-1 btn btn-warning">
+            <button v-if="props.user_id !== duty.owned_by_id" @click="printDuty" class="mr-1 btn btn-warning">
                 Print
             </button>
 
 
-            <button v-if="props.user_id == duty.owned_by_id" @click="editDuty" class="mr-1 btn btn-primary">
+            <button v-if="props.user_id === duty.owned_by_id" @click="editDuty" class="mr-1 btn btn-primary">
                 Edit
             </button>
-            <button v-if="props.user_id == duty.owned_by_id" @click="sendToHouseKeeping" class="btn btn-danger"
+            <button v-if="props.user_id === duty.owned_by_id" @click="sendToHouseKeeping" class="btn btn-danger"
                 type="submit">
                 Submit
             </button>

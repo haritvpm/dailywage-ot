@@ -47,11 +47,11 @@
                     <ul class="navbar-nav mr-auto">
                         @guest
                         @else
-                            <li class="nav-item">
+                           {{--  <li class="nav-item">
                                 <a class="nav-link" href="{{ route('frontend.home') }}">
                                     {{ __('Dashboard') }}
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('frontend.main') }}">
                                   Forms
