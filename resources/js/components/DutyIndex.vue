@@ -75,6 +75,9 @@ const props = defineProps({
     user_id: {
         required: false,
     },
+    user: {
+        required: false,
+    },
 })
 
 onMounted(getDuties)

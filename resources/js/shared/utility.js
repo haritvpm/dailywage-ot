@@ -1,5 +1,10 @@
 
 function getTimeDuration(from, to) {
+
+    if( !from || !to) {
+        return moment.duration(0, 'seconds');
+
+    }
     var splitted1 = from.split(":");
     var splitted2 = to.split(":");
 
@@ -29,13 +34,15 @@ function getTimeDuration(from, to) {
     return moment.duration(end.diff(startTime));
 }
 const ontotalhours = (obj) => {
+    let tot = moment.duration(0, 'seconds');
 
     var duration = getTimeDuration(obj.fn_from, obj.fn_to)
     var duration2 = getTimeDuration(obj.an_from, obj.an_to)
 
-    var duration = duration.add(duration2);
+    if(duration) tot.add(duration);
+    if(duration2) tot.add(duration2);
 
-    var res = duration.hours() + '.' + duration.minutes().toString().padStart(2, 0);
+    var res = tot.hours() + '.' + tot.minutes().toString().padStart(2, 0);
 
     if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
         obj.total_hours = res;
@@ -74,4 +81,52 @@ const sumDurations = (obje) => {
 
 };
 
-export { getTimeDuration, ontotalhours, sumDurations };
+const validateTimes = ( obj, check_empty_rows ) =>
+{
+    var formats = ["h:mm","HH:mm"];
+
+    let errors =[]
+    let totalvalidrows = 0;
+    obj.forEach((item, index, arr) => {
+        if( (item.fn_from ^ item.fn_to) || (item.an_from ^ item.an_to) ){
+            //errors.push( 'Please fill row ' +  (index+1) )
+        }
+        let thisrowhaserror = false;
+      
+        if( (item.fn_from || item.fn_to) || (item.an_from || item.an_to) ){
+            
+            if(item.fn_from || item.fn_to){
+                if(!moment(item.fn_from, formats, true).isValid() || 
+                   !moment(item.fn_to, formats, true).isValid()){
+                        errors.push( 'Please enter correct morning time in row ' +  (index+1) )
+                        thisrowhaserror = true;
+                }   
+                
+            }
+
+            if(item.an_from || item.an_to){
+               if(!moment(item.an_from, formats, true).isValid() || 
+                  !moment(item.an_to, formats, true).isValid()){
+                       errors.push( 'Please enter correct evening time in row ' +  (index+1) )
+                       thisrowhaserror = true;
+               }
+           }
+        } else{
+            thisrowhaserror = true; //empty row
+        }
+
+        if(!thisrowhaserror){
+            totalvalidrows += 1;
+        }
+
+    } )
+
+    if( check_empty_rows && totalvalidrows != obj.length ){
+        errors.push( 'Please fill all rows or remove unneeded rows')
+
+    }
+
+    return errors
+}
+
+export { getTimeDuration, ontotalhours, sumDurations, validateTimes };

@@ -194,7 +194,7 @@
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { sumDurations, ontotalhours } from './../shared/utility';
+import { sumDurations, ontotalhours , validateTimes} from './../shared/utility';
 
 const { errors, duty, calender, employees, getDuty, getCalender, updateDuty, getEmployees } = useDailyWageForm()
 
@@ -206,6 +206,12 @@ const props = defineProps({
     session: {
         required: false,
 
+    },
+    user_id: {
+        required: false,
+    },
+    user: {
+        required: false,
     },
 })
 
@@ -280,8 +286,26 @@ const ontotalhours_ = (index) => {
 };
 const saveDuty = async () => {
     // console.log(form)    
+    errors.value = []
+    if( duty.form_type === 'oneday-multiemp'){
+        if( !duty.date ){
+            errors.value.push( 'Please select date ' )
+        }
+    let errors2 = validateTimes( duty.value.duty_items, true )
+    errors2.forEach( e => errors.value.push(e) )
 
+    }
+    else //single employee all session days
+    {
+        if( !duty.value.employee_id ){
+            errors.value.push( 'Please select employee ' )
+        }
+        let errors2 = validateTimes( duty.value.duty_items, false )
+        errors2.forEach( e => errors.value.push(e) )
+    }
 
+    if(errors.value.length) return;
+   
     await updateDuty(props.id)
 }
 

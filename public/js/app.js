@@ -23340,6 +23340,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {
     session: {
       required: false
+    },
+    user_id: {
+      required: false
+    },
+    user: {
+      required: false
     }
   },
   setup: function setup(__props, _ref) {
@@ -23432,12 +23438,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var errors2, _errors;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              errors.value = [];
+              if (form.form_type === 'oneday-multiemp') {
+                if (!form.date) {
+                  errors.value.push('Please select date ');
+                }
+                errors2 = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes)(form.duty_items, true);
+                errors2.forEach(function (e) {
+                  return errors.value.push(e);
+                });
+              } else
+                //single employee all session days
+                {
+                  if (!form.employee) {
+                    errors.value.push('Please select employee ');
+                  }
+                  _errors = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes)(form.dates, false);
+                  _errors.forEach(function (e) {
+                    return errors.value.push(e);
+                  });
+                }
+              if (!errors.value.length) {
+                _context2.next = 4;
+                break;
+              }
+              return _context2.abrupt("return");
+            case 4:
+              _context2.next = 6;
               return storeDuty(_objectSpread({}, form));
-            case 2:
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -23502,6 +23535,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       get ontotalhours() {
         return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours;
+      },
+      get validateTimes() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes;
       }
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -23543,6 +23579,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       type: String
     },
     session: {
+      required: false
+    },
+    user_id: {
+      required: false
+    },
+    user: {
       required: false
     }
   },
@@ -23619,12 +23661,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        var errors2, _errors;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) switch (_context2.prev = _context2.next) {
             case 0:
-              _context2.next = 2;
+              // console.log(form)    
+              errors.value = [];
+              if (duty.form_type === 'oneday-multiemp') {
+                if (!duty.date) {
+                  errors.value.push('Please select date ');
+                }
+                errors2 = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes)(duty.value.duty_items, true);
+                errors2.forEach(function (e) {
+                  return errors.value.push(e);
+                });
+              } else
+                //single employee all session days
+                {
+                  if (!duty.value.employee_id) {
+                    errors.value.push('Please select employee ');
+                  }
+                  _errors = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes)(duty.value.duty_items, false);
+                  _errors.forEach(function (e) {
+                    return errors.value.push(e);
+                  });
+                }
+              if (!errors.value.length) {
+                _context2.next = 4;
+                break;
+              }
+              return _context2.abrupt("return");
+            case 4:
+              _context2.next = 6;
               return updateDuty(props.id);
-            case 2:
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -23683,6 +23753,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       get ontotalhours() {
         return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours;
+      },
+      get validateTimes() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.validateTimes;
       }
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
@@ -23717,6 +23790,9 @@ __webpack_require__.r(__webpack_exports__);
       required: false
     },
     user_id: {
+      required: false
+    },
+    user: {
       required: false
     }
   },
@@ -25084,9 +25160,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getTimeDuration": () => (/* binding */ getTimeDuration),
 /* harmony export */   "ontotalhours": () => (/* binding */ ontotalhours),
-/* harmony export */   "sumDurations": () => (/* binding */ sumDurations)
+/* harmony export */   "sumDurations": () => (/* binding */ sumDurations),
+/* harmony export */   "validateTimes": () => (/* binding */ validateTimes)
 /* harmony export */ });
 function getTimeDuration(from, to) {
+  if (!from || !to) {
+    return moment.duration(0, 'seconds');
+  }
   var splitted1 = from.split(":");
   var splitted2 = to.split(":");
   if (splitted1.length == 2) {
@@ -25108,10 +25188,12 @@ function getTimeDuration(from, to) {
   return moment.duration(end.diff(startTime));
 }
 var ontotalhours = function ontotalhours(obj) {
+  var tot = moment.duration(0, 'seconds');
   var duration = getTimeDuration(obj.fn_from, obj.fn_to);
   var duration2 = getTimeDuration(obj.an_from, obj.an_to);
-  var duration = duration.add(duration2);
-  var res = duration.hours() + '.' + duration.minutes().toString().padStart(2, 0);
+  if (duration) tot.add(duration);
+  if (duration2) tot.add(duration2);
+  var res = tot.hours() + '.' + tot.minutes().toString().padStart(2, 0);
   if (!res.includes("NaN") && !res.includes("-"))
     //no negative time diff when time is like 9:3
     obj.total_hours = res;else obj.total_hours = '';
@@ -25137,6 +25219,41 @@ var sumDurations = function sumDurations(obje) {
   if (!res.includes("NaN") && !res.includes("-"))
     //no negative time diff when time is like 9:3
     return res;else return '';
+};
+var validateTimes = function validateTimes(obj, check_empty_rows) {
+  var formats = ["h:mm", "HH:mm"];
+  var errors = [];
+  var totalvalidrows = 0;
+  obj.forEach(function (item, index, arr) {
+    if (item.fn_from ^ item.fn_to || item.an_from ^ item.an_to) {
+      //errors.push( 'Please fill row ' +  (index+1) )
+    }
+    var thisrowhaserror = false;
+    if (item.fn_from || item.fn_to || item.an_from || item.an_to) {
+      if (item.fn_from || item.fn_to) {
+        if (!moment(item.fn_from, formats, true).isValid() || !moment(item.fn_to, formats, true).isValid()) {
+          errors.push('Please enter correct morning time in row ' + (index + 1));
+          thisrowhaserror = true;
+        }
+      }
+      if (item.an_from || item.an_to) {
+        if (!moment(item.an_from, formats, true).isValid() || !moment(item.an_to, formats, true).isValid()) {
+          errors.push('Please enter correct evening time in row ' + (index + 1));
+          thisrowhaserror = true;
+        }
+      }
+    } else {
+      thisrowhaserror = true; //empty row
+    }
+
+    if (!thisrowhaserror) {
+      totalvalidrows += 1;
+    }
+  });
+  if (check_empty_rows && totalvalidrows != obj.length) {
+    errors.push('Please fill all rows or remove unneeded rows');
+  }
+  return errors;
 };
 
 
