@@ -259,4 +259,13 @@ return [
             'created_by_helper'  => ' ',
         ],
     ],
+    'routing' => [
+		'title' => 'Routing',
+        'title_singular' => 'Routing',
+		'fields' => [
+			'user' => 'User',
+			'route' => 'Route',
+			'last_forwarded_to' => 'Last Forwarded To',
+		],
+	],
 ];

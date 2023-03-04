@@ -20,6 +20,7 @@ class Designation extends Model
 
     protected $fillable = [
         'title',
+        'wage',
         'created_at',
         'updated_at',
         'deleted_at',

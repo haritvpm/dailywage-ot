@@ -19,6 +19,14 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.title_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="wage">Wage</label>
+                <input class="form-control {{ $errors->has('wage') ? 'is-invalid' : '' }}" type="number" name="wage" id="wage" value="{{ old('wage', $session->wage) }}" step="1">
+                @if($errors->has('wage'))
+                    <span class="text-danger">{{ $errors->first('wage') }}</span>
+                @endif
+  
+            </div>
+            <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

@@ -12,6 +12,10 @@ class DailyWageEmployee extends Model
 
     public $table = 'daily_wage_employees';
 
+    public const STATUS_SELECT = [
+        'active'   => 'SHOW',
+        'inactive' => 'HIDE',
+    ];
     protected $dates = [
         'created_at',
         'updated_at',
@@ -24,6 +28,7 @@ class DailyWageEmployee extends Model
         'designation_id',
         'category_id',
         'section_id',
+        'status',
         'created_at',
         'updated_at',
         'deleted_at',

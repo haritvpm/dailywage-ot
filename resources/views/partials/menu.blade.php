@@ -67,6 +67,16 @@
                                         </p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.routings.index") }}" class="nav-link {{ request()->is("admin/routings") || request()->is("admin/routings/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-user">
+
+                                        </i>
+                                        <p>
+                                            Routing
+                                        </p>
+                                    </a>
+                                </li>
                             @endcan
                         </ul>
                     </li>

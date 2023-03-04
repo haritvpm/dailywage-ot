@@ -12,6 +12,7 @@ class CreateDailyWageEmployeesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->string('ten')->unique();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

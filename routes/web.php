@@ -51,6 +51,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Duty Form Item
     Route::delete('duty-form-items/destroy', 'DutyFormItemController@massDestroy')->name('duty-form-items.massDestroy');
     Route::resource('duty-form-items', 'DutyFormItemController');
+
+    //Routings
+    Route::resource('routings', 'RoutingController');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

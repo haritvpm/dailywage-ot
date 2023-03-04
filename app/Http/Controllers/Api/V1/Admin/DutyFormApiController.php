@@ -55,6 +55,10 @@ class DutyFormApiController extends Controller
             return response()->json($responseArr, 422);
         }
     
+        $maxform_no = DutyForm::where('session_id', $session->id)->max('form_num');
+        if($maxform_no < 0){
+           $maxform_no = 0; //plan to use form no field to -1 for rejected
+        }
      
        $dutyForm = DutyForm::create(
         [
@@ -64,7 +68,7 @@ class DutyFormApiController extends Controller
             'owned_by_id' => auth()->user()->id,
             'employee_id' =>  $request->employee ?  $request->employee['id'] :null ,
             'total_hours'  => $request->total_hours ? $request->total_hours : null,
-
+            'form_num' => $maxform_no+1,
         ]
        );
 

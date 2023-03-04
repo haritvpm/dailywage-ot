@@ -16,7 +16,7 @@
     <table class=" mt-1 table table-sm table-borderless">
 
         <tbody>
-           
+
             <tr>
                 <td>
                     For
@@ -161,7 +161,7 @@
 
         <tbody>
             <template v-for="(item, index) in duty.duty_items" :key="index">
-                <tr class="text-center">
+                <tr v-show="item.fn_from || an_from" class="text-center">
                     <td class="text-center">
                         {{ index + 1 }}
                     </td>
