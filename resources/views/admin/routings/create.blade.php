@@ -27,9 +27,12 @@
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="route">{{ trans('cruds.routing.fields.route') }}</label>
-                <input class="form-control {{ $errors->has('route') ? 'is-invalid' : '' }}" type="text" name="route" id="route" value="{{ old('route', '') }}">
-            
+                  <label for="route_id">{{ trans('cruds.routing.fields.route') }}</label>
+                  <select class="form-control select2" name="route_id" id="route_id">
+                        @foreach($users as $id => $entry)
+                            <option value="{{ $id }}" {{ old('route_id') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                        @endforeach
+                    </select>
                    
                 </div>
             </div>

@@ -215,9 +215,9 @@
             </button>
 
 
-            <button v-if="routes['submit']" type="submit" name="action" value="submit" class="mr-1 btn btn-danger">{{
+            <button v-if="routes['submit']" @click="routeForm('submit')" class="mr-1 btn btn-danger">{{
                 routes['submit'] }}</button>
-            <button v-if="routes['return']" type="submit" name="action" value="return" class="mr-1 btn btn-warning">{{
+            <button v-if="routes['return']" @click="routeForm('return')" class="mr-1 btn btn-warning">{{
                 routes['return'] }}</button>
 
 
@@ -263,8 +263,8 @@ const printDuty = async () => {
     //  await updateDuty(props.id)
 }
 
-const sendToHouseKeeping = async () => {
-    await submitDuty(props.id)
+const routeForm = async (action) => {
+    await setRoute(props.id, action)
 }
 
 const editDuty = async () => {

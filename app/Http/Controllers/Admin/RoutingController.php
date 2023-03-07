@@ -19,13 +19,12 @@ class RoutingController extends Controller
      */
     public function index()
     {
-        if (! Gate::allows('user_access')) {
-            return abort(401);
-        }
+      //  if (! Gate::allows('user_access')) {
+        //    return abort(401);
+       // }
         
       
         $routings = Routing::with('user')->latest()->get();
-
 
 
         return view('admin.routings.index', compact('routings'));
@@ -75,9 +74,9 @@ class RoutingController extends Controller
      */
     public function edit($id)
     {
-        if (! Gate::allows('user_edit')) {
-            return abort(401);
-        }
+      //  if (! Gate::allows('user_edit')) {
+       //     return abort(401);
+      //  }
         
         $users = User::get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -114,12 +113,13 @@ class RoutingController extends Controller
      */
     public function show($id)
     {
-        if (! Gate::allows('user_view')) {
-            return abort(401);
-        }
-        $routing = Routing::findOrFail($id);
+      //  if (! Gate::allows('user_view')) {
+        //    return abort(401);
+      //  }
+       // $routing = Routing::findOrFail($id);
 
-        return view('admin.routings.show', compact('routing'));
+      //  return view('admin.routings.show', compact('routing'));
+      return redirect()->route('admin.routings.index');
     }
 
 
@@ -131,9 +131,9 @@ class RoutingController extends Controller
      */
     public function destroy($id)
     {
-        if (! Gate::allows('user_delete')) {
-            return abort(401);
-        }
+      //  if (! Gate::allows('user_delete')) {
+       //     return abort(401);
+       // }
         $routing = Routing::findOrFail($id);
         $routing->delete();
 
@@ -154,7 +154,7 @@ class RoutingController extends Controller
             $entries = Routing::whereIn('id', $request->input('ids'))->get();
 
             foreach ($entries as $entry) {
-                $entry->delete();
+              //  $entry->delete();
             }
         }
     }

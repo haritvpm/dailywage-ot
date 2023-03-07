@@ -18,6 +18,10 @@ return new class extends Migration
                 $table->unsignedBigInteger('user_id')->nullable();
                 $table->foreign('user_id', '71940_59b17bbe27cef')->references('id')->on('users')->onDelete('cascade');
                 }
+                if (!Schema::hasColumn('routings', 'route_id')) {
+                    $table->unsignedBigInteger('route_id')->nullable();
+                    $table->foreign('route_id', '71940_59b17bbe27aef')->references('id')->on('users')->onDelete('cascade');
+                    }
         });
     }
 

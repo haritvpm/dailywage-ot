@@ -250,26 +250,29 @@ class DutyFormApiController extends Controller
 
     public function route(Request $request)
     {
-        $dutyForm = DutyForm::find($request->id);
+      
 
-        $admin = User::with(['roles' => function($q){
-            $q->where('title', 'Admin');
-        }])->first();
-
-       switch ($request->input('action')) {
+       $dutyForm = DutyForm::findOrFail($request->id);
+     
+       switch ($request->input('route')) {
         case 'submit':
             if( !$dutyForm->owned_by->IsAdmin )
             {
-                $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->get();
-    
+                $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->first();
+                dump($route);
                 if($route?->count())
                 {
                   //Forward
                   $dutyForm->update( [
-                    'owned_by_id' => $route->routeUser?->id,
+                    'owned_by_id' => $route->route->id,
                   ]);
 
                 } else {
+
+                    $admin = User::with(['roles' => function($q){
+                        $q->where('title', 'Admin');
+                    }])->first();
+
                     //Submit to HouseKeeping
                     $dutyForm->update( [
                         'owned_by_id' => $admin->id,

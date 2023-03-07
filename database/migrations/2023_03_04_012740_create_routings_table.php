@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('routings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('route')->nullable();;
             $table->string('last_forwarded_to')->nullable();;
             $table->timestamps();
         });

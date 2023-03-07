@@ -25,7 +25,7 @@ class UpdateRoutingsRequest extends FormRequest
         return [
             
             'user_id' => 'required',
-            'route' => '',
+            'route_id' => 'required',
         ];
     }
 }

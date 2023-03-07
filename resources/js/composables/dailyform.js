@@ -84,7 +84,8 @@ export default function useDailyWageForm() {
     const setRoute = async (id, route) => {
         errors.value = ''
         try {
-            await axios.post(`/api/v1/duty-forms/${id}/route`, id, route)
+            console.log(route)
+            await axios.post(`/api/v1/duty-forms/${id}/route`, { id, route })
             // await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {

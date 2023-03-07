@@ -38,7 +38,7 @@
 
 </td>
                                 <td field-key='user'>{{ $routing->user->name ?? '' }}</td>
-                                <td field-key='route'>{{ $routing->route }}</td>
+                                <td field-key='route'>{{ $routing->route?->name }}</td>
                                 <td field-key='last_forwarded_to'>{{ $routing->last_forwarded_to }}</td>
                                                                 <td>
                                    <!--  @can('user_access')

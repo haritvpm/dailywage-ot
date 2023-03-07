@@ -23909,20 +23909,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return _ref3.apply(this, arguments);
       };
     }();
-    var sendToHouseKeeping = /*#__PURE__*/function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+    var routeForm = /*#__PURE__*/function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(action) {
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
           while (1) switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return submitDuty(props.id);
+              return setRoute(props.id, action);
             case 2:
             case "end":
               return _context3.stop();
           }
         }, _callee3);
       }));
-      return function sendToHouseKeeping() {
+      return function routeForm(_x) {
         return _ref4.apply(this, arguments);
       };
     }();
@@ -23956,7 +23956,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       setRoute: setRoute,
       props: props,
       printDuty: printDuty,
-      sendToHouseKeeping: sendToHouseKeeping,
+      routeForm: routeForm,
       editDuty: editDuty,
       get useDailyWageForm() {
         return _composables_dailyform__WEBPACK_IMPORTED_MODULE_0__["default"];
@@ -24682,20 +24682,6 @@ var _hoisted_21 = {
 var _hoisted_22 = {
   "class": "d-print-none form-group mt-1"
 };
-var _hoisted_23 = {
-  key: 2,
-  type: "submit",
-  name: "action",
-  value: "submit",
-  "class": "mr-1 btn btn-danger"
-};
-var _hoisted_24 = {
-  key: 3,
-  type: "submit",
-  name: "action",
-  value: "return",
-  "class": "mr-1 btn btn-warning"
-};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$setup$duty$date, _$setup$duty$employee, _$setup$duty$created_, _$setup$duty$total_ho;
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.errors, function (v, k) {
@@ -24723,7 +24709,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 1,
     onClick: $setup.editDuty,
     "class": "mr-1 btn btn-primary"
-  }, " Edit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['submit'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['submit']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['return'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['return']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64 /* STABLE_FRAGMENT */);
+  }, " Edit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['submit'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 2,
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $setup.routeForm('submit');
+    }),
+    "class": "mr-1 btn btn-danger"
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['submit']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['return'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 3,
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $setup.routeForm('return');
+    }),
+    "class": "mr-1 btn btn-warning"
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['return']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -25098,24 +25096,28 @@ function useDailyWageForm() {
           case 0:
             errors.value = '';
             _context9.prev = 1;
-            _context9.next = 4;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id, "/route"), id, route);
-          case 4:
-            _context9.next = 9;
+            console.log(route);
+            _context9.next = 5;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id, "/route"), {
+              id: id,
+              route: route
+            });
+          case 5:
+            _context9.next = 10;
             break;
-          case 6:
-            _context9.prev = 6;
+          case 7:
+            _context9.prev = 7;
             _context9.t0 = _context9["catch"](1);
             if (_context9.t0.response.status === 422) {
               for (key in _context9.t0.response.data.errors) {
                 errors.value = _context9.t0.response.data.errors;
               }
             }
-          case 9:
+          case 10:
           case "end":
             return _context9.stop();
         }
-      }, _callee9, null, [[1, 6]]);
+      }, _callee9, null, [[1, 7]]);
     }));
     return function setRoute(_x9, _x10) {
       return _ref9.apply(this, arguments);
