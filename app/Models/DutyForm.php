@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DutyForm extends Model
 {
-    use MultiTenantModelTrait;
+  //  use MultiTenantModelTrait;
     use HasFactory;
 
     public const FORM_TYPE_SELECT = [
@@ -26,6 +26,7 @@ class DutyForm extends Model
     ];
 
     protected $fillable = [
+        'form_num',
         'form_type',
         'date_id',
         'session_id',

@@ -31,6 +31,11 @@ class Routing extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function routeUser()
+    {
+        return $this->belongsTo(User::class, 'route');
+    }
+
 
     public function forwardable_usernames()
     {

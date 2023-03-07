@@ -13,14 +13,16 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\DutyFormItem;
-
+use App\Models\Routing;
 
 class DutyFormApiController extends Controller
 {
     public function index()
     {
         //abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $duty = DutyForm::with(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by'])->get();
+        $duty = DutyForm::with(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by'])
+        ->where('owned_by_id', auth()->user()->id)
+        ->get();
         // dump($duty);
 
         return new DutyFormResource( $duty);
@@ -214,24 +216,81 @@ class DutyFormApiController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
-    public function submit(Request $request)
+    public function routes(Request $request, int $id )
     {
-       // dump($request->all());
+        $dutyForm = DutyForm::with(['owned_by', 'created_by'])->findOrFail($id);
+        abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
+        dump($dutyForm->owned_by->IsAdmin);
 
-       $dutyForm = DutyForm::find($request->id);
+        $routes = [];
 
-       $admin = User::with(['roles' => function($q){
+        if( /*$dutyForm->owned_by->IsAdmin() || */$dutyForm->owned_by_id != $dutyForm->created_by_id)
+        {
+            $routes['return'] = 'Return';
+        }
+        
+        //see if there is a routing for this user
+
+        if( !$dutyForm->owned_by->IsAdmin )
+        {
+            $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->get();
+
+            if($route?->count())
+            {
+              $routes['submit'] = 'Forward';
+            } else {
+              $routes['submit'] = 'Submit to HouseKeeping';
+            }
+        }
+
+
+        return new DutyFormResource($routes);
+
+    }
+
+    public function route(Request $request)
+    {
+        $dutyForm = DutyForm::find($request->id);
+
+        $admin = User::with(['roles' => function($q){
             $q->where('title', 'Admin');
         }])->first();
 
-        //dump( $dutyForm->id);
-       $dutyForm->update( [
-             'owned_by_id' => $admin->id,
-        ]);
+       switch ($request->input('action')) {
+        case 'submit':
+            if( !$dutyForm->owned_by->IsAdmin )
+            {
+                $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->get();
+    
+                if($route?->count())
+                {
+                  //Forward
+                  $dutyForm->update( [
+                    'owned_by_id' => $route->routeUser?->id,
+                  ]);
+
+                } else {
+                    //Submit to HouseKeeping
+                    $dutyForm->update( [
+                        'owned_by_id' => $admin->id,
+                   ]);
+                }
+            }
+    
+            break;
+
+        case 'return':
+            $dutyForm->update( [
+                'owned_by_id' => $dutyForm->created_by_id,
+           ]);
+            break;
+       
+        }
 
         return (new DutyFormResource($dutyForm))
             ->response()
             ->setStatusCode(Response::HTTP_ACCEPTED);
+            
     }
+    
 }

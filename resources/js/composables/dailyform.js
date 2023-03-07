@@ -7,6 +7,7 @@ export default function useDailyWageForm() {
     const calender = ref([])
     const employees = ref([])
     const duty = ref([])
+    const routes = ref([])
 
     const errors = ref('')
     const router = useRouter()
@@ -31,6 +32,8 @@ export default function useDailyWageForm() {
         let response = await axios.get(`/api/v1/duty-forms`)
         duties.value = response.data.data
     }
+
+
     const storeDuty = async (data) => {
 
         errors.value = ''
@@ -38,8 +41,8 @@ export default function useDailyWageForm() {
 
 
             await axios.post('/api/v1/duty-forms', data)
-             await router.push({ name: 'duty.index' })
-           // await router.push({ name: 'duty.view' }, duty.id )
+            await router.push({ name: 'duty.index' })
+            // await router.push({ name: 'duty.view' }, duty.id )
         } catch (e) {
             if (e.response.status === 422) {
                 //for (const key in e.response.data.errors) 
@@ -56,7 +59,7 @@ export default function useDailyWageForm() {
         try {
             await axios.patch(`/api/v1/duty-forms/${id}`, duty.value)
             //await router.push({ name: 'duty.view' }, duty.id )
-             await router.push({ name: 'duty.index' })
+            await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -73,11 +76,16 @@ export default function useDailyWageForm() {
         await getDuties()
     }
 
-    const submitDuty = async (id) => {
+    const getRoutes = async (id) => {
+        let response = await axios.get(`/api/v1/duty-forms/${id}/routes`)
+        routes.value = response.data.data
+    }
+
+    const setRoute = async (id, route) => {
         errors.value = ''
         try {
-            await axios.post(`/api/v1/duty-forms/${id}/submit`, id)
-            await router.push({ name: 'duty.index' })
+            await axios.post(`/api/v1/duty-forms/${id}/route`, id, route)
+            // await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
@@ -93,6 +101,7 @@ export default function useDailyWageForm() {
         duties,
         calender,
         employees,
+        routes,
         getCalender,
         getEmployees,
         getDuties,
@@ -100,7 +109,8 @@ export default function useDailyWageForm() {
         storeDuty,
         updateDuty,
         deleteDuty,
-        submitDuty,
+        getRoutes,
+        setRoute,
 
     }
 }

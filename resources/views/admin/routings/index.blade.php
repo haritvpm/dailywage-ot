@@ -1,4 +1,3 @@
-@inject('request', 'Illuminate\Http\Request')
 @extends('layouts.admin')
 
 @section('content')
@@ -16,10 +15,12 @@
         
 
         <div class="card-body">
-            <table class="table table-bordered table-striped ">
+            <table class="table table-bordered table-striped datatable datatable-routings">
                 <thead>
                     <tr>
-                       
+                    <th width="10">
+
+</th>
                         <th>@lang('cruds.routing.fields.user')</th>
                         <th>@lang('cruds.routing.fields.route')</th>
                         <th>@lang('cruds.routing.fields.last_forwarded_to')</th>
@@ -33,7 +34,9 @@
                         @foreach ($routings as $routing)
                             <tr data-entry-id="{{ $routing->id }}">
                               
+                            <td>
 
+</td>
                                 <td field-key='user'>{{ $routing->user->name ?? '' }}</td>
                                 <td field-key='route'>{{ $routing->route }}</td>
                                 <td field-key='last_forwarded_to'>{{ $routing->last_forwarded_to }}</td>
@@ -64,11 +67,25 @@
             </table>
         </div>
     </div>
-@stop
+@endsection
+@section('scripts')
+@parent
+<script>
+    $(function () {
+  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
+  
+  $.extend(true, $.fn.dataTable.defaults, {
+    orderCellsTop: true,
+    order: [[ 1, 'desc' ]],
+    pageLength: 100,
+  });
+  let table = $('.datatable-routings:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+      $($.fn.dataTable.tables(true)).DataTable()
+          .columns.adjust();
+  });
+  
+})
 
-@section('javascript') 
-    <script>
-       
-
-    </script>
+</script>
 @endsection

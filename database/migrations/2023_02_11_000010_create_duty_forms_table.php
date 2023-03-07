@@ -11,6 +11,8 @@ class CreateDutyFormsTable extends Migration
         Schema::create('duty_forms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('form_type')->nullable();
+            $table->string('creator')->nullable(); //name and desig
+            $table->string('approver')->nullable();
             $table->float('total_hours', 10, 2)->nullable();
             $table->integer('form_num')->nullable();
             $table->timestamps();

@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::apiResource('calenders', 'CalenderApiController');
 
     // Duty Form
-    Route::post('duty-forms/{id}/submit', 'DutyFormApiController@submit');
+    Route::get('duty-forms/{id}/routes', 'DutyFormApiController@routes');
+    Route::post('duty-forms/{id}/route', 'DutyFormApiController@route');
     Route::apiResource('duty-forms', 'DutyFormApiController');
 });

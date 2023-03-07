@@ -213,10 +213,14 @@
             <button v-if="props.user_id === duty.owned_by_id" @click="editDuty" class="mr-1 btn btn-primary">
                 Edit
             </button>
-            <button v-if="props.user_id === duty.owned_by_id" @click="sendToHouseKeeping" class="btn btn-danger"
-                type="submit">
-                Submit
-            </button>
+
+
+            <button v-if="routes['submit']" type="submit" name="action" value="submit" class="mr-1 btn btn-danger">{{
+                routes['submit'] }}</button>
+            <button v-if="routes['return']" type="submit" name="action" value="return" class="mr-1 btn btn-warning">{{
+                routes['return'] }}</button>
+
+
 
         </div>
     </div>
@@ -226,7 +230,7 @@ import useDailyWageForm from '../composables/dailyform'
 import { onMounted, } from 'vue'
 import router from "../router";
 
-const { errors, duty, getDuty, submitDuty } = useDailyWageForm()
+const { errors, duty, routes, getDuty, getRoutes, setRoute } = useDailyWageForm()
 
 const props = defineProps({
     id: {
@@ -247,6 +251,9 @@ onMounted(async () => {
     //   await getEmployees();
 
     await getDuty(props.id);
+    await getRoutes(props.id);
+    console.log(routes)
+
 
 })
 

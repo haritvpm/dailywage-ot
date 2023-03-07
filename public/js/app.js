@@ -23871,8 +23871,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var _useDailyWageForm = (0,_composables_dailyform__WEBPACK_IMPORTED_MODULE_0__["default"])(),
       errors = _useDailyWageForm.errors,
       duty = _useDailyWageForm.duty,
+      routes = _useDailyWageForm.routes,
       getDuty = _useDailyWageForm.getDuty,
-      submitDuty = _useDailyWageForm.submitDuty;
+      getRoutes = _useDailyWageForm.getRoutes,
+      setRoute = _useDailyWageForm.setRoute;
     (0,vue__WEBPACK_IMPORTED_MODULE_1__.onMounted)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
@@ -23880,6 +23882,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _context.next = 2;
             return getDuty(props.id);
           case 2:
+            _context.next = 4;
+            return getRoutes(props.id);
+          case 4:
+            console.log(routes);
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -23943,8 +23950,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     var __returned__ = {
       errors: errors,
       duty: duty,
+      routes: routes,
       getDuty: getDuty,
-      submitDuty: submitDuty,
+      getRoutes: getRoutes,
+      setRoute: setRoute,
       props: props,
       printDuty: printDuty,
       sendToHouseKeeping: sendToHouseKeeping,
@@ -24511,7 +24520,7 @@ var _hoisted_2 = {
 var _hoisted_3 = {
   "class": "table table-sm table-striped table-bordered"
 };
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " ID "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " FormType "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " Date(s) "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " CreatedBy "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " @ ")])], -1 /* HOISTED */);
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " Form No. "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " FormType "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " Date(s) "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " CreatedBy "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", null, " @ ")])], -1 /* HOISTED */);
 var _hoisted_5 = ["onClick"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
@@ -24528,7 +24537,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, 8 /* PROPS */, ["to"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.duties, function (item) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: item.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.id), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session'), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.created_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.owned_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_num), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session'), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.created_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.owned_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'duty.view',
         params: {
@@ -24673,6 +24682,20 @@ var _hoisted_21 = {
 var _hoisted_22 = {
   "class": "d-print-none form-group mt-1"
 };
+var _hoisted_23 = {
+  key: 2,
+  type: "submit",
+  name: "action",
+  value: "submit",
+  "class": "mr-1 btn btn-danger"
+};
+var _hoisted_24 = {
+  key: 3,
+  type: "submit",
+  name: "action",
+  value: "return",
+  "class": "mr-1 btn btn-warning"
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$setup$duty$date, _$setup$duty$employee, _$setup$duty$created_, _$setup$duty$total_ho;
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.errors, function (v, k) {
@@ -24700,12 +24723,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 1,
     onClick: $setup.editDuty,
     "class": "mr-1 btn btn-primary"
-  }, " Edit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.props.user_id === $setup.duty.owned_by_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-    key: 2,
-    onClick: $setup.sendToHouseKeeping,
-    "class": "btn btn-danger",
-    type: "submit"
-  }, " Submit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64 /* STABLE_FRAGMENT */);
+  }, " Edit ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['submit'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['submit']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $setup.routes['return'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['return']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -24866,6 +24884,7 @@ function useDailyWageForm() {
   var calender = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
   var employees = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
   var duty = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
+  var routes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)([]);
   var errors = (0,vue__WEBPACK_IMPORTED_MODULE_0__.ref)('');
   var router = (0,vue_router__WEBPACK_IMPORTED_MODULE_2__.useRouter)();
   var getCalender = /*#__PURE__*/function () {
@@ -25050,40 +25069,56 @@ function useDailyWageForm() {
       return _ref7.apply(this, arguments);
     };
   }();
-  var submitDuty = /*#__PURE__*/function () {
+  var getRoutes = /*#__PURE__*/function () {
     var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(id) {
-      var key;
+      var response;
       return _regeneratorRuntime().wrap(function _callee8$(_context8) {
         while (1) switch (_context8.prev = _context8.next) {
           case 0:
-            errors.value = '';
-            _context8.prev = 1;
-            _context8.next = 4;
-            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id, "/submit"), id);
+            _context8.next = 2;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().get("/api/v1/duty-forms/".concat(id, "/routes"));
+          case 2:
+            response = _context8.sent;
+            routes.value = response.data.data;
           case 4:
-            _context8.next = 6;
-            return router.push({
-              name: 'duty.index'
-            });
-          case 6:
-            _context8.next = 11;
-            break;
-          case 8:
-            _context8.prev = 8;
-            _context8.t0 = _context8["catch"](1);
-            if (_context8.t0.response.status === 422) {
-              for (key in _context8.t0.response.data.errors) {
-                errors.value = _context8.t0.response.data.errors;
-              }
-            }
-          case 11:
           case "end":
             return _context8.stop();
         }
-      }, _callee8, null, [[1, 8]]);
+      }, _callee8);
     }));
-    return function submitDuty(_x8) {
+    return function getRoutes(_x8) {
       return _ref8.apply(this, arguments);
+    };
+  }();
+  var setRoute = /*#__PURE__*/function () {
+    var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(id, route) {
+      var key;
+      return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+        while (1) switch (_context9.prev = _context9.next) {
+          case 0:
+            errors.value = '';
+            _context9.prev = 1;
+            _context9.next = 4;
+            return axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/v1/duty-forms/".concat(id, "/route"), id, route);
+          case 4:
+            _context9.next = 9;
+            break;
+          case 6:
+            _context9.prev = 6;
+            _context9.t0 = _context9["catch"](1);
+            if (_context9.t0.response.status === 422) {
+              for (key in _context9.t0.response.data.errors) {
+                errors.value = _context9.t0.response.data.errors;
+              }
+            }
+          case 9:
+          case "end":
+            return _context9.stop();
+        }
+      }, _callee9, null, [[1, 6]]);
+    }));
+    return function setRoute(_x9, _x10) {
+      return _ref9.apply(this, arguments);
     };
   }();
   return {
@@ -25092,6 +25127,7 @@ function useDailyWageForm() {
     duties: duties,
     calender: calender,
     employees: employees,
+    routes: routes,
     getCalender: getCalender,
     getEmployees: getEmployees,
     getDuties: getDuties,
@@ -25099,7 +25135,8 @@ function useDailyWageForm() {
     storeDuty: storeDuty,
     updateDuty: updateDuty,
     deleteDuty: deleteDuty,
-    submitDuty: submitDuty
+    getRoutes: getRoutes,
+    setRoute: setRoute
   };
 }
 

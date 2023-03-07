@@ -13,7 +13,7 @@
             <thead>
                 <tr>
                     <th>
-                        ID
+                        Form No.
                     </th>
                     <th>
                         FormType
@@ -34,7 +34,7 @@
                 <template v-for="item in duties" :key="item.id">
                     <tr>
                         <td>
-                            {{ item.id }}
+                            {{ item.form_num }}
                         </td>
                         <td>
                             {{ item.form_type }}
@@ -51,9 +51,10 @@
                         <td>
                             <router-link :to="{ name: 'duty.view', params: { id: item.id } }"
                                 class="mr-2 ">View</router-link>
-                            <router-link  v-if="props.user_id == item.owned_by_id" :to="{ name: 'duty.edit', params: { id: item.id } }"
-                                class="mr-2 ">Edit</router-link>
-                            <button  v-if="props.user_id == item.owned_by_id"  @click="deleteDuty(item.id)" class="ml-1 btn btn-xs btn-secondary">Delete</button>
+                            <router-link v-if="props.user_id == item.owned_by_id"
+                                :to="{ name: 'duty.edit', params: { id: item.id } }" class="mr-2 ">Edit</router-link>
+                            <button v-if="props.user_id == item.owned_by_id" @click="deleteDuty(item.id)"
+                                class="ml-1 btn btn-xs btn-secondary">Delete</button>
                         </td>
                     </tr>
                 </template>
