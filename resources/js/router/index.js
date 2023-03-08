@@ -7,27 +7,40 @@ import DutyView from './../components/DutyView.vue'
 
 const routes = [
     {
-        path: '/duty',
+        path: '/admin/duty-forms',
+        name: 'adminduty.index',
+        component: DutyIndex,
+
+    },
+    {
+        path: '/admin/duty-forms/:id',
+        name: 'adminduty.view',
+        component: DutyView,
+        props: true
+    },
+    {
+        path: '/duty-forms',
         name: 'duty.index',
         component: DutyIndex
     },
     {
-        path: '/duty/create',
+        path: '/duty-forms/create',
         name: 'duty.create',
         component: DutyCreate
     },
     {
-        path: '/duty/:id/edit',
+        path: '/duty-forms/:id/edit',
         name: 'duty.edit',
         component: DutyEdit,
         props: true
     },
     {
-        path: '/duty/:id',
+        path: '/duty-forms/:id',
         name: 'duty.view',
         component: DutyView,
         props: true
     },
+
 ];
 
 export default createRouter({

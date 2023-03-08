@@ -20,10 +20,12 @@ class DutyFormController extends Controller
     public function index()
     {
         abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+/*
         $dutyForms = DutyForm::with(['date', 'session', 'employee', 'owned_by', 'created_by'])->get();
 
-        return view('admin.dutyForms.index', compact('dutyForms'));
+        return view('admin.dutyForms.index', compact('dutyForms'));*/
+
+        return view('admin.dutyForms.show');
     }
 
     public function create()

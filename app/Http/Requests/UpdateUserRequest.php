@@ -21,9 +21,10 @@ class UpdateUserRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'email' => [
+            'displayname' => [
+                'string',
                 'required',
-                'unique:users,email,' . request()->route('user')->id,
+         //       'unique:users,email,' . request()->route('user')->id,
             ],
             'roles.*' => [
                 'integer',

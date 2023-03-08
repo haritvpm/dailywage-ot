@@ -192,30 +192,30 @@
                         </a>
                     </li>
                 @endcan
-                @can('single_day_duty_access')
-                    <li class="nav-item">
-                        <a href="{{ route("admin.single-day-duties.index") }}" class="nav-link {{ request()->is("admin/single-day-duties") || request()->is("admin/single-day-duties/*") ? "active" : "" }}">
+                @can('duty_form_access')
+                <li class="nav-item">
+                        <a href="{{ route("admin.duty-forms.index") }}" class="nav-link {{ request()->is("admin/duty-forms") || request()->is("admin/duty-forms/*") ? "active" : "" }}">
                             <i class="fa-fw nav-icon fas fa-address-card">
 
                             </i>
                             <p>
-                                {{ trans('cruds.singleDayDuty.title') }}
+                                {{ trans('cruds.dutyForm.title') }}
                             </p>
                         </a>
                     </li>
                 @endcan
-                @can('single_day_duty_item_access')
+               <!--  @can('duty_form_item_access')
                     <li class="nav-item">
-                        <a href="{{ route("admin.single-day-duty-items.index") }}" class="nav-link {{ request()->is("admin/single-day-duty-items") || request()->is("admin/single-day-duty-items/*") ? "active" : "" }}">
+                        <a href="{{ route("admin.duty-form-items.index") }}" class="nav-link {{ request()->is("admin/duty-form-items") || request()->is("admin/duty-form-items/*") ? "active" : "" }}">
                             <i class="fa-fw nav-icon fas fa-list-ol">
 
                             </i>
                             <p>
-                                {{ trans('cruds.singleDayDutyItem.title') }}
+                                {{ trans('cruds.dutyFormItem.title') }}
                             </p>
                         </a>
                     </li>
-                @endcan
+                @endcan -->
                 @if(file_exists(app_path('Http/Controllers/Auth/ChangePasswordController.php')))
                     @can('profile_password_edit')
                         <li class="nav-item">

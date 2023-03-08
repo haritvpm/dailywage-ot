@@ -24,7 +24,6 @@ class User extends Authenticatable
     ];
 
     protected $dates = [
-        'email_verified_at',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -32,8 +31,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'email',
-        'email_verified_at',
+        'displayname',
         'password',
         'remember_token',
         'created_at',
@@ -46,7 +44,7 @@ class User extends Authenticatable
         return $this->roles()->where('id', 1)->exists();
     }
 
-    public function getEmailVerifiedAtAttribute($value)
+   /*  public function getEmailVerifiedAtAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
     }
@@ -54,7 +52,7 @@ class User extends Authenticatable
     public function setEmailVerifiedAtAttribute($value)
     {
         $this->attributes['email_verified_at'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
-    }
+    } */
 
     public function setPasswordAttribute($input)
     {

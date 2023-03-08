@@ -26,14 +26,12 @@
                             {{ trans('cruds.user.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.name') }}
+                            LoginName
                         </th>
                         <th>
-                            {{ trans('cruds.user.fields.email') }}
+                            DisplayName
                         </th>
-                        <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                        </th>
+                   
                         <th>
                             {{ trans('cruds.user.fields.roles') }}
                         </th>
@@ -55,11 +53,9 @@
                                 {{ $user->name ?? '' }}
                             </td>
                             <td>
-                                {{ $user->email ?? '' }}
+                                {{ $user->displayname ?? '' }}
                             </td>
-                            <td>
-                                {{ $user->email_verified_at ?? '' }}
-                            </td>
+                           
                             <td>
                                 @foreach($user->roles as $key => $item)
                                     <span class="badge badge-info">{{ $item->title }}</span>

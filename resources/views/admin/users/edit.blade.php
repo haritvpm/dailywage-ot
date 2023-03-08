@@ -18,13 +18,15 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.user.fields.name_helper') }}</span>
             </div>
+      
+            
             <div class="form-group">
-                <label class="required" for="email">{{ trans('cruds.user.fields.email') }}</label>
-                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required>
-                @if($errors->has('email'))
-                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                <label class="required" for="displayname">Display Name</label>
+                <input class="form-control {{ $errors->has('displayname') ? 'is-invalid' : '' }}" type="displayname" name="displayname" id="displayname" value="{{ old('displayname', $user->displayname) }}" required>
+                @if($errors->has('displayname'))
+                    <span class="text-danger">{{ $errors->first('displayname') }}</span>
                 @endif
-                <span class="help-block">{{ trans('cruds.user.fields.email_helper') }}</span>
+                
             </div>
             <div class="form-group">
                 <label class="required" for="password">{{ trans('cruds.user.fields.password') }}</label>

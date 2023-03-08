@@ -226,7 +226,7 @@ class DutyFormApiController extends Controller
 
         if( /*$dutyForm->owned_by->IsAdmin() || */$dutyForm->owned_by_id != $dutyForm->created_by_id)
         {
-            $routes['return'] = 'Return';
+            $routes['return'] = 'Send Back';
         }
         
         //see if there is a routing for this user
@@ -265,6 +265,7 @@ class DutyFormApiController extends Controller
                   //Forward
                   $dutyForm->update( [
                     'owned_by_id' => $route->route->id,
+                    'creator' => auth()->user()->displayname, 
                   ]);
 
                 } else {
@@ -276,6 +277,7 @@ class DutyFormApiController extends Controller
                     //Submit to HouseKeeping
                     $dutyForm->update( [
                         'owned_by_id' => $admin->id,
+                        'approver' => auth()->user()->displayname, 
                    ]);
                 }
             }

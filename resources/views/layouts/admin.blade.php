@@ -52,7 +52,7 @@
         </nav>
 
         @include('partials.menu')
-        <div class="content-wrapper" style="min-height: 917px;">
+        <div  id="app" class="content-wrapper" style="min-height: 917px;">
             <!-- Main content -->
             <section class="content" style="padding-top: 20px">
                 @if(session('message'))
@@ -72,6 +72,7 @@
                     </div>
                 @endif
                 @yield('content')
+             
             </section>
             <!-- /.content -->
         </div>

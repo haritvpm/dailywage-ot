@@ -2,7 +2,7 @@
     <div class="flex mb-4 place-content-end">
         <div class="px-4 py-2 text-white bg-indigo-600 cursor-pointer hover:bg-indigo-700">
 
-            <router-link :to="{ name: 'duty.create' }" class="btn btn-success">Create Form</router-link>
+            <router-link v-if="!isadmin" :to="{ name: 'duty.create' }" class="btn btn-success">Create Form</router-link>
 
         </div>
     </div>
@@ -51,9 +51,9 @@
                         <td>
                             <router-link :to="{ name: 'duty.view', params: { id: item.id } }"
                                 class="mr-2 ">View</router-link>
-                            <router-link v-if="props.user_id == item.owned_by_id"
+                            <router-link v-if="props.user_id == item.owned_by_id && !isadmin"
                                 :to="{ name: 'duty.edit', params: { id: item.id } }" class="mr-2 ">Edit</router-link>
-                            <button v-if="props.user_id == item.owned_by_id" @click="deleteDuty(item.id)"
+                            <button v-if="props.user_id == item.owned_by_id && !isadmin" @click="deleteDuty(item.id)"
                                 class="ml-1 btn btn-xs btn-secondary">Delete</button>
                         </td>
                     </tr>
@@ -77,6 +77,10 @@ const props = defineProps({
         required: false,
     },
     user: {
+        required: false,
+    },
+
+    isadmin: {
         required: false,
     },
 })

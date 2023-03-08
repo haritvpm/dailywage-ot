@@ -209,16 +209,16 @@
                 Print
             </button>
 
-
-            <button v-if="props.user_id === duty.owned_by_id" @click="editDuty" class="mr-1 btn btn-primary">
+            <button v-if="props.user_id === duty.owned_by_id && !isadmin" @click="editDuty" class="mr-1 btn btn-primary">
                 Edit
             </button>
-
 
             <button v-if="routes['submit']" @click="routeForm('submit')" class="mr-1 btn btn-danger">{{
                 routes['submit'] }}</button>
             <button v-if="routes['return']" @click="routeForm('return')" class="mr-1 btn btn-warning">{{
                 routes['return'] }}</button>
+
+            <router-link :to="{ name: 'duty.index' }" class="btn btn-success ml-1">Go Back</router-link>
 
 
 
@@ -241,6 +241,10 @@ const props = defineProps({
         required: false,
     },
     user_id: {
+        required: false,
+    },
+
+    isadmin: {
         required: false,
     },
 })

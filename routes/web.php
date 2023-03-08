@@ -45,11 +45,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('calenders', 'CalenderController');
 
     // Duty Form
-    Route::delete('duty-forms/destroy', 'DutyFormController@massDestroy')->name('duty-forms.massDestroy');
+   // Route::delete('duty-forms/destroy', 'DutyFormController@massDestroy')->name('duty-forms.massDestroy');
     Route::resource('duty-forms', 'DutyFormController');
 
     // Duty Form Item
-    Route::delete('duty-form-items/destroy', 'DutyFormItemController@massDestroy')->name('duty-form-items.massDestroy');
+    //Route::delete('duty-form-items/destroy', 'DutyFormItemController@massDestroy')->name('duty-form-items.massDestroy');
     Route::resource('duty-form-items', 'DutyFormItemController');
 
     //Routings
@@ -70,7 +70,7 @@ Route::group(['as' => 'frontend.', 'namespace' => 'Frontend', 'middleware' => ['
   //  Route::view('/{any}', 'frontend.home')->where('any', '.*');
     Route::get('/home', 'HomeController@index')->name('home');
    // Route::view('/duty', 'frontend.main')->name('main');;
-    Route::get('/duty',  'DutyFormController@main')->name('main');;
+    Route::get('/duty-forms',  'DutyFormController@main')->name('main');;
 
 /* 
     Route::get('/home', 'HomeController@index')->name('home');
