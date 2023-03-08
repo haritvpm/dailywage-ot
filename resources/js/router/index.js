@@ -6,22 +6,30 @@ import DutyEdit from './../components/DutyEdit.vue'
 import DutyView from './../components/DutyView.vue'
 
 const routes = [
-    {
-        path: '/admin/duty-forms',
-        name: 'adminduty.index',
-        component: DutyIndex,
-
-    },
-    {
-        path: '/admin/duty-forms/:id',
-        name: 'adminduty.view',
-        component: DutyView,
-        props: true
-    },
+    /* {
+         path: '/admin/duty-forms',
+         name: 'adminduty.index',
+         component: DutyIndex,
+ 
+     },
+     {
+         path: '/admin/duty-forms/:id',
+         name: 'adminduty.view',
+         component: DutyView,
+         props: true
+     },*/
     {
         path: '/duty-forms',
+        alias: '/admin/duty-forms',
         name: 'duty.index',
         component: DutyIndex
+    },
+    {
+        path: '/duty-forms/:id',
+        alias: '/admin/duty-forms/:id',
+        name: 'duty.view',
+        component: DutyView,
+        props: true
     },
     {
         path: '/duty-forms/create',
@@ -34,12 +42,7 @@ const routes = [
         component: DutyEdit,
         props: true
     },
-    {
-        path: '/duty-forms/:id',
-        name: 'duty.view',
-        component: DutyView,
-        props: true
-    },
+
 
 ];
 

@@ -43,10 +43,10 @@
                             {{ item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session' }}
                         </td>
                         <td>
-                            {{ item.created_by.name }}
+                            {{ item.created_by?.name }}
                         </td>
                         <td>
-                            {{ item.owned_by.name }}
+                            {{ item.owned_by?.name }}
                         </td>
                         <td>
                             <router-link :to="{ name: 'duty.view', params: { id: item.id } }"

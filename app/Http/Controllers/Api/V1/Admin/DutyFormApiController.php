@@ -71,6 +71,8 @@ class DutyFormApiController extends Controller
             'employee_id' =>  $request->employee ?  $request->employee['id'] :null ,
             'total_hours'  => $request->total_hours ? $request->total_hours : null,
             'form_num' => $maxform_no+1,
+            'created_by_id' => auth()->user()->id,
+            
         ]
        );
 

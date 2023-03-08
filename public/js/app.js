@@ -24542,9 +24542,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["to"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.duties, function (item) {
+    var _item$created_by, _item$owned_by;
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: item.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_num), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session'), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.created_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.owned_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_num), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session'), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_item$created_by = item.created_by) === null || _item$created_by === void 0 ? void 0 : _item$created_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)((_item$owned_by = item.owned_by) === null || _item$owned_by === void 0 ? void 0 : _item$owned_by.name), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
       to: {
         name: 'duty.view',
         params: {
@@ -25183,19 +25184,29 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var routes = [{
-  path: '/admin/duty-forms',
-  name: 'adminduty.index',
-  component: _components_DutyIndex__WEBPACK_IMPORTED_MODULE_0__["default"]
-}, {
-  path: '/admin/duty-forms/:id',
-  name: 'adminduty.view',
-  component: _components_DutyView_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-  props: true
-}, {
+var routes = [
+/* {
+     path: '/admin/duty-forms',
+     name: 'adminduty.index',
+     component: DutyIndex,
+   },
+ {
+     path: '/admin/duty-forms/:id',
+     name: 'adminduty.view',
+     component: DutyView,
+     props: true
+ },*/
+{
   path: '/duty-forms',
+  alias: '/admin/duty-forms',
   name: 'duty.index',
   component: _components_DutyIndex__WEBPACK_IMPORTED_MODULE_0__["default"]
+}, {
+  path: '/duty-forms/:id',
+  alias: '/admin/duty-forms/:id',
+  name: 'duty.view',
+  component: _components_DutyView_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+  props: true
 }, {
   path: '/duty-forms/create',
   name: 'duty.create',
@@ -25204,11 +25215,6 @@ var routes = [{
   path: '/duty-forms/:id/edit',
   name: 'duty.edit',
   component: _components_DutyEdit_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-  props: true
-}, {
-  path: '/duty-forms/:id',
-  name: 'duty.view',
-  component: _components_DutyView_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
   props: true
 }];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue_router__WEBPACK_IMPORTED_MODULE_4__.createRouter)({
