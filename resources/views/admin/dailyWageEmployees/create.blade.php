@@ -65,7 +65,7 @@
                 <label>{{ trans('cruds.session.fields.status') }}</label>
                 <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
                     <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Session::STATUS_SELECT as $key => $label)
+                    @foreach(App\Models\DailyWageEmployee::STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('status', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>

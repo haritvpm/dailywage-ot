@@ -20,7 +20,9 @@ class DailyWageEmployeeApiController extends Controller
        //return new DailyWageEmployeeResource(DailyWageEmployee::with(['designation', 'category', 'section'])->get());
 
 
-       $emps =  DailyWageEmployee::with(['designation', 'category', 'section'])->get();
+       $emps =  DailyWageEmployee::with(['designation', 'category', 'section'])
+       ->where('status','active')
+       ->get();
      
        $section =  Section::where( 'user_id' , auth()->user()->id)->first();
        if( $section ){

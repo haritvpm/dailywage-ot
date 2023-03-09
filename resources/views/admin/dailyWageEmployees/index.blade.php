@@ -45,6 +45,9 @@
                             {{ trans('cruds.dailyWageEmployee.fields.section') }}
                         </th>
                         <th>
+                            {{ trans('cruds.session.fields.status') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -72,6 +75,9 @@
                             </td>
                             <td>
                                 {{ $dailyWageEmployee->section->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ App\Models\DailyWageEmployee::STATUS_SELECT[$dailyWageEmployee->status] ?? '' }}
                             </td>
                             <td>
                                 @can('daily_wage_employee_show')
