@@ -23495,6 +23495,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
       form.duty_items.push({
         employee_id: selectedEmp.value.id,
+        employee_name: selectedEmp.value.displayname,
         fn_from: '',
         fn_to: '',
         an_from: '',
@@ -25037,24 +25038,29 @@ function useDailyWageForm() {
           case 4:
             _context6.next = 6;
             return router.push({
+              name: 'duty.view'
+            }, duty.id);
+          case 6:
+            _context6.next = 8;
+            return router.push({
               name: 'duty.index'
             });
-          case 6:
-            _context6.next = 11;
-            break;
           case 8:
-            _context6.prev = 8;
+            _context6.next = 13;
+            break;
+          case 10:
+            _context6.prev = 10;
             _context6.t0 = _context6["catch"](1);
             if (_context6.t0.response.status === 422) {
               for (key in _context6.t0.response.data.errors) {
                 errors.value = _context6.t0.response.data.errors;
               }
             }
-          case 11:
+          case 13:
           case "end":
             return _context6.stop();
         }
-      }, _callee6, null, [[1, 8]]);
+      }, _callee6, null, [[1, 10]]);
     }));
     return function updateDuty(_x6) {
       return _ref6.apply(this, arguments);
@@ -25122,21 +25128,26 @@ function useDailyWageForm() {
               route: route
             });
           case 5:
-            _context9.next = 10;
-            break;
+            _context9.next = 7;
+            return router.push({
+              name: 'duty.index'
+            });
           case 7:
-            _context9.prev = 7;
+            _context9.next = 12;
+            break;
+          case 9:
+            _context9.prev = 9;
             _context9.t0 = _context9["catch"](1);
             if (_context9.t0.response.status === 422) {
               for (key in _context9.t0.response.data.errors) {
                 errors.value = _context9.t0.response.data.errors;
               }
             }
-          case 10:
+          case 12:
           case "end":
             return _context9.stop();
         }
-      }, _callee9, null, [[1, 7]]);
+      }, _callee9, null, [[1, 9]]);
     }));
     return function setRoute(_x9, _x10) {
       return _ref9.apply(this, arguments);

@@ -20,8 +20,21 @@ class DutyFormApiController extends Controller
     public function index()
     {
         //abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+
+        $approvers = Routing::where('route_id', auth()->user()->id)->pluck('user_id');
+
         $duty = DutyForm::with(['dutyItems', 'date', 'session', 'employee', 'owned_by', 'created_by'])
-        ->where('owned_by_id', auth()->user()->id)
+        ->where(function($query) use ( $approvers) {
+            $query->where('owned_by_id', auth()->user()->id)
+                ->orWhere('created_by_id', auth()->user()->id)
+                //show all forms approved by this user.
+                ->orwhere(function($query2) use ( $approvers) {
+                    $query2->Wherein('created_by_id', $approvers)
+                    ->whereColumn('owned_by_id', '<>', 'created_by_id'); //but exclude draft stage in asst;
+                 });
+        })
+        ->orderby('owned_by_id','desc')
         ->get();
         // dump($duty);
 
@@ -221,19 +234,21 @@ class DutyFormApiController extends Controller
     public function routes(Request $request, int $id )
     {
         $dutyForm = DutyForm::with(['owned_by', 'created_by'])->findOrFail($id);
-        abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
+      //  abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
         dump($dutyForm->owned_by->IsAdmin);
 
         $routes = [];
 
-        if( /*$dutyForm->owned_by->IsAdmin() || */$dutyForm->owned_by_id != $dutyForm->created_by_id)
+        if( $dutyForm->owned_by_id == auth()->user()->id &&  
+            $dutyForm->owned_by_id != $dutyForm->created_by_id)
         {
             $routes['return'] = 'Send Back';
         }
         
         //see if there is a routing for this user
 
-        if( !$dutyForm->owned_by->IsAdmin )
+        if( $dutyForm->owned_by_id == auth()->user()->id && 
+            !$dutyForm->owned_by->IsAdmin )
         {
             $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->get();
 

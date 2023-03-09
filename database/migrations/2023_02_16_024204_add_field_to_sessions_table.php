@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('sessions', function (Blueprint $table) {
             $table->string('status')->nullable();
+            $table->string('viewstatus')->nullable();
         });
     }
 

@@ -19,6 +19,8 @@ class AddRelationshipFieldsToDutyFormsTable extends Migration
             $table->foreign('owned_by_id', 'owned_by_fk_8011887')->references('id')->on('users');
             $table->unsignedBigInteger('created_by_id')->nullable();
             $table->foreign('created_by_id', 'created_by_fk_8011891')->references('id')->on('users');
+        //    $table->unsignedBigInteger('submitted_by_id')->nullable();
+         //   $table->foreign('submitted_by_id', 'submitted_by_fk_8011891')->references('id')->on('users');
         });
     }
 }

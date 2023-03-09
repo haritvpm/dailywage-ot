@@ -305,28 +305,28 @@ const ontotalhours_wholesession = (index) => {
 };
 
 const saveDuty = async () => {
-   
+
     errors.value = []
-    if( form.form_type === 'oneday-multiemp'){
-        if( !form.date ){
-            errors.value.push( 'Please select date ' )
+    if (form.form_type === 'oneday-multiemp') {
+        if (!form.date) {
+            errors.value.push('Please select date ')
         }
-    let errors2 = validateTimes( form.duty_items, true )
-    errors2.forEach( e => errors.value.push(e) )
+        let errors2 = validateTimes(form.duty_items, true)
+        errors2.forEach(e => errors.value.push(e))
 
     }
     else //single employee all session days
     {
-        if( !form.employee ){
-            errors.value.push( 'Please select employee ' )
+        if (!form.employee) {
+            errors.value.push('Please select employee ')
         }
-        let errors2 = validateTimes( form.dates, false )
-        errors2.forEach( e => errors.value.push(e) )
+        let errors2 = validateTimes(form.dates, false)
+        errors2.forEach(e => errors.value.push(e))
     }
 
-    if(errors.value.length) return;
+    if (errors.value.length) return;
 
-     await storeDuty({ ...form })
+    await storeDuty({ ...form })
 }
 // a computed ref
 /*
@@ -346,6 +346,7 @@ const addRow = () => {
 
     form.duty_items.push({
         employee_id: selectedEmp.value.id,
+        employee_name: selectedEmp.value.displayname,
         fn_from: '',
         fn_to: '',
         an_from: '',

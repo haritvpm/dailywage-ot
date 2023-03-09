@@ -15,20 +15,20 @@ use Illuminate\Database\Eloquent\Model;
 class Routing extends Model
 {
     protected $fillable = ['route_id', 'user_id', 'last_forwarded_to'];
-    
+    public $table = 'routings';
 
     /**
      * Set to null if empty
      * @param $input
      */
-    public function setUserIdAttribute($input)
+    /* public function setUserIdAttribute($input)
     {
         $this->attributes['user_id'] = $input ? $input : null;
     }
     public function setRouteIdAttribute($input)
     {
         $this->attributes['route_id'] = $input ? $input : null;
-    }
+    } */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

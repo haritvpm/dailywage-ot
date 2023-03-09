@@ -19,10 +19,10 @@ class RoutingController extends Controller
      */
     public function index()
     {
-      //  if (! Gate::allows('user_access')) {
-        //    return abort(401);
-       // }
-        
+      if (! Gate::allows('user_access')) {
+           return abort(401);
+      }
+       
       
         $routings = Routing::with('user')->latest()->get();
 
@@ -79,6 +79,7 @@ class RoutingController extends Controller
       //  }
         
         $users = User::get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users2 = User::get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $routing = Routing::findOrFail($id);
 
@@ -94,10 +95,13 @@ class RoutingController extends Controller
      */
     public function update(UpdateRoutingsRequest $request, $id)
     {
-        if (! Gate::allows('user_edit')) {
-            return abort(401);
-        }
+      //  if (! Gate::allows('user_edit')) {
+       //     return abort(401);
+      //  }
         $routing = Routing::findOrFail($id);
+
+        dump($request->all());
+
         $routing->update($request->all());
 
 

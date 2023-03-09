@@ -3,8 +3,9 @@
 @section('content')
     <h3 class="page-title">@lang('cruds.routing.title')</h3>
     
-    <form method="PUT" action="{{ route('admin.routings.update', [$routing->id]) }}" enctype="multipart/form-data">
-    @csrf
+    <form method="POST" action="{{ route("admin.routings.update", [$routing->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
 
     <div class="card">
       
@@ -25,7 +26,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <label for="route">{{ trans('cruds.routing.fields.route') }}</label>
+                    <label for="route_id">{{ trans('cruds.routing.fields.route') }}</label>
                     <select class="form-control select2" name="route_id" id="route_id">
 
                  @foreach($users as $id => $entry)
@@ -47,7 +48,7 @@
     </div>
     <div class="form-group">
                 <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
+                    {{ trans('global.update') }}
                 </button>
             </div>
     </form>
