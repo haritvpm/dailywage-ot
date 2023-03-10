@@ -29,10 +29,15 @@
 
                     <th colspan="2">
                         Morning
+                        <button class="btn btn-light" @click.prevent="CopyRow('am')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
 
                     <th colspan="2">
-                        Evening
+                        Evening <button class="btn btn-light" @click.prevent="CopyRow('pm')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
                     <th style="width: 8%" rowspan="2">
                         Total Hours
@@ -116,11 +121,15 @@
                     </th>
 
                     <th colspan="2">
-                        Morning
+                        Morning <button class="btn btn-light" @click.prevent="CopyRow('am')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
 
                     <th colspan="2">
-                        Evening
+                        Evening <button class="btn btn-light" @click.prevent="CopyRow('pm')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
                     <th style="width: 8%" rowspan="2">
                         Total Hours
@@ -194,7 +203,7 @@
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { sumDurations, ontotalhours , validateTimes} from './../shared/utility';
+import { copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
 
 const { errors, duty, calender, employees, getDuty, getCalender, updateDuty, getEmployees } = useDailyWageForm()
 
@@ -211,6 +220,9 @@ const props = defineProps({
         required: false,
     },
     user: {
+        required: false,
+    },
+    isadmin: {
         required: false,
     },
 })
@@ -287,25 +299,25 @@ const ontotalhours_ = (index) => {
 const saveDuty = async () => {
     // console.log(form)    
     errors.value = []
-    if( duty.form_type === 'oneday-multiemp'){
-        if( !duty.date ){
-            errors.value.push( 'Please select date ' )
+    if (duty.form_type === 'oneday-multiemp') {
+        if (!duty.date) {
+            errors.value.push('Please select date ')
         }
-    let errors2 = validateTimes( duty.value.duty_items, true )
-    errors2.forEach( e => errors.value.push(e) )
+        let errors2 = validateTimes(duty.value.duty_items, true)
+        errors2.forEach(e => errors.value.push(e))
 
     }
     else //single employee all session days
     {
-        if( !duty.value.employee_id ){
-            errors.value.push( 'Please select employee ' )
+        if (!duty.value.employee_id) {
+            errors.value.push('Please select employee ')
         }
-        let errors2 = validateTimes( duty.value.duty_items, false )
-        errors2.forEach( e => errors.value.push(e) )
+        let errors2 = validateTimes(duty.value.duty_items, false)
+        errors2.forEach(e => errors.value.push(e))
     }
 
-    if(errors.value.length) return;
-   
+    if (errors.value.length) return;
+
     await updateDuty(props.id)
 }
 
@@ -333,6 +345,14 @@ const addRow = () => {
 };
 const removeRow = (n) => {
     duty.value.duty_items.splice(n, 1);
+};
+
+
+const CopyRow = (col) => {
+
+    copyTimes(duty.value.duty_items, col)
+    duty.value.total_hours = sumDurations(duty.value.duty_items)
+
 };
 
 </script>

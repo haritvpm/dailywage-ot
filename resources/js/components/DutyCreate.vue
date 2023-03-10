@@ -31,10 +31,10 @@
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
                                                                                                                                                 no-today :format="format" :enable-time-picker="false">
                                                                                                                                             </Datepicker> -->
-        <v-select v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" label="date"
+        <v-select v-if="form.form_type == 'oneday-multiemp'" v-model="form.date" label="date"
             :options="calender"></v-select>
 
-        <table v-show="form.form_type == 'oneday-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+        <table v-if="form.form_type == 'oneday-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
             <thead>
                 <tr class="text-center">
                     <th rowspan="2">
@@ -45,11 +45,15 @@
                     </th>
 
                     <th colspan="2">
-                        Morning
+                        Morning <button class="btn btn-light" @click.prevent="CopyRow('am')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
 
                     <th colspan="2">
-                        Evening
+                        Evening <button class="btn btn-light" @click.prevent="CopyRow('pm')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
                     <th style="width: 8%" rowspan="2">
                         Total Hours
@@ -121,10 +125,10 @@
 
 
         <!-- whole session -->
-        <v-select v-show="form.form_type == 'alldays-oneemp'" v-model="form.employee" label="displayname"
+        <v-select v-if="form.form_type == 'alldays-oneemp'" v-model="form.employee" label="displayname"
             :options="sectionEmp"></v-select>
 
-        <table v-show="form.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
+        <table v-if="form.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
             <thead>
                 <tr class="text-center">
                     <th rowspan="2">
@@ -135,11 +139,15 @@
                     </th>
 
                     <th colspan="2">
-                        Morning
+                        Morning <button class="btn btn-light" @click.prevent="CopyRow('am')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
 
                     <th colspan="2">
-                        Evening
+                        Evening <button class="btn btn-light" @click.prevent="CopyRow('pm')"><i class="fa fa-clone"
+                                aria-hidden="true"></i>
+                        </button>
                     </th>
                     <th style="width: 8%" rowspan="2">
                         Total Hours
@@ -210,7 +218,7 @@
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { sumDurations, ontotalhours, validateTimes } from './../shared/utility';
+import { copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
 
 const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 const props = defineProps({
@@ -223,6 +231,9 @@ const props = defineProps({
         required: false,
     },
     user: {
+        required: false,
+    },
+    isadmin: {
         required: false,
     },
 })
@@ -359,5 +370,12 @@ const addRow = () => {
 const removeRow = (n) => {
     form.duty_items.splice(n, 1);
 };
-
+const CopyRow = (col) => {
+    if (form.form_type == 'alldays-oneemp') {
+        copyTimes(form.dates, col)
+        form.total_hours = sumDurations(form.dates)
+    } else {
+        copyTimes(form.duty_items, col)
+    }
+};
 </script>

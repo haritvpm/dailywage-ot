@@ -34,7 +34,7 @@ class DutyFormApiController extends Controller
                     ->whereColumn('owned_by_id', '<>', 'created_by_id'); //but exclude draft stage in asst;
                  });
         })
-        ->orderby('owned_by_id','desc')
+        ->latest()
         ->get();
         // dump($duty);
 

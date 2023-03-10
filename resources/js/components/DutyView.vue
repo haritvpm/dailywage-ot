@@ -43,7 +43,7 @@
 
     </table>
 
-    <table v-show="duty.form_type == 'oneday-multiemp'" class="table table-sm table-striped table-bordered">
+    <table v-if="duty.form_type == 'oneday-multiemp'" class="table table-sm table-striped table-bordered">
         <thead>
             <tr class="text-center">
                 <th rowspan="2">
@@ -117,7 +117,7 @@
 
     <!-- whole session -->
 
-    <table v-show="duty.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
+    <table v-if="duty.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
         <thead>
             <tr class="text-center">
                 <th rowspan="2">
@@ -161,7 +161,7 @@
 
         <tbody>
             <template v-for="(item, index) in duty.duty_items" :key="index">
-                <tr v-show="item.fn_from || an_from" class="text-center">
+                <tr v-show="item.fn_from || item.an_from" class="text-center">
                     <td class="text-center">
                         {{ index + 1 }}
                     </td>
@@ -247,6 +247,9 @@ const props = defineProps({
     isadmin: {
         required: false,
     },
+    user: {
+        required: false,
+    },
 })
 
 onMounted(async () => {
@@ -256,7 +259,7 @@ onMounted(async () => {
 
     await getDuty(props.id);
     await getRoutes(props.id);
-    console.log(routes)
+    //   console.log(duty.value.duty_items)
 
 
 })
