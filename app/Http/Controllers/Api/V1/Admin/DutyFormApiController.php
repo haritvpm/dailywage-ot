@@ -62,6 +62,14 @@ class DutyFormApiController extends Controller
 
             if (!$request->employee) {
                 $errors[] = 'Employee is needed';
+            } else {
+                //check if this employee has already been created
+                $form = DutyForm::where('session_id', $session->id)
+                        ->where('employee_id', $request->employee['id'])
+                        ->first();
+                if( $form ){
+                    $errors[] = 'Form for this employee already exists: ' . $form->form_num;
+                }
             }
        }
 
@@ -149,6 +157,15 @@ class DutyFormApiController extends Controller
 
                 if (!$request->employee) {
                     $errors[] = 'Employee is needed';
+                } else {
+                    //check if this employee has already been created
+                    $form = DutyForm::where('session_id', $dutyForm->session_id)
+                            ->where('employee_id', $request->employee['id'])
+                            ->wherenot( 'id', $dutyForm->id)
+                            ->first();
+                    if( $form ){
+                        $errors[] = 'Form for this employee already exists: ' . $form->form_num;
+                    }
                 }
         }
 
