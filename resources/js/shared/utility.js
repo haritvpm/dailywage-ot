@@ -141,7 +141,5 @@ const copyTimes = (obj, col) => {
         ontotalhours(obj[i])
     }
 
-
-    obj.total_hours = sumDurations(obj)
 }
 export { copyTimes, getTimeDuration, ontotalhours, sumDurations, validateTimes };

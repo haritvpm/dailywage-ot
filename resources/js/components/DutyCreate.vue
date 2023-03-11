@@ -7,9 +7,8 @@
         </div>
     </div>
 
-    <!-- {{ props.user }} -->
-
-    <form @submit.prevent="saveDuty">
+    <div v-else="form.session_id">No Session open for dataentry</div>
+    <form v-if="form.session_id" @submit.prevent="saveDuty">
 
         <div class="form-group">
 
@@ -220,13 +219,13 @@ import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
 import { copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
 
-const { errors, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
+const { errors, session, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 const props = defineProps({
 
-    session: {
-        required: false,
-
-    },
+    /*  session: {
+          required: false,
+  
+      },*/
     user_id: {
         required: false,
     },
@@ -242,6 +241,7 @@ const selectedEmp = ref()
 const sectionEmp = ref([])
 
 const form = reactive({
+    session_id: '',
     form_type: 'oneday-multiemp',
     date: '',
     duty_items: [],
@@ -253,8 +253,9 @@ const form = reactive({
 onMounted(async () => {
     await getCalender();
     await getEmployees();
-    // console.log(employees)
-
+    if (calender.value?.length) {
+        form.session_id = calender.value[0].session_id
+    }
 
     for (let i = 0; i < employees.value.length; i++) {
         if (employees.value[i].in_usersection) {

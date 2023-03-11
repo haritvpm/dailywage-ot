@@ -17,7 +17,6 @@ export default function useDailyWageForm() {
     const getCalender = async (id) => {
         let response = await axios.get(`/api/v1/calenders`)
 
-
         calender.value = response.data.data
     }
     const getEmployees = async (id) => {

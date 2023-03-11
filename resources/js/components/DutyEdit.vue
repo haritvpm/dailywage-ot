@@ -297,10 +297,10 @@ const ontotalhours_ = (index) => {
 
 };
 const saveDuty = async () => {
-    // console.log(form)    
+    // console.log(duty.value.form_type)
     errors.value = []
-    if (duty.form_type === 'oneday-multiemp') {
-        if (!duty.date) {
+    if (duty.value.form_type === 'oneday-multiemp') {
+        if (!duty.value.date) {
             errors.value.push('Please select date ')
         }
         let errors2 = validateTimes(duty.value.duty_items, true)

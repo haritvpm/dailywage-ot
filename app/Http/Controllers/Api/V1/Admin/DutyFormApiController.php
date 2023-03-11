@@ -40,45 +40,57 @@ class DutyFormApiController extends Controller
 
         return new DutyFormResource( $duty);
     }
-
-    public function store(Request $request)
+    public function doValidation( &$errors, Request $request, DutyForm $dutyForm=null)
     {
-    //    dump($request->all());
-       
-       $session = Session::latest()->where('status', 'active')->first();
+        if (!$request->session_id) {
+            $errors[] = 'Session not found';
+            return;
+        }
 
-       // dump( $session);
-       $user = auth()->user();
-
-       $errors = [];
-
-       if('oneday-multiemp' === $request->form_type){
+        if('oneday-multiemp' === $request->form_type){
 
             if (!$request->date) {
                 $errors[] = 'Date is needed';
             }
-         
-       } else {
-
-            if (!$request->employee) {
-                $errors[] = 'Employee is needed';
+                
             } else {
-                //check if this employee has already been created
-                $form = DutyForm::where('session_id', $session->id)
-                        ->where('employee_id', $request->employee['id'])
-                        ->first();
-                if( $form ){
-                    $errors[] = 'Form for this employee already exists: ' . $form->form_num;
-                }
+    
+                    if (!$request->employee) {
+                        $errors[] = 'Employee is needed';
+                    } else {
+                        //check if this employee has already been created
+
+                        $form = DutyForm::where('session_id', $request->session_id)
+                                ->where('employee_id', $request->employee['id'])
+                                ->when($dutyForm, function ($q, $dutyForm){
+                                    return  $q->wherenot( 'id', $dutyForm->id);
+                                })
+                                ->first();
+                        if( $form ){
+                            $errors[] = 'Form for this employee already exists: ' . $form->form_num;
+                        }
+                    }
             }
-       }
+    
+
+    }
+
+    public function store(Request $request)
+    {
+    //    dump($request->all());
+           
+       $user = auth()->user();
+
+       $errors = [];
+
+       $this->doValidation($errors, $request );
 
         if (count($errors)) {
             $responseArr = array('errors' => $errors );
             return response()->json($responseArr, 422);
         }
     
-        $maxform_no = DutyForm::where('session_id', $session->id)->max('form_num');
+        $maxform_no = DutyForm::where('session_id', $request->session_id)->max('form_num');
         if($maxform_no < 0){
            $maxform_no = 0; //plan to use form no field to -1 for rejected
         }
@@ -87,7 +99,7 @@ class DutyFormApiController extends Controller
         [
             'form_type' => $request->form_type,
             'date_id' =>  $request->date ? $request->date['id'] : null,
-            'session_id' => $session->id,
+            'session_id' => $request->session_id,
             'owned_by_id' => auth()->user()->id,
             'employee_id' =>  $request->employee ?  $request->employee['id'] :null ,
             'total_hours'  => $request->total_hours ? $request->total_hours : null,
@@ -147,27 +159,7 @@ class DutyFormApiController extends Controller
        abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
         
        $errors = [];
-       if('oneday-multiemp' === $request->form_type){
-
-        if (!$request->date) {
-            $errors[] = 'Date is needed';
-        }
-            
-        } else {
-
-                if (!$request->employee) {
-                    $errors[] = 'Employee is needed';
-                } else {
-                    //check if this employee has already been created
-                    $form = DutyForm::where('session_id', $dutyForm->session_id)
-                            ->where('employee_id', $request->employee['id'])
-                            ->wherenot( 'id', $dutyForm->id)
-                            ->first();
-                    if( $form ){
-                        $errors[] = 'Form for this employee already exists: ' . $form->form_num;
-                    }
-                }
-        }
+       $this->doValidation($errors, $request, $dutyForm );
 
         if (count($errors)) {
             $responseArr = array('errors' => $errors );
