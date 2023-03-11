@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div v-else="form.session_id">No Session open for dataentry</div>
+    <div v-if="!form.session_id">No Session open for dataentry</div>
     <form v-if="form.session_id" @submit.prevent="saveDuty">
 
         <div class="form-group">

@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use \DateTimeInterface;
-use App\Traits\MultiTenantModelTrait;
+//use App\Traits\MultiTenantModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class DutyFormItem extends Model
 {
-    use MultiTenantModelTrait;
+    //use MultiTenantModelTrait;
     use HasFactory;
 
     public $table = 'duty_form_items';

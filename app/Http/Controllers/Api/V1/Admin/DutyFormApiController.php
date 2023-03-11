@@ -14,6 +14,7 @@ use App\Models\Session;
 use App\Models\User;
 use App\Models\DutyFormItem;
 use App\Models\Routing;
+use App\Models\DailyWageEmployee;
 
 class DutyFormApiController extends Controller
 {
@@ -52,25 +53,43 @@ class DutyFormApiController extends Controller
             if (!$request->date) {
                 $errors[] = 'Date is needed';
             }
-                
-            } else {
-    
-                    if (!$request->employee) {
-                        $errors[] = 'Employee is needed';
-                    } else {
-                        //check if this employee has already been created
-
-                        $form = DutyForm::where('session_id', $request->session_id)
-                                ->where('employee_id', $request->employee['id'])
-                                ->when($dutyForm, function ($q, $dutyForm){
-                                    return  $q->wherenot( 'id', $dutyForm->id);
-                                })
-                                ->first();
-                        if( $form ){
-                            $errors[] = 'Form for this employee already exists: ' . $form->form_num;
-                        }
-                    }
+            else{
+                //for each emlpoyee, check if data exists already
+                $emps = Collect($request->duty_items)->pluck('employee_id');
+                $dutyFormItemsExisting = DutyFormItem::with( 'form' )
+                    ->whereHas('form', function ($query) use ($request ) {
+                        $query->where('date_id',$request->date['id']);
+                        })
+                    ->wherein('employee_id',  $emps->toArray())
+                    ->when($dutyForm, function ($q, $dutyForm){
+                        return  $q->wherenot( 'form_id', $dutyForm->id);
+                    })
+                    ->get();
+              if($dutyFormItemsExisting ){
+                $empnames = DailyWageEmployee::wherein('id', $dutyFormItemsExisting->pluck('employee_id')->toArray() );
+                $errors[] = 'Data already entered for employees: ' . $empnames->pluck('ten')->implode(',');
+              }
             }
+           
+                
+        } else {
+
+            if (!$request->employee) {
+                $errors[] = 'Employee is needed';
+            } else {
+                //check if this employee has already been created
+
+                $form = DutyForm::where('session_id', $request->session_id)
+                        ->where('employee_id', $request->employee['id'])
+                        ->when($dutyForm, function ($q, $dutyForm){
+                            return  $q->wherenot( 'id', $dutyForm->id);
+                        })
+                        ->first();
+                if( $form ){
+                    $errors[] = 'Form for this employee already exists: ' . $form->form_num;
+                }
+            }
+        }
     
 
     }
@@ -233,7 +252,7 @@ class DutyFormApiController extends Controller
     {
        // abort_if(Gate::denies('duty_form_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
        abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+ 
         $dutyForm->dutyItems()->delete();
 
         $dutyForm->delete();
@@ -244,7 +263,7 @@ class DutyFormApiController extends Controller
     {
         $dutyForm = DutyForm::with(['owned_by', 'created_by'])->findOrFail($id);
       //  abort_if($dutyForm->owned_by_id != auth()->user()->id, Response::HTTP_FORBIDDEN, '403 Forbidden');
-        dump($dutyForm->owned_by->IsAdmin);
+       // dump($dutyForm->owned_by->IsAdmin);
 
         $routes = [];
 

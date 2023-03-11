@@ -100,7 +100,7 @@ class RoutingController extends Controller
       //  }
         $routing = Routing::findOrFail($id);
 
-        dump($request->all());
+       // dump($request->all());
 
         $routing->update($request->all());
 
