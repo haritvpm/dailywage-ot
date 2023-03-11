@@ -96,7 +96,7 @@
                             <input readonly class="form-control" type="text" v-model='item.total_hours' />
                         </td>
                         <td>
-                            <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
+                            <button class="btn btn-danger" @click.prevent="removeRow(index)"><i class="fa fa-trash"
                                     aria-hidden="true"></i></button>
 
                         </td>

@@ -65,9 +65,9 @@ class DutyFormApiController extends Controller
                         return  $q->wherenot( 'form_id', $dutyForm->id);
                     })
                     ->get();
-              if($dutyFormItemsExisting ){
+              if($dutyFormItemsExisting->count() ){
                 $empnames = DailyWageEmployee::wherein('id', $dutyFormItemsExisting->pluck('employee_id')->toArray() );
-                $errors[] = 'Data already entered for employees: ' . $empnames->pluck('ten')->implode(',');
+                $errors[] = 'OT already entered for employees: ' . $empnames->pluck('ten')->implode(',');
               }
             }
            

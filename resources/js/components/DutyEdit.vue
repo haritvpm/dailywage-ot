@@ -71,7 +71,7 @@
                             {{ index + 1 }}
                         </td>
                         <td>
-                            {{ item.employee?.displayname }}
+                            {{ item.employee?.displayname ?? item?.added_name }}
                         </td>
                         <time-input v-model:fn_from="item.fn_from" v-model:fn_to="item.fn_to" v-model:an_from="item.an_from"
                             v-model:an_to="item.an_to" @total_hours="ontotalhours_(index)" />
@@ -79,7 +79,7 @@
                             <input readonly class="form-control" type="text" v-model='item.total_hours' />
                         </td>
                         <td>
-                            <button class="btn btn-danger" @click="removeRow(index)"><i class="fa fa-trash"
+                            <button class="btn btn-danger" @click.prevent="removeRow(index)"><i class="fa fa-trash"
                                     aria-hidden="true"></i></button>
 
                         </td>
@@ -326,13 +326,14 @@ const addRow = () => {
 
     for (let i = 0; i < duty.value.duty_items.length; i++) {
         if (duty.value.duty_items[i].employee_id == selectedEmp.value.id) {
+            alert('Already exists')
             return
         }
     }
 
     duty.value.duty_items.push({
         employee_id: selectedEmp.value.id,
-        name: selectedEmp.value.displayname,
+        added_name: selectedEmp.value.displayname,
         fn_from: '',
         fn_to: '',
         an_from: '',
