@@ -14,6 +14,8 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FormsExport;
 
 class DutyFormController extends Controller
 {
@@ -92,10 +94,16 @@ class DutyFormController extends Controller
         return back();
     }
 
-    public function massDestroy(MassDestroyDutyFormRequest $request)
+  /*   public function massDestroy(MassDestroyDutyFormRequest $request)
     {
         DutyForm::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+ */
+    public function download(Request $request)
+    {
+        //return Excel::download(new  FormsExport, 'invoices.xlsx');
+        return Excel::download(new  FormsExport, 'dailywage.ods');
     }
 }

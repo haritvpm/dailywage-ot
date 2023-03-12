@@ -45,7 +45,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('calenders', 'CalenderController');
 
     // Duty Form
-   // Route::delete('duty-forms/destroy', 'DutyFormController@massDestroy')->name('duty-forms.massDestroy');
+    Route::get('duty-forms/download', 'DutyFormController@download')->name('duty-forms.download');
     Route::resource('duty-forms', 'DutyFormController');
 
     // Duty Form Item
