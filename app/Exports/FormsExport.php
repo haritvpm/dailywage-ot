@@ -2,18 +2,29 @@
 
 namespace App\Exports;
 
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use App\Models\DutyForm;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
 use App\Models\Calender;
 use App\Models\Session;
+use App\Models\Category;
 
-class FormsExport implements FromView
+
+class FormsExport implements WithMultipleSheets
 {
-    public function view(): View
+           
+    public function __construct(
+                                )
     {
-        
+      
+    }
+
+
+    /**
+     * @return array
+     */
+    public function sheets(): array
+    {
+
         $session = Session::where('status', 'active')->latest()->first();
 
         $dates = Calender::selectRaw('date, type, year(date) AS year, DATE_FORMAT(date, \'%b\') AS monthname, MONTH(date) month , DAYOFMONTH(date) AS day')
@@ -21,9 +32,30 @@ class FormsExport implements FromView
         ->orderBy('date', 'asc')
         ->get();
         
-        $monthcols =  $dates->groupBy('monthname')->map->count();;
+        $monthcols =  $dates->groupBy('monthname')->map->count();
+        $categories = Category::all();
+      
+        $data = [];
+        $sheets = [];
+       /* $sheets[] = new FormsExportConsolidatedSheet(
+                        $this->$dates, 
+                        $this->$monthcols, 
+                        $this->$session,
+                        $this->$data 
+                    );*/
 
-        return view('admin.dutyForms.excel', compact('monthcols', 'dates','session'));
+        foreach ($categories as $category) {
+          
+            $sheets[] = new FormsExportCategorySheet($category,
+                                                            $dates, 
+                                                            $monthcols, 
+                                                            $session,
+                                                            $data 
+        
+                                );
+        }
+
+        return $sheets;
     }
 
 }
