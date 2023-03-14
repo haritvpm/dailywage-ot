@@ -1,3 +1,21 @@
+@php
+   function num2alpha($n)
+    {
+        for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
+            $r = chr($n%26 + 0x41) . $r;
+        return $r;
+    }
+
+    function sumformula(int $sl, $dates)
+    {
+       $row = $sl + 5; //
+       $lastdatecol = 4+count($dates)-1;
+       return "=SUM(E" . $row . ':' . num2alpha($lastdatecol) . $row . ')';
+    }
+
+
+@endphp
+
 <div >
 <table>
     <thead>
@@ -32,18 +50,20 @@
     </thead>
     <tbody>
   
+        @foreach($data as $key => $value)
         <tr>
+        <td>{{$loop->iteration}}</td>
+        <td>{{$key}}</td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        @foreach($dates as $d)
-            <td style="text-align: center">{{ $d->day }}</td>
-        @endforeach
-        <td style="text-align: center">=SUM(A2:D2)</td>
+             @foreach($value as $h)
+            <td style="text-align: center">{{ $h }}</td>
+            @endforeach
+        <td style="text-align: center">{{sumformula($loop->iteration, $dates)}}</td>
         <td ></td>
         <td ></td>
         </tr>
+        @endforeach
   
     </tbody>
 </table>

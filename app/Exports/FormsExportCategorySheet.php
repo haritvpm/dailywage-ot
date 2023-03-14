@@ -15,21 +15,27 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
                                 protected $dates, 
                                 protected $monthcols, 
                                 protected $session,
-                                protected $data )
+                                protected $data, protected  $empcategory )
     {
        
     }
     
     public function view(): View
     {
-        
-    
+        $dataforcategory = null;
+        foreach ($this->data as $key => $value) {
+            if( $this->empcategory[$key]  == $this->category->id ){
+                $dataforcategory [$key] = $value;
+            }
+        }
+        dump($dataforcategory);
         return view('admin.dutyForms.excel',
                         [
                             'category' => $this->category->title,
                             'monthcols' => $this->monthcols,
                             'dates' => $this->dates,
                             'session' => $this->session,
+                            'data' => $dataforcategory,
                         ]
 
                         );
