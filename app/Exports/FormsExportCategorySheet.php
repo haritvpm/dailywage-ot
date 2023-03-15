@@ -15,7 +15,7 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
                                 protected $dates, 
                                 protected $monthcols, 
                                 protected $session,
-                                protected $data, protected  $empcategory )
+                                protected $data, protected  $empinfo )
     {
        
     }
@@ -24,7 +24,7 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
     {
         $dataforcategory = null;
         foreach ($this->data as $key => $value) {
-            if( $this->empcategory[$key]  == $this->category->id ){
+            if( $this->empinfo[$key]['category_id']  == $this->category->id ){
                 $dataforcategory [$key] = $value;
             }
         }
@@ -36,6 +36,7 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
                             'dates' => $this->dates,
                             'session' => $this->session,
                             'data' => $dataforcategory,
+                            'empinfo' => $this->empinfo,
                         ]
 
                         );

@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label for="wage">Wage</label>
-                <input class="form-control {{ $errors->has('wage') ? 'is-invalid' : '' }}" type="number" name="wage" id="wage" value="{{ old('wage', $session->wage) }}" step="1">
+                <input class="form-control {{ $errors->has('wage') ? 'is-invalid' : '' }}" type="number" name="wage" id="wage" value="{{ old('wage', $designation->wage) }}" step="1">
                 @if($errors->has('wage'))
                     <span class="text-danger">{{ $errors->first('wage') }}</span>
                 @endif

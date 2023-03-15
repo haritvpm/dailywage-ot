@@ -48,7 +48,7 @@ class FormsExport implements WithMultipleSheets
        
 
         $data = array();
-        $empcategory = array();
+        $empinfo = array();
 
         foreach ($formitems as $item) {
             if( $item->form->form_type == 'oneday-multiemp' )
@@ -61,7 +61,11 @@ class FormsExport implements WithMultipleSheets
                 }
 
                 $data[$key][$item->form->date_id] = $item->total_hours;
-                $empcategory[$key] = $item->employee->category_id;
+                $empinfo[$key]['category_id'] = $item->employee->category_id;
+                $empinfo[$key]['name'] = $item->employee->name;
+                $empinfo[$key]['ten'] = $item->employee->ten;
+                $empinfo[$key]['desig'] = $item->employee->designation->title;
+                $empinfo[$key]['wage'] = $item->employee->designation->wage;
             } else {
 
                 $key = $item->form->employee->displayname;
@@ -72,7 +76,11 @@ class FormsExport implements WithMultipleSheets
                 }
 
                 $data[$key][$item->date_id] = $item->total_hours;
-                $empcategory[$key] = $item->form->employee->category_id;
+                $empinfo[$key]['category_id']  = $item->form->employee->category_id;
+                $empinfo[$key]['name']  = $item->form->employee->name;
+                $empinfo[$key]['ten']  = $item->form->employee->ten;
+                $empinfo[$key]['desig']  = $item->form->employee->designation->title;
+                $empinfo[$key]['wage']  = $item->form->employee->designation->wage;
             }
             
         }
@@ -92,7 +100,7 @@ class FormsExport implements WithMultipleSheets
                                                             $dates, 
                                                             $monthcols, 
                                                             $session,
-                                                            $data,  $empcategory 
+                                                            $data,  $empinfo 
         
                                 );
         }

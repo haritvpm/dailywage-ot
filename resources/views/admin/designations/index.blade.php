@@ -33,6 +33,9 @@
                             {{ trans('cruds.designation.fields.title') }}
                         </th>
                         <th>
+                            Wage
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -48,6 +51,9 @@
                             </td>
                             <td>
                                 {{ $designation->title ?? '' }}
+                            </td>
+                            <td>
+                                {{ $designation->wage ?? '' }}
                             </td>
                             <td>
                                 @can('designation_show')

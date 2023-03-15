@@ -10,8 +10,8 @@
         <form method="POST" action="{{ route("admin.daily-wage-employees.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label for="name">{{ trans('cruds.dailyWageEmployee.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
+                <label class="required"  for="name">{{ trans('cruds.dailyWageEmployee.fields.name') }}</label>
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
                 @if($errors->has('name'))
                     <span class="text-danger">{{ $errors->first('name') }}</span>
                 @endif
@@ -19,7 +19,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="ten">{{ trans('cruds.dailyWageEmployee.fields.ten') }}</label>
-                <input class="form-control {{ $errors->has('ten') ? 'is-invalid' : '' }}" type="text" name="ten" id="ten" value="{{ old('ten', '') }}" required>
+                <input class="form-control {{ $errors->has('ten') ? 'is-invalid' : '' }}" type="text" pattern="[A-Z0-9]+"  name="ten" id="ten" value="{{ old('ten', '') }}" required>
                 @if($errors->has('ten'))
                     <span class="text-danger">{{ $errors->first('ten') }}</span>
                 @endif
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label>{{ trans('cruds.session.fields.status') }}</label>
                 <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
-                    <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                   
                     @foreach(App\Models\DailyWageEmployee::STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('status', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
