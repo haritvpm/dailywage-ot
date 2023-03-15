@@ -58,7 +58,8 @@ class DutyFormApiController extends Controller
                 $emps = Collect($request->duty_items)->pluck('employee_id');
                 $dutyFormItemsExisting = DutyFormItem::with( 'form' )
                     ->whereHas('form', function ($query) use ($request ) {
-                        $query->where('date_id',$request->date['id']);
+                        $query->where('date_id',$request->date['id'])
+                              ->where('session_id', $request->session_id);
                         })
                     ->wherein('employee_id',  $emps->toArray())
                     ->when($dutyForm, function ($q, $dutyForm){
@@ -67,12 +68,24 @@ class DutyFormApiController extends Controller
                     ->get();
               if($dutyFormItemsExisting->count() ){
                 $empnames = DailyWageEmployee::wherein('id', $dutyFormItemsExisting->pluck('employee_id')->toArray() );
-                $errors[] = 'OT already entered for employees: ' . $empnames->pluck('ten')->implode(',');
+                $errors[] = 'OT for this date already entered for employees: ' . $empnames->pluck('ten')->implode(',');
               }
+
+              //also check if a whole session form exists for these employees. if so, dont allow
+                $forms = DutyForm::where('session_id', $request->session_id)
+                            ->where('form_type', 'alldays-oneemp')
+                            ->wherein('employee_id', $emps->toArray())
+                            ->get();
+
+                if( $forms->count() ){
+                    $empnames = DailyWageEmployee::wherein('id', $forms->pluck('employee_id')->toArray() );
+                    $errors[] = 'Whole-session form for these employees already exists: ' .   $empnames->pluck('ten')->implode(',');
+                }
+
             }
            
                 
-        } else {
+        } else { //Whole Session Form
 
             if (!$request->employee) {
                 $errors[] = 'Employee is needed';
@@ -86,8 +99,22 @@ class DutyFormApiController extends Controller
                         })
                         ->first();
                 if( $form ){
-                    $errors[] = 'Form for this employee already exists: ' . $form->form_num;
+                    $errors[] = 'Form for this employee already exists. Form No: ' . $form->form_num;
                 }
+
+                //also check if any one-day multi emp formitem for any date exists for this employee.
+                $dutyFormItemsExisting = DutyFormItem::with( 'form' )
+                    ->whereHas('form', function ($query) use ($request ) {
+                        $query->where('session_id', $request->session_id)
+                            ->where('form_type', 'oneday-multiemp');
+                        })
+                    ->where('employee_id',   $request->employee['id'])
+                    ->first();
+                    if($dutyFormItemsExisting ){
+                        $date = $dutyFormItemsExisting->form->date?->date;
+                        $errors[] = 'OT already entered for employee for date: ' . $date;
+                    }
+
             }
         }
     

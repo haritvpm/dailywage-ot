@@ -25427,33 +25427,47 @@ var ontotalhours = function ontotalhours(obj) {
   var duration2 = getTimeDuration(obj.an_from, obj.an_to);
   if (duration) tot.add(duration);
   if (duration2) tot.add(duration2);
-  var res = tot.hours() + '.' + tot.minutes().toString().padStart(2, 0);
+
+  // var res = tot.hours() + '.' + tot.minutes().toString().padStart(2, 0);
+  var res = tot.asHours().toFixed(2).toString();
   if (!res.includes("NaN") && !res.includes("-"))
     //no negative time diff when time is like 9:3
     obj.total_hours = res;else obj.total_hours = '';
 };
 var sumDurations = function sumDurations(obje) {
-  var tot = moment.duration(0, 'seconds');
+  /*
+      let tot = moment.duration(0, 'seconds');
+      obje.forEach((obj) => {
+            if (obj.total_hours) {
+              var splitted = obj.total_hours.toString().split(".");
+                if (splitted.length == 2) {
+                  tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
+                  splitted[1] = splitted[1].padEnd(2, 0) //3 -> 30
+                  tot.add(moment.duration(parseInt(), 'minutes'));
+              } else {
+                  tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
+  
+              }
+          } else {
+              //console.log(obj.total_hours.value)
+          }
+      })
+  
+      var res = tot.asHours().toString().split(".")[0] + '.' + tot.minutes().toString().padStart(2, 0);
+  
+      if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
+          return res;
+      else
+          return '';
+  */
+
+  var tot = 0;
   obje.forEach(function (obj) {
-    //        console.log(obj.total_hours)
     if (obj.total_hours) {
-      var splitted = obj.total_hours.toString().split(".");
-      //   console.log(splitted)
-      if (splitted.length == 2) {
-        tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
-        splitted[1] = splitted[1].padEnd(2, 0); //3 -> 30
-        tot.add(moment.duration(parseInt(), 'minutes'));
-      } else {
-        tot.add(moment.duration(parseInt(splitted[0]), 'hours'));
-      }
-    } else {
-      //console.log(obj.total_hours.value)
+      tot += parseFloat(obj.total_hours);
     }
   });
-  var res = tot.asHours().toString().split(".")[0] + '.' + tot.minutes().toString().padStart(2, 0);
-  if (!res.includes("NaN") && !res.includes("-"))
-    //no negative time diff when time is like 9:3
-    return res;else return '';
+  return tot.toString();
 };
 var validateTimes = function validateTimes(obj, check_empty_rows) {
   var formats = ["h:mm", "HH:mm"];
