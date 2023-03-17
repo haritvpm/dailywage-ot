@@ -1,5 +1,5 @@
 @php
-   function num2alpha($n)
+function num2alpha($n)
     {
         for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
             $r = chr($n%26 + 0x41) . $r;
@@ -39,7 +39,7 @@
 <table>
     <thead>
     <tr> <th style="text-align: center" colspan={{count($dates)+7}}>OVERTIME STATEMENT OF DAILY WAGES  </th>    </tr>
-    <tr>       <th style="text-align: center" colspan={{count($dates)+7}}> {{$category}} </th>        </tr>
+    <tr>       <th style="text-align: center" colspan={{count($dates)+7}}> {{$category_title}} </th>        </tr>
     <tr>
         <th rowspan='3' style="text-align: center">Sl.</th>
         <th rowspan='3'>Name</th>
@@ -69,18 +69,18 @@
     </thead>
     <tbody>
   
-        @foreach($data as $key => $value)
+        @foreach($data as $key => $emp)
         <tr>
         <td style="text-align: center">{{$loop->iteration}}</td>
-        <td>{{ $empinfo[$key]['name'] }}</td>
-        <td>{{ $empinfo[$key]['ten'] }}</td>
-        <td>{{ $empinfo[$key]['desig'] }}</td>
-             @foreach($value as $h)
-            <td style="text-align: center">{{ $h }}</td>
-            @endforeach
+        <td>{{ $emp['name'] }}</td>
+        <td>{{ $emp['ten'] }}</td>
+        <td>{{ $emp['desig'] }}</td>
+        @foreach($dates as $d)
+            <td style="text-align: center">{{ $emp['data'][ $d->id] ?? ''}}</td>
+        @endforeach
         <td style="text-align: center">{{sumformula($loop->iteration, $dates)}}</td>
         <td style="text-align: center">{{tohoursformula($loop->iteration, $dates)}}</td>
-        <td style="text-align: center">{{torupeesformula($loop->iteration, $dates,  $empinfo[$key]['wage'])}}</td>
+        <td style="text-align: center">{{torupeesformula($loop->iteration, $dates, $emp['wage'])}}</td>
         </tr>
         @endforeach
         <tr>

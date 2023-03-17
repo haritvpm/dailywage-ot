@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'DailyWageOverTimeAllowanceApp',
+    'site_title' => 'DailyWage-OTA',
 ];

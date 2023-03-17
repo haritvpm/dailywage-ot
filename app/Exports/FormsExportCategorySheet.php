@@ -2,12 +2,11 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
-
 use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
 {
@@ -15,28 +14,21 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
                                 protected $dates, 
                                 protected $monthcols, 
                                 protected $session,
-                                protected $data, protected  $empinfo )
+                                protected $dataforcategory )
     {
        
     }
     
     public function view(): View
-    {
-        $dataforcategory = null;
-        foreach ($this->data as $key => $value) {
-            if( $this->empinfo[$key]['category_id']  == $this->category->id ){
-                $dataforcategory [$key] = $value;
-            }
-        }
-        dump($dataforcategory);
-        return view('admin.dutyForms.excel',
+    {       
+        return view('admin.dutyForms.excel-category',
                         [
-                            'category' => $this->category->title,
+                            'category_title' => $this->category->title,
                             'monthcols' => $this->monthcols,
                             'dates' => $this->dates,
                             'session' => $this->session,
-                            'data' => $dataforcategory,
-                            'empinfo' => $this->empinfo,
+                            'data' =>  $this->dataforcategory,
+                           
                         ]
 
                         );
