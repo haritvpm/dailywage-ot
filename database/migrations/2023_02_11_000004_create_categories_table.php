@@ -11,6 +11,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->unique();
+            $table->string('longtitle')->unique();
             $table->float('max_hours', 4, 2);
             $table->time('working_fn_from')->nullable();
             $table->time('working_fn_to')->nullable();

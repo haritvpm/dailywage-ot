@@ -21,7 +21,7 @@ class DutyFormApiController extends Controller
     public function index()
     {
         //abort_if(Gate::denies('duty_form_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        $session = Session::where('status', 'active')->latest()->first();
 
         $approvers = Routing::where('route_id', auth()->user()->id)->pluck('user_id');
 
@@ -35,6 +35,7 @@ class DutyFormApiController extends Controller
                     ->whereColumn('owned_by_id', '<>', 'created_by_id'); //but exclude draft stage in asst;
                  });
         })
+        ->where( 'session_id', $session?->id )
         ->latest()
         ->get();
         // dump($duty);
@@ -311,7 +312,7 @@ class DutyFormApiController extends Controller
             {
               $routes['submit'] = 'Forward';
             } else {
-              $routes['submit'] = 'Submit to HouseKeeping';
+              $routes['submit'] = 'Submit';
             }
         }
 

@@ -1,15 +1,3 @@
-@php
-
-    function totalformula(int $sl, $dates)
-    {
-       $fromcol = 6;
-       $lastrow = $sl + 5; 
-       $otcol = 4+count($dates)+2;
-
-       return "=SUM(" . num2alpha($otcol) . $fromcol . ':' . num2alpha($otcol) . $lastrow . ')';
-    }
-@endphp
-
 <div >
 <table>
     <thead>
@@ -62,7 +50,7 @@
         <tr>
         <td colspan={{count($dates)+6}} style="text-align: right">Total</td>
        
-        <td style="text-align: center">{{totalformula( count($data) , $dates)}}</td>
+        <td style="text-align: center">{{ $pagetotalformula}}</td>
         </tr>
     </tbody>
 </table>

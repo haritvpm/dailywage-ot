@@ -19,6 +19,7 @@ class UpdateCalenderRequest extends FormRequest
         return [
             'date' => [
                 'required',
+               
                 'date_format:' . config('panel.date_format'),
             ],
             'type' => [

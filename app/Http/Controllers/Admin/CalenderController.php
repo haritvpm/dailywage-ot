@@ -27,7 +27,7 @@ class CalenderController extends Controller
     {
         abort_if(Gate::denies('calender_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $sessions = Session::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $sessions = Session::latest()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('admin.calenders.create', compact('sessions'));
     }

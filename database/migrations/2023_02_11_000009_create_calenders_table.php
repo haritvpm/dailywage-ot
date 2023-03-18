@@ -10,7 +10,7 @@ class CreateCalendersTable extends Migration
     {
         Schema::create('calenders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('date');
+            $table->date('date')->unique();
             $table->string('type');
             $table->timestamps();
         });

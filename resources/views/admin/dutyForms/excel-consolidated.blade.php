@@ -11,20 +11,7 @@
     }
     return $num.'th';
   }
-  function num2alpha($n)
-    {
-        for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
-            $r = chr($n%26 + 0x41) . $r;
-        return $r;
-    }
-    function grandtotalformula(int $sl)
-    {
-       $col = 7;
-       $rowstart = 4; 
-       $rowend = $sl + $rowstart  ; 
-      
-       return "=SUM(" . num2alpha($col) . $rowstart . ':' . num2alpha($col) . $rowend . ')';
-    }
+
 @endphp
 
 <div >
@@ -64,7 +51,7 @@
         @endforeach
         <tr>
         <td colspan='7' style="text-align: right">Total</td>
-        <td style="text-align: center">{{grandtotalformula( count($dataforcategory))}}</td>
+        <td style="text-align: center">{{$grandtotalformula}}</td>
         </tr>
     </tbody>
 </table>

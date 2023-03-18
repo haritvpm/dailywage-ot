@@ -22,6 +22,20 @@ class FormsExportConsolidatedSheet implements FromView, WithTitle, ShouldAutoSiz
     {
        
     }
+    function num2alpha($n)
+    {
+        for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
+            $r = chr($n%26 + 0x41) . $r;
+        return $r;
+    }
+    function grandtotalformula(int $sl)
+    {
+       $col = 7;
+       $rowstart = 4; 
+       $rowend = $sl + $rowstart  ; 
+      
+       return "=SUM(" . $this->num2alpha($col) . $rowstart . ':' . $this->num2alpha($col) . $rowend . ')';
+    }
     
     public function view(): View
     {
@@ -33,6 +47,7 @@ class FormsExportConsolidatedSheet implements FromView, WithTitle, ShouldAutoSiz
             'session' => $this->session,
             'categories' => $this->categories,
             'dataforcategory' => $this->dataforcategory,
+            'grandtotalformula' => $this->grandtotalformula(count($this->dataforcategory)),
         ]
 
         );

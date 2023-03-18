@@ -30,6 +30,11 @@ class SessionController extends Controller
 
     public function store(StoreSessionRequest $request)
     {
+        if( $request->status == 'active' ){
+            Session::query()->update( 
+                ['status' => 'inactive']
+            );
+        }
         $session = Session::create($request->all());
 
         return redirect()->route('admin.sessions.index');
@@ -44,6 +49,12 @@ class SessionController extends Controller
 
     public function update(UpdateSessionRequest $request, Session $session)
     {
+        if( $request->status == 'active' ){
+            Session::query()->update( 
+                ['status' => 'inactive']
+            );
+        }
+
         $session->update($request->all());
 
         return redirect()->route('admin.sessions.index');

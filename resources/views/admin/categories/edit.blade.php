@@ -19,6 +19,11 @@
                 <span class="help-block">{{ trans('cruds.category.fields.title_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="longtitle">{{ trans('cruds.category.fields.title') }}</label>
+                <input class="form-control {{ $errors->has('longtitle') ? 'is-invalid' : '' }}" type="text" name="longtitle" id="longtitle" value="{{ old('longtitle', $category->longtitle) }}" required>
+              
+            </div>
+            <div class="form-group">
                 <label class="required" for="max_hours">{{ trans('cruds.category.fields.max_hours') }}</label>
                 <input class="form-control {{ $errors->has('max_hours') ? 'is-invalid' : '' }}" type="number" name="max_hours" id="max_hours" value="{{ old('max_hours', $category->max_hours) }}" step="0.01" required>
                 @if($errors->has('max_hours'))

@@ -16,7 +16,7 @@
                         Form No.
                     </th>
                     <th>
-                        FormType
+                        Session
                     </th>
                     <th>
                         Date(s)
@@ -37,7 +37,7 @@
                             {{ item.form_num }}
                         </td>
                         <td>
-                            {{ item.form_type }}
+                            {{ item.session.name }}
                         </td>
                         <td>
                             {{ item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session: ' +

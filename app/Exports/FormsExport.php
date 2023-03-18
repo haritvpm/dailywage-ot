@@ -71,6 +71,7 @@ class FormsExport implements WithMultipleSheets
        $row = $sl + 5; 
        return '='. $pagetitle . '!'  . $this->num2alpha($col) . $row ;
     }
+   
     
     /**
      * @return array
@@ -167,17 +168,20 @@ class FormsExport implements WithMultipleSheets
                         $dates, 
                         $monthcols, 
                         $session,
-                        $dataforcategory 
+                        $dataforcategory
                     );
         foreach ($categories as $category) {
-          
-            $sheets[] = new FormsExportCategorySheet($category,
+           
+            if( array_key_exists($category->id, $dataforcategory) ){
+
+                $sheets[] = new FormsExportCategorySheet($category,
                                                             $dates, 
                                                             $monthcols, 
                                                             $session,
                                                             $dataforcategory[$category->id] 
         
                                 );
+            }
         }
 
         return $sheets;

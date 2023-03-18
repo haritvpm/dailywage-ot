@@ -20,6 +20,7 @@ class Category extends Model
 
     protected $fillable = [
         'title',
+        'longtitle',
         'max_hours',
         'working_fn_from',
         'working_fn_to',

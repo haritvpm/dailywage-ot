@@ -11,37 +11,39 @@
 
 
     <h6 class="text-center">Overtime Duty Statement</h6>
-    <div class="text-center">KLA: <b>{{ props.session.assembly }}</b> Session: <b>{{ props.session.session }}</b></div>
+    <div class="text-center">KLA: <b>{{ duty.session?.assembly }}</b> Session: <b>{{ duty.session?.session }}</b></div>
 
-    <table class=" mt-1 table table-sm table-borderless">
+    <div class="col-md-5">
+        <table class=" mt-1 table table-sm  table-borderless">
 
-        <tbody>
+            <tbody>
 
-            <tr>
-                <td>
-                    For
-                </td>
-                <td v-show="duty.form_type == 'oneday-multiemp'">
-                    {{ duty.date?.date }}
-                </td>
-                <td v-show="duty.form_type == 'alldays-oneemp'">
-                    {{ duty.employee?.displayname }}
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        For
+                    </td>
+                    <td v-show="duty.form_type == 'oneday-multiemp'">
+                        <b> {{ duty.date?.date }}</b>
+                    </td>
+                    <td v-show="duty.form_type == 'alldays-oneemp'">
+                        <b> {{ duty.employee?.displayname }}</b>
+                    </td>
+                </tr>
 
-            <tr>
-                <td>
-                    Section
-                </td>
+                <tr>
+                    <td>
+                        Section
+                    </td>
 
-                <td>
-                    {{ duty.created_by?.name }}
-                </td>
-            </tr>
+                    <td>
+                        <b> {{ duty.created_by?.name }}</b>
+                    </td>
+                </tr>
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
+    </div>
 
     <table v-if="duty.form_type == 'oneday-multiemp'" class="table table-sm table-striped table-bordered">
         <thead>
