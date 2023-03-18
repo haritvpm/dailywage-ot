@@ -11,17 +11,30 @@
     }
     return $num.'th';
   }
-
+  function num2alpha($n)
+    {
+        for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
+            $r = chr($n%26 + 0x41) . $r;
+        return $r;
+    }
+    function grandtotalformula(int $sl)
+    {
+       $col = 7;
+       $rowstart = 4; 
+       $rowend = $sl + $rowstart  ; 
+      
+       return "=SUM(" . num2alpha($col) . $rowstart . ':' . num2alpha($col) . $rowend . ')';
+    }
 @endphp
 
 <div >
 <table>
     <thead>
-    <tr> <th style="text-align: center" colspan='8'> {{addOrdinalNumberSuffix($session->kla)}} KLA – addOrdinalNumberSuffix($session->session) SESSION</th>    </tr>
+    <tr> <th style="text-align: center" colspan='8'> {{addOrdinalNumberSuffix($session->assembly)}} KLA – {{addOrdinalNumberSuffix($session->session)}} SESSION</th>    </tr>
     <tr> <th style="text-align: center" colspan='8'>STATEMENT SHOWING OVERTIME ALLOWANCE TO DAILY WAGES STAFF </th>        </tr>
     <tr>
         <th style="text-align: center">Sl.</th>
-        <th>Employee<br>Code</th>
+        <th>TEN</th>
         <th>Name</th>
         <th>Desgn</th>
         <th style="text-align: center">OT Duty<br>(Hrs)</th>
@@ -33,19 +46,25 @@
     </thead>
     <tbody>
   
-        @foreach($data as $key => $value)
+        @foreach($dataforcategory as $c)
+        @foreach($c as $key => $empinfo)
+        
         <tr>
-        <td style="text-align: center">{{$loop->iteration}}</td>
-        <td>{{ $empinfo[$key]['ten'] }}</td>
-        <td>{{ $empinfo[$key]['name'] }}</td>
-        <td>{{ $empinfo[$key]['desig'] }}</td>
-        <td style="text-align: center"></td>
-        <td style="text-align: center"></td>
+        <td style="text-align: center">{{$empinfo['sl'] }}</td>
+        <td>{{ $empinfo['ten'] }}</td>
+        <td>{{ $empinfo['name'] }}</td>
+        <td>{{ $empinfo['desig'] }}</td>
+        <td style="text-align: center">{{$empinfo['pagehourscelladr'] }}</td>
+        <td style="text-align: center">{{$empinfo['pagedayscelladr']}}</td>
+        <td style="text-align: center">{{ $empinfo['wage'] }}</td>
+        <td style="text-align: center">{{$empinfo['pageamountcelladr']}}</td>
+     
         </tr>
+        @endforeach
         @endforeach
         <tr>
         <td colspan='7' style="text-align: right">Total</td>
-        <td style="text-align: center"></td>
+        <td style="text-align: center">{{grandtotalformula( count($dataforcategory))}}</td>
         </tr>
     </tbody>
 </table>

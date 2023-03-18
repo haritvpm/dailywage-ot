@@ -39,6 +39,6 @@ class FormsExportCategorySheet implements FromView, WithTitle, ShouldAutoSize
      */
     public function title(): string
     {
-        return $this->category->title;
+        return ($this->category->title);
     }
 }

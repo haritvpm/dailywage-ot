@@ -14,10 +14,11 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class FormsExportConsolidatedSheet implements FromView, WithTitle, ShouldAutoSize
 {
     public function __construct(
+                            protected $categories,
                             protected $dates, 
                             protected $monthcols, 
                             protected $session,
-                            protected $data, protected  $empinfo )
+                            protected $dataforcategory )
     {
        
     }
@@ -30,8 +31,8 @@ class FormsExportConsolidatedSheet implements FromView, WithTitle, ShouldAutoSiz
             'monthcols' => $this->monthcols,
             'dates' => $this->dates,
             'session' => $this->session,
-            'data' => $this->data,
-            'empinfo' => $this->empinfo,
+            'categories' => $this->categories,
+            'dataforcategory' => $this->dataforcategory,
         ]
 
         );

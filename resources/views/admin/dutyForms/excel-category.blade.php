@@ -1,30 +1,5 @@
 @php
-function num2alpha($n)
-    {
-        for($r = ""; $n >= 0; $n = intval($n / 26) - 1)
-            $r = chr($n%26 + 0x41) . $r;
-        return $r;
-    }
 
-    function sumformula(int $sl, $dates)
-    {
-       $row = $sl + 5; //
-       $lastdatecol = 4+count($dates)-1;
-       return "=SUM(E" . $row . ':' . num2alpha($lastdatecol) . $row . ')';
-    }
-    
-    function tohoursformula(int $sl, $dates)
-    {
-       $row = $sl + 5; 
-       $hourscol = 4+count($dates);
-       return "=ROUNDDOWN(" . num2alpha($hourscol) . $row . '/8,0)';
-    }
-    function torupeesformula(int $sl, $dates, $wage)
-    {
-       $row = $sl + 5; 
-       $dayscol = 4+count($dates)+1;
-       return "=" . num2alpha($dayscol) . $row . '*' . $wage;
-    }
     function totalformula(int $sl, $dates)
     {
        $fromcol = 6;
@@ -42,8 +17,9 @@ function num2alpha($n)
     <tr>       <th style="text-align: center" colspan={{count($dates)+7}}> {{$category_title}} </th>        </tr>
     <tr>
         <th rowspan='3' style="text-align: center">Sl.</th>
+     
+        <th rowspan='3'>TEN</th>  
         <th rowspan='3'>Name</th>
-        <th rowspan='3'>TEN</th>
         <th rowspan='3'>Desig</th>
         <th style="text-align: center" colspan={{count($dates)}}> OT Duty (In Hours)</th>
         <th rowspan='3' style="text-align: center">Hours</th>
@@ -72,15 +48,15 @@ function num2alpha($n)
         @foreach($data as $key => $emp)
         <tr>
         <td style="text-align: center">{{$loop->iteration}}</td>
-        <td>{{ $emp['name'] }}</td>
         <td>{{ $emp['ten'] }}</td>
+        <td>{{ $emp['name'] }}</td>
         <td>{{ $emp['desig'] }}</td>
         @foreach($dates as $d)
             <td style="text-align: center">{{ $emp['data'][ $d->id] ?? ''}}</td>
         @endforeach
-        <td style="text-align: center">{{sumformula($loop->iteration, $dates)}}</td>
-        <td style="text-align: center">{{tohoursformula($loop->iteration, $dates)}}</td>
-        <td style="text-align: center">{{torupeesformula($loop->iteration, $dates, $emp['wage'])}}</td>
+        <td style="text-align: center">{{$emp['sumformula']}}</td>
+        <td style="text-align: center">{{$emp['tohoursformula']}}</td>
+        <td style="text-align: center">{{$emp['torupeesformula']}}</td>
         </tr>
         @endforeach
         <tr>

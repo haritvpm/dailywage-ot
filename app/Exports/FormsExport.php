@@ -30,20 +30,20 @@ class FormsExport implements WithMultipleSheets
     {
        $row = $sl + 5; //
        $lastdatecol = 4+count($dates)-1;
-       return "=SUM(E" . $row . ':' . num2alpha($lastdatecol) . $row . ')';
+       return "=SUM(E" . $row . ':' . $this->num2alpha($lastdatecol) . $row . ')';
     }
     
     function tohoursformula(int $sl, $dates)
     {
        $row = $sl + 5; 
        $hourscol = 4+count($dates);
-       return "=ROUNDDOWN(" . num2alpha($hourscol) . $row . '/8,0)';
+       return "=ROUNDDOWN(" . $this->num2alpha($hourscol) . $row . '/8,0)';
     }
     function torupeesformula(int $sl, $dates, $wage)
     {
        $row = $sl + 5; 
        $dayscol = 4+count($dates)+1;
-       return "=" . num2alpha($dayscol) . $row . '*' . $wage;
+       return "=" . $this->num2alpha($dayscol) . $row . '*' . $wage;
     }
     function totalformula(int $sl, $dates)
     {
@@ -51,9 +51,27 @@ class FormsExport implements WithMultipleSheets
        $lastrow = $sl + 5; 
        $otcol = 4+count($dates)+2;
 
-       return "=SUM(" . num2alpha($otcol) . $fromcol . ':' . num2alpha($otcol) . $lastrow . ')';
+       return "=SUM(" . $this->num2alpha($otcol) . $fromcol . ':' . $this->num2alpha($otcol) . $lastrow . ')';
     }
-
+    function pagehourscelladr( $pagetitle, int $sl, $dates)
+    {
+       $col = 4+count($dates);
+       $row = $sl + 5; 
+       return '='. $pagetitle . '!'  . $this->num2alpha($col) . $row ;
+    }
+    function pagedayscelladr( $pagetitle, int $sl, $dates)
+    {
+       $col = 4+count($dates)+1;
+       $row = $sl + 5; 
+       return '='. $pagetitle . '!'  . $this->num2alpha($col) . $row ;
+    }
+    function pageamountcelladr( $pagetitle, int $sl, $dates)
+    {
+       $col = 4+count($dates)+2;
+       $row = $sl + 5; 
+       return '='. $pagetitle . '!'  . $this->num2alpha($col) . $row ;
+    }
+    
     /**
      * @return array
      */
@@ -81,19 +99,19 @@ class FormsExport implements WithMultipleSheets
                         ->get();
        
 
-        $data = array();
+     
         $empinfo = array();
 
         foreach ($formitems as $item) {
             if( $item->form->form_type == 'oneday-multiemp' )
             {   
                 $key = $item->employee->displayname;
-                if(!array_key_exists($key, $data)) {
+               /*  if(!array_key_exists($key, $data)) {
                     foreach ($dates as $date) {
                         $data[$key][$date->id] = '';
                     }
                 }
-
+ */
                // $data[$key][$item->form->date_id] = $item->total_hours;
                 $empinfo[$key]['category_id'] = $item->employee->category_id;
                 $empinfo[$key]['name'] = $item->employee->name;
@@ -105,11 +123,11 @@ class FormsExport implements WithMultipleSheets
             } else {
 
                 $key = $item->form->employee->displayname;
-                if(!array_key_exists($key, $data)) { //fill with sorted dateid
+               /*  if(!array_key_exists($key, $data)) { //fill with sorted dateid
                     foreach ($dates as $date) {
                         $data[$key][$date->id] = '';
                     }
-                }
+                } */
 
               //  $data[$key][$item->date_id] = $item->total_hours;
                 $empinfo[$key]['category_id']  = $item->form->employee->category_id;
@@ -124,21 +142,32 @@ class FormsExport implements WithMultipleSheets
         
         //sort by category so we get continuous index for each category
         $dataforcategory = [];
+        $sl = 1;
         foreach ($categories as $category) {
+            $pagerow = 0;
             foreach ($empinfo as $key => $value) {
-                if(  $value['category_id']  == $category->id ){
+                if( $value['category_id']  == $category->id ){
+                    $pagerow++;
                     $dataforcategory [$category->id][$key] = $value;
+                    $dataforcategory [$category->id][$key]['sl'] =  $sl++;
+                    $dataforcategory [$category->id][$key]['sumformula'] = $this->sumformula($pagerow, $dates);
+                    $dataforcategory [$category->id][$key]['tohoursformula'] = $this->tohoursformula($pagerow, $dates);
+                    $dataforcategory [$category->id][$key]['torupeesformula'] = $this->torupeesformula($pagerow, $dates, $value['wage'] );
+                    $dataforcategory [$category->id][$key]['pagehourscelladr'] = $this->pagehourscelladr($category->title,$pagerow, $dates );
+                    $dataforcategory [$category->id][$key]['pagedayscelladr'] = $this->pagedayscelladr($category->title,$pagerow, $dates );
+                    $dataforcategory [$category->id][$key]['pageamountcelladr'] = $this->pageamountcelladr($category->title,$pagerow, $dates );
                 }
             }
         }
-        
+              
 
         $sheets = [];
         $sheets[] = new FormsExportConsolidatedSheet(
+                        $categories,
                         $dates, 
                         $monthcols, 
                         $session,
-                        $data,  $empinfo 
+                        $dataforcategory 
                     );
         foreach ($categories as $category) {
           
