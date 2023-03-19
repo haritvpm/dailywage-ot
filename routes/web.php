@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
     // Duty Form
     Route::get('duty-forms/download', 'DutyFormController@download')->name('duty-forms.download');
+    Route::get('duty-forms/download2', 'DutyFormController@download2')->name('duty-forms.download2');
     Route::resource('duty-forms', 'DutyFormController');
 
     // Duty Form Item

@@ -103,7 +103,12 @@ class DutyFormController extends Controller
  */
     public function download(Request $request)
     {
-        //return Excel::download(new  FormsExport, 'invoices.xlsx');
-        return Excel::download(new  FormsExport, 'dailywage.ods');
+       
+        return Excel::download(new  FormsExport(true), 'dailywage.ods');
+    }
+    public function download2(Request $request)
+    {
+      
+        return Excel::download(new  FormsExport(false), 'dailywage.ods');
     }
 }

@@ -9,6 +9,9 @@
             <a class="btn btn-success" href="{{ route('admin.duty-forms.download') }}">
                 Download
             </a>
+            <a class="ml-1 btn btn-danger" href="{{ route('admin.duty-forms.download2') }}">
+                Download (Original)
+            </a>
         </div>
     </div>
             <router-view :session='{{$active_session}}' :isadmin ='true' :user='{{Auth::user()->name}}' :user_id='{{Auth::id()}}'/>
