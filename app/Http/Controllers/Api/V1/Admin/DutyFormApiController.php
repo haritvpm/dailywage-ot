@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\Session;
 use App\Models\User;
 use App\Models\DutyFormItem;
+use App\Models\Calender;
 use App\Models\Routing;
 use App\Models\DailyWageEmployee;
 
@@ -197,7 +198,37 @@ class DutyFormApiController extends Controller
     {
        // abort_if(Gate::denies('duty_form_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new DutyFormResource($dutyForm->load(['dutyItems', 'dutyItems.date','dutyItems.employee', 'date', 'session', 'employee', 'owned_by', 'created_by']));
+       $dutyForm = $dutyForm->load(['dutyItems', 'dutyItems.date','dutyItems.employee', 'date', 'session', 'employee', 'owned_by', 'created_by']);
+       
+       if('oneday-multiemp' === $dutyForm->form_type)
+       {
+
+
+       } else {
+        //if any new dates have been added to this session after this form was submitted
+           $dates = Calender::where('session_id', $dutyForm->session_id)->orderby('date')->get();
+           $datesinform = $dutyForm->dutyItems->pluck( 'date_id' );
+           //
+           foreach ($dates as $key => $date) {
+                if( !$datesinform->contains( $date->id ) ){
+                    //dump( $date->id);
+                    $dutyForm->dutyItems->push( [
+                        'id' =>  -1,
+                        'date_id' =>  $date->id,
+                        'date' =>  $date,
+                        'fn_from' =>  '',
+                        'fn_to' =>  '',
+                        'an_from' =>  '',
+                        'an_to' =>  '',
+                        'total_hours' =>  '',
+                    ] );
+                }
+           }
+            
+
+        }
+
+       return new DutyFormResource($dutyForm);
     }
 
     public function update(Request $request, DutyForm $dutyForm)
@@ -228,7 +259,6 @@ class DutyFormApiController extends Controller
 
         if('oneday-multiemp' === $request->form_type){
          
-
             $dutyItems = [];
             foreach ($requestData as $item) {
                 $dutyItems[] = new DutyFormItem([
@@ -249,25 +279,34 @@ class DutyFormApiController extends Controller
             //todo update each row not delete entire items
             //$dutyItems = [];
             foreach ($requestData as $item) {
-                $dutyFormItem = DutyFormItem::find( $item['id'] );
-                $dutyFormItem->update
-                /*
-                $dutyItems[] = new DutyFormItem*/
-                    (
-                    [
-                    'date_id' => $item['date_id'],
-                    'fn_from' => $item['fn_from'],
-                    'fn_to' => $item['fn_to'],
-                    'an_from' => $item['an_from'],
-                    'an_to' => $item['an_to'],
-                    'total_hours' => $item['total_hours'],
-                    ]
-                );
-            }
+                if( -1 == $item['id']) //a new date added. sometimes because we edit the old calender and add dates
+                {
+                    $newdutyItem = new DutyFormItem([
+                        'date_id' => $item['date']['id'],
+                        'fn_from' => $item['fn_from'],
+                        'fn_to' => $item['fn_to'],
+                        'an_from' => $item['an_from'],
+                        'an_to' => $item['an_to'],
+                        'total_hours' => $item['total_hours'],
+                    ]);
+    
+                    $dutyForm->dutyItems()->save($newdutyItem);
 
-          //  $dutyForm->dutyItems()->delete();
-          //  $dutyForm->dutyItems()->saveMany($dutyItems);
-        
+                } else {
+                    $dutyFormItem = DutyFormItem::find( $item['id'] );
+                    $dutyFormItem->update (
+                        [
+                        'date_id' => $item['date_id'],
+                        'fn_from' => $item['fn_from'],
+                        'fn_to' => $item['fn_to'],
+                        'an_from' => $item['an_from'],
+                        'an_to' => $item['an_to'],
+                        'total_hours' => $item['total_hours'],
+                        ]
+                    );
+                }
+            }
+               
        }
 
 

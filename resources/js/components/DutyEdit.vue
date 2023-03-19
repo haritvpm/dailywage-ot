@@ -197,6 +197,10 @@
             <button class="btn btn-danger" type="submit">
                 Update
             </button>
+            <button type="button" @click.prevent="$router.go(-1)" class="ml-1 btn btn-outline-success">
+                Cancel
+            </button>
+
         </div>
     </form>
 </template>
