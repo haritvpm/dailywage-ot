@@ -136,18 +136,15 @@ class DutyFormApiController extends Controller
                 $errors[] = 'OT already entered for employees: ' . $empnames->pluck('ten')->implode(',');
               }
 
-                //also check if any one-day multi emp formitem for any date exists for this employee.
-                $dutyFormItemsExisting = DutyFormItem::with( 'form' )
-                    ->whereHas('form', function ($query) use ($request ) {
-                        $query->where('session_id', $request->session_id)
-                            ->where('form_type', 'oneday-multiemp');
-                        })
-                    ->wherein('employee_id',   $emps->toArray() )
-                    ->first();
-                    if($dutyFormItemsExisting ){
-                        $date = $dutyFormItemsExisting->form->date?->date;
-                        $errors[] = 'OT already entered for employee';
-                    }
+            //also check single emp formitem 
+            $form = DutyForm::where('session_id', $request->session_id)
+                        ->wherein('employee_id',   $emps->toArray() )
+                        ->first();
+
+                if($form ){
+                    
+                    $errors[] = 'OT already entered for employee : form ' . $form->form_num ;
+                }
 
 
         }

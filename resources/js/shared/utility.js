@@ -89,6 +89,20 @@ const sumDurations = (obje) => {
     return tot.toString();
 
 };
+const sumHoursForm3 = (obj) => {
+    let tot = 0;
+    obj?.all_ot_hours.forEach((h) => {
+        if (h) {
+            tot += parseFloat(h)
+        }
+    })
+    let res = tot.toString();;
+    if (!res.includes("NaN") && !res.includes("-")) //no negative time diff when time is like 9:3
+        obj.total_hours = res;
+    else
+        obj.total_hours = '';
+
+};
 
 const validateTimes = (obj, check_empty_rows) => {
     var formats = ["h:mm", "HH:mm"];
@@ -150,4 +164,4 @@ const copyTimes = (obj, col) => {
     }
 
 }
-export { copyTimes, getTimeDuration, ontotalhours, sumDurations, validateTimes };
+export { sumHoursForm3, copyTimes, getTimeDuration, ontotalhours, sumDurations, validateTimes };

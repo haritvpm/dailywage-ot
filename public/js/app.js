@@ -23453,6 +23453,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours)(form.dates[index]);
       form.total_hours = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(form.dates);
     };
+    var ontotalhours_form3 = function ontotalhours_form3(index) {
+      (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumHoursForm3)(form.duty_items[index]);
+    };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var errors2, _errors;
@@ -23547,6 +23550,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       format: format,
       ontotalhours_singleday: ontotalhours_singleday,
       ontotalhours_wholesession: ontotalhours_wholesession,
+      ontotalhours_form3: ontotalhours_form3,
       saveDuty: saveDuty,
       addRow: addRow,
       removeRow: removeRow,
@@ -23558,6 +23562,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       reactive: vue__WEBPACK_IMPORTED_MODULE_1__.reactive,
       ref: vue__WEBPACK_IMPORTED_MODULE_1__.ref,
       computed: vue__WEBPACK_IMPORTED_MODULE_1__.computed,
+      get sumHoursForm3() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumHoursForm3;
+      },
       get copyTimes() {
         return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.copyTimes;
       },
@@ -23692,6 +23699,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.ontotalhours)(duty.value.duty_items[index]);
       duty.value.total_hours = (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumDurations)(duty.value.duty_items);
     };
+    var ontotalhours_form3 = function ontotalhours_form3(index) {
+      (0,_shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumHoursForm3)(duty.value.duty_items[index]);
+    };
     var saveDuty = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
         var errors2, _errors;
@@ -23776,6 +23786,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       sectionEmp: sectionEmp,
       format: format,
       ontotalhours_: ontotalhours_,
+      ontotalhours_form3: ontotalhours_form3,
       saveDuty: saveDuty,
       addRow: addRow,
       removeRow: removeRow,
@@ -23787,6 +23798,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       reactive: vue__WEBPACK_IMPORTED_MODULE_1__.reactive,
       ref: vue__WEBPACK_IMPORTED_MODULE_1__.ref,
       computed: vue__WEBPACK_IMPORTED_MODULE_1__.computed,
+      get sumHoursForm3() {
+        return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.sumHoursForm3;
+      },
       get copyTimes() {
         return _shared_utility__WEBPACK_IMPORTED_MODULE_2__.copyTimes;
       },
@@ -24268,7 +24282,7 @@ var _hoisted_59 = {
 var _hoisted_60 = {
   "class": "text-left"
 };
-var _hoisted_61 = ["onUpdate:modelValue"];
+var _hoisted_61 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_62 = ["onUpdate:modelValue"];
 var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "form-group mt-1"
@@ -24442,8 +24456,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return item.all_ot_hours[ind] = $event;
         },
+        onChange: function onChange($event) {
+          return $setup.ontotalhours_form3(index);
+        },
         autocomplete: "off"
-      }, null, 8 /* PROPS */, _hoisted_61), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.all_ot_hours[ind]]])]);
+      }, null, 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_61), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.all_ot_hours[ind]]])]);
     }), 256 /* UNKEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       readonly: "",
       "class": "form-control",
@@ -24615,9 +24632,9 @@ var _hoisted_50 = {
   "class": "text-center"
 };
 var _hoisted_51 = {
-  "class": "text-center"
+  "class": "text-left"
 };
-var _hoisted_52 = ["onUpdate:modelValue"];
+var _hoisted_52 = ["onUpdate:modelValue", "onChange"];
 var _hoisted_53 = ["onUpdate:modelValue"];
 var _hoisted_54 = {
   "class": "form-group mt-1"
@@ -24769,8 +24786,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "onUpdate:modelValue": function onUpdateModelValue($event) {
           return item.all_ot_hours[ind] = $event;
         },
+        onChange: function onChange($event) {
+          return $setup.ontotalhours_form3(index);
+        },
         autocomplete: "off"
-      }, null, 8 /* PROPS */, _hoisted_52), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.all_ot_hours[ind]]])]);
+      }, null, 40 /* PROPS, HYDRATE_EVENTS */, _hoisted_52), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, item.all_ot_hours[ind]]])]);
     }), 256 /* UNKEYED_FRAGMENT */)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       readonly: "",
       "class": "form-control",
@@ -25533,6 +25553,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "getTimeDuration": () => (/* binding */ getTimeDuration),
 /* harmony export */   "ontotalhours": () => (/* binding */ ontotalhours),
 /* harmony export */   "sumDurations": () => (/* binding */ sumDurations),
+/* harmony export */   "sumHoursForm3": () => (/* binding */ sumHoursForm3),
 /* harmony export */   "validateTimes": () => (/* binding */ validateTimes)
 /* harmony export */ });
 function getTimeDuration(from, to) {
@@ -25606,6 +25627,19 @@ var sumDurations = function sumDurations(obje) {
     }
   });
   return tot.toString();
+};
+var sumHoursForm3 = function sumHoursForm3(obj) {
+  var tot = 0;
+  obj === null || obj === void 0 ? void 0 : obj.all_ot_hours.forEach(function (h) {
+    if (h) {
+      tot += parseFloat(h);
+    }
+  });
+  var res = tot.toString();
+  ;
+  if (!res.includes("NaN") && !res.includes("-"))
+    //no negative time diff when time is like 9:3
+    obj.total_hours = res;else obj.total_hours = '';
 };
 var validateTimes = function validateTimes(obj, check_empty_rows) {
   var formats = ["h:mm", "HH:mm"];

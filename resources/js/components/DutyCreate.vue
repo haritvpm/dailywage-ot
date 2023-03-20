@@ -250,7 +250,7 @@
 
                             <td v-for="(h, ind) in item.all_ot_hours">
                                 <input class="form-control" type="text" v-model='item.all_ot_hours[ind]'
-                                    autocomplete="off" />
+                                    @change="ontotalhours_form3(index)" autocomplete="off" />
                             </td>
 
                             <td>
@@ -276,7 +276,7 @@
 <script setup>
 import useDailyWageForm from './../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
+import { sumHoursForm3, copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
 
 const { errors, session, calender, employees, getCalender, storeDuty, getEmployees } = useDailyWageForm()
 const props = defineProps({
@@ -386,6 +386,10 @@ const ontotalhours_wholesession = (index) => {
     form.total_hours = sumDurations(form.dates)
 };
 
+
+const ontotalhours_form3 = (index) => {
+    sumHoursForm3(form.duty_items[index])
+};
 const saveDuty = async () => {
 
     errors.value = []

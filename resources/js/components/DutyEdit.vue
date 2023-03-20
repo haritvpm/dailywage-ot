@@ -222,11 +222,12 @@
                         <td class="text-center">
                             {{ index + 1 }}
                         </td>
-                        <td class="text-center">
+                        <td class="text-left">
                             {{ item.employee?.displayname ?? item?.added_name }}
                         </td>
                         <td v-for="(h, ind) in item.all_ot_hours">
-                            <input class="form-control" type="text" v-model='item.all_ot_hours[ind]' autocomplete="off" />
+                            <input class="form-control" type="text" v-model='item.all_ot_hours[ind]'
+                                @change="ontotalhours_form3(index)" autocomplete="off" />
                         </td>
                         <td>
                             <input readonly class="form-control" type="text" v-model='item.total_hours' />
@@ -256,7 +257,7 @@
 <script setup>
 import useDailyWageForm from '../composables/dailyform'
 import { onMounted, reactive, ref, computed } from 'vue'
-import { copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
+import { sumHoursForm3, copyTimes, sumDurations, ontotalhours, validateTimes } from './../shared/utility';
 
 const { errors, duty, calender, employees, getDuty, getCalender, updateDuty, getEmployees } = useDailyWageForm()
 
@@ -349,6 +350,12 @@ const ontotalhours_ = (index) => {
     duty.value.total_hours = sumDurations(duty.value.duty_items)
 
 };
+
+
+const ontotalhours_form3 = (index) => {
+    sumHoursForm3(duty.value.duty_items[index])
+};
+
 const saveDuty = async () => {
     // console.log(duty.value.form_type)
     errors.value = []
