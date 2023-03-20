@@ -15,6 +15,7 @@ class DutyForm extends Model
     public const FORM_TYPE_SELECT = [
         'oneday-multiemp'     => 'oneday-multiemp',
         'alldays-oneemp' => 'alldays-oneemp',
+        'alldays-multiemp' => 'alldays-multiemp',
     ];
 
     public $table = 'duty_forms';

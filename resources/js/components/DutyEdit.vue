@@ -191,6 +191,55 @@
         </table>
 
 
+        <!-- whole session all emp-->
+        <!-- whole session -->
+
+        <table v-show="duty.form_type == 'alldays-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>
+                        Sl.
+                    </th>
+                    <th style="width: 15%" class="text-left">
+                        Name
+                    </th>
+
+                    <th class="text-center" v-for="(item, index) in calender">
+                        {{ item.dateShort }}
+                    </th>
+
+                    <th style="width: 8%">
+                        Total Hours
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                <template v-for="(item, index) in duty.duty_items" :key="index">
+                    <tr class="bg-white">
+                        <td class="text-center">
+                            {{ index + 1 }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.employee?.displayname ?? item?.added_name }}
+                        </td>
+                        <td v-for="(h, ind) in item.all_ot_hours">
+                            <input class="form-control" type="text" v-model='item.all_ot_hours[ind]' autocomplete="off" />
+                        </td>
+                        <td>
+                            <input readonly class="form-control" type="text" v-model='item.total_hours' />
+                        </td>
+
+                    </tr>
+                </template>
+
+            </tbody>
+
+        </table>
+
+
 
 
         <div class="form-group mt-1">
@@ -242,7 +291,7 @@ onMounted(async () => {
     await getEmployees();
 
 
-    //console.log(employees)
+    console.log(calender)
 
     console.log(duty)
 
@@ -311,7 +360,7 @@ const saveDuty = async () => {
         errors2.forEach(e => errors.value.push(e))
 
     }
-    else //single employee all session days
+    else if (duty.value.form_type === 'alldays-oneemp') //single employee all session days
     {
         if (!duty.value.employee_id) {
             errors.value.push('Please select employee ')

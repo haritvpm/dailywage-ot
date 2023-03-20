@@ -30,6 +30,8 @@ class DutyFormItem extends Model
         'an_from',
         'an_to',
         'total_hours',
+        'all_ot_hours', //hours each day for this employee
+        'all_ot_dayids',
         'created_at',
         'updated_at',
         'deleted_at',

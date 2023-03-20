@@ -25,7 +25,11 @@
                     v-model="form.form_type" />
                 <label class="form-check-label" for="alldays-oneemp">For Whole Session</label>
             </div>
-
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="alldays-multiemp" value="alldays-multiemp"
+                    v-model="form.form_type" />
+                <label class="form-check-label" for="alldays-multiemp">For Whole Session, All Employees</label>
+            </div>
         </div>
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
                                                                                                                                                 no-today :format="format" :enable-time-picker="false">
@@ -207,6 +211,61 @@
             </tfoot>
         </table>
 
+        <!-- whole session all emp-->
+        <!-- whole session all emp-->
+        <div class="table-responsive-sm">
+
+            <table v-if="form.form_type == 'alldays-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+                            Sl.
+                        </th>
+                        <th style="width: 15%" class="text-left">
+                            Name
+                        </th>
+
+                        <th class="text-center" v-for="(item, index) in form.dates">
+                            {{ item.date.dateShort }}
+                        </th>
+
+
+                        <th class="text-center" style="width: 8%">
+                            Total Hours
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <template v-for="(item, index) in form.duty_items" :key="index">
+                        <tr class="bg-white">
+                            <td class="text-center">
+                                {{ index + 1 }}
+                            </td>
+                            <td class="text-left">
+                                {{ item.employee_name }}
+                            </td>
+
+                            <td v-for="(h, ind) in item.all_ot_hours">
+                                <input class="form-control" type="text" v-model='item.all_ot_hours[ind]'
+                                    autocomplete="off" />
+                            </td>
+
+                            <td>
+                                <input readonly class="form-control" type="text" v-model='item.total_hours' />
+                            </td>
+
+                        </tr>
+                    </template>
+
+                </tbody>
+
+            </table>
+        </div>
+
+
         <div class="form-group mt-1">
             <button class="btn btn-danger" type="submit">
                 Save
@@ -272,6 +331,8 @@ onMounted(async () => {
                 an_from: '',
                 an_to: '',
                 total_hours: '',
+                all_ot_hours: [],
+                all_ot_dayids: [],
             })
         }
     }
@@ -284,6 +345,15 @@ onMounted(async () => {
             an_to: '',
             total_hours: '',
         })
+    }
+
+    //form3
+    for (let i = 0; i < form.duty_items.length; i++) {
+        for (let j = 0; j < calender.value.length; j++) {
+            form.duty_items[i].all_ot_hours.push('');
+            form.duty_items[i].all_ot_dayids.push(calender.value[j].id);
+
+        }
     }
 
 })
@@ -327,7 +397,7 @@ const saveDuty = async () => {
         errors2.forEach(e => errors.value.push(e))
 
     }
-    else //single employee all session days
+    else if (form.form_type === 'alldays-oneemp')  //single employee all session days
     {
         if (!form.employee) {
             errors.value.push('Please select employee ')

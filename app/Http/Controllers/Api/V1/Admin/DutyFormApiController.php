@@ -87,7 +87,7 @@ class DutyFormApiController extends Controller
             }
            
                 
-        } else { //Whole Session Form
+        } else if('alldays-oneemp' === $request->form_type) { //Whole Session Form, single employee
 
             if (!$request->employee) {
                 $errors[] = 'Employee is needed';
@@ -118,6 +118,38 @@ class DutyFormApiController extends Controller
                     }
 
             }
+        } else { //Whole Session Form, All employees
+
+            //check if any form created for these emps
+            $emps = Collect($request->duty_items)->pluck('employee_id');
+                $dutyFormItemsExisting = DutyFormItem::with( 'form' )
+                    ->whereHas('form', function ($query) use ($request ) {
+                        $query->where('session_id', $request->session_id);
+                        })
+                    ->wherein('employee_id', $emps->toArray())
+                    ->when($dutyForm, function ($q, $dutyForm){
+                        return  $q->wherenot( 'form_id', $dutyForm->id);
+                    })
+                  ->get();
+              if($dutyFormItemsExisting->count() ){
+                $empnames = DailyWageEmployee::wherein('id', $dutyFormItemsExisting->pluck('employee_id')->toArray() );
+                $errors[] = 'OT already entered for employees: ' . $empnames->pluck('ten')->implode(',');
+              }
+
+                //also check if any one-day multi emp formitem for any date exists for this employee.
+                $dutyFormItemsExisting = DutyFormItem::with( 'form' )
+                    ->whereHas('form', function ($query) use ($request ) {
+                        $query->where('session_id', $request->session_id)
+                            ->where('form_type', 'oneday-multiemp');
+                        })
+                    ->wherein('employee_id',   $emps->toArray() )
+                    ->first();
+                    if($dutyFormItemsExisting ){
+                        $date = $dutyFormItemsExisting->form->date?->date;
+                        $errors[] = 'OT already entered for employee';
+                    }
+
+
         }
     
 
@@ -125,8 +157,10 @@ class DutyFormApiController extends Controller
 
     public function store(Request $request)
     {
-    //    dump($request->all());
+       dump($request->all());
            
+       
+
        $user = auth()->user();
 
        $errors = [];
@@ -172,7 +206,7 @@ class DutyFormApiController extends Controller
                     'total_hours' => $item['total_hours'],
                 ]);
             }
-       } else {
+       } else if('alldays-oneemp' === $request->form_type) {
         
             $requestData = $request->dates;
             foreach ($requestData as $item) {
@@ -183,6 +217,20 @@ class DutyFormApiController extends Controller
                     'an_from' => $item['an_from'],
                     'an_to' => $item['an_to'],
                     'total_hours' => $item['total_hours'],
+                ]);
+            }
+       } else{
+           // $dates = Calender::where('session_id', $dutyForm->session_id)->orderby('date')->get();
+
+            $requestData = $request->duty_items;
+            foreach ($requestData as $item) {
+                              
+                $dutyItems[] = new DutyFormItem([
+                    'employee_id' => $item['employee_id'],
+                    'total_hours' => $item['total_hours'],
+                    'all_ot_hours' => implode( ',',  $item['all_ot_hours']),
+                    'all_ot_dayids' => implode( ',',  $item['all_ot_dayids']),
+                    
                 ]);
             }
        }
@@ -204,7 +252,7 @@ class DutyFormApiController extends Controller
        {
 
 
-       } else {
+       } else if ('alldays-oneemp' === $dutyForm->form_type) {
         //if any new dates have been added to this session after this form was submitted
            $dates = Calender::where('session_id', $dutyForm->session_id)->orderby('date')->get();
            $datesinform = $dutyForm->dutyItems->pluck( 'date_id' );
@@ -225,6 +273,33 @@ class DutyFormApiController extends Controller
                 }
            }
             
+
+        } else {
+            //convert string all_ot_hours,all_ot_dayids  to array. Also add if there are new dates in session calendar
+            $dateids = Calender::where('session_id', $dutyForm->session_id)->orderby('date')->pluck('id');
+            foreach ($dutyForm->dutyItems as &$dutyitem) {
+                $all_ot_hours = explode(',', $dutyitem->all_ot_hours);
+                $all_ot_dayids = explode(',', $dutyitem->all_ot_dayids);
+                $idtohour = array();
+                foreach ($all_ot_dayids as $index => $id) {
+                    $idtohour[$id] =  $all_ot_hours[$index];
+                }
+                
+                $hoursnew = [];
+                foreach ($dateids as $key => $id) {
+                    if( !array_key_exists( $id,$idtohour) ){
+                        $hoursnew[] = '';
+                    } else {
+                        $hoursnew[] = $idtohour[$id];
+                    }
+                }
+
+                $dutyitem->all_ot_hours =  $hoursnew;
+                $dutyitem->all_ot_dayids =  $dateids;
+              
+                dump($all_ot_dayids);
+            }
+
 
         }
 
@@ -249,7 +324,7 @@ class DutyFormApiController extends Controller
                 // 'form_type' => $request->form_type,
                 'date_id' =>  $request->date['id'],
             ]);
-        } else {
+        } else  if ('alldays-oneemp' === $request->form_type) {
             $dutyForm->update( [
                  'employee_id' =>  $request->employee['id'],
                  'total_hours'=>  $request->total_hours,
@@ -274,7 +349,7 @@ class DutyFormApiController extends Controller
             $dutyForm->dutyItems()->delete();
             $dutyForm->dutyItems()->saveMany($dutyItems);
         
-       } else {
+       } else if ('alldays-oneemp' === $request->form_type) {
 
             //todo update each row not delete entire items
             //$dutyItems = [];
@@ -307,7 +382,23 @@ class DutyFormApiController extends Controller
                 }
             }
                
-       }
+       } else{ //all-all
+            
+            $dutyItems = [];
+            foreach ($requestData as $item) {
+                            
+                $dutyItems[] = new DutyFormItem([
+                    'employee_id' => $item['employee_id'],
+                    'total_hours' => $item['total_hours'],
+                    'all_ot_hours' => implode( ',',  $item['all_ot_hours']),
+                    'all_ot_dayids' => implode( ',',  $item['all_ot_dayids']),
+                    
+                ]);
+            }
+
+            $dutyForm->dutyItems()->delete();
+            $dutyForm->dutyItems()->saveMany($dutyItems);
+    }
 
 
         return (new DutyFormResource($dutyForm))

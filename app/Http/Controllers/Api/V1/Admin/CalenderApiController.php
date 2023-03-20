@@ -26,6 +26,7 @@ class CalenderApiController extends Controller
                 //return Carbon::createFromFormat('d/m/Y', $d->date)->format('Y/m/d');
                 return [ 'id' =>  $d->id, 
                         'date'=> Carbon::createFromFormat('d/m/Y', $d->date)->format('M d,Y'),
+                        'dateShort'=> Carbon::createFromFormat('d/m/Y', $d->date)->format('M d'),
                         'session_id' => $d->session->id,
                         'session_name' => $d->session->name,
                     ];

@@ -40,8 +40,8 @@
                             {{ item.session.name }}
                         </td>
                         <td>
-                            {{ item.form_type == 'oneday-multiemp' ? item.date.date : 'whole session: ' +
-                                item.employee.name }}
+                            {{ item.form_type == 'oneday-multiemp' ? item.date.date : item.form_type == 'alldays-oneemp' ?
+                                'whole session: ' + item.employee.name : 'whole session' }}
                         </td>
                         <td>
                             {{ item.created_by?.name }}

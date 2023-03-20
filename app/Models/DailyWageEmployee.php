@@ -37,7 +37,8 @@ class DailyWageEmployee extends Model
 
     public function getDisplaynameAttribute()
     {
-        return  $this->ten . '-' . $this->name . ' (' . $this->designation->title . ')';
+        return  $this->ten . '-' . $this->name ;
+        // return  $this->ten . '-' . $this->name . ' (' . $this->designation->title . ')';
      
     }
 
