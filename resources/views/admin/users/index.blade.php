@@ -26,10 +26,10 @@
                             {{ trans('cruds.user.fields.id') }}
                         </th>
                         <th>
-                            LoginName
+                        {{ trans('cruds.user.fields.name') }} 
                         </th>
                         <th>
-                            DisplayName
+                        {{ trans('cruds.user.fields.displayname') }}
                         </th>
                    
                         <th>

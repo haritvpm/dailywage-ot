@@ -48,7 +48,7 @@
                 <span class="help-block">{{ trans('cruds.session.fields.status_helper') }}</span>
             </div>
             <div class="form-group">
-                <label>Finished?</label>
+                <label>{{ trans('cruds.session.fields.over') }}</label>
                 <select class="form-control {{ $errors->has('over') ? 'is-invalid' : '' }}" name="over" id="over">
                     <option value disabled {{ old('over', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                     @foreach(App\Models\Session::STATUS_OVER as $key => $label)

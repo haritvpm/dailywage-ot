@@ -9,7 +9,7 @@ use App\Models\Session;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Carbon\Carbon;
 class SessionController extends Controller
 {
     public function index()
@@ -55,7 +55,14 @@ class SessionController extends Controller
                 ['status' => 'inactive']
             );
         }
-        dump( $request->all());
+        if($request->over === 'yes'  ){
+            $hasfuturedates = $session->sessionCalenders()->whereDate('date', '>', Carbon::now()  )->first();
+            if($hasfuturedates){
+                return redirect()->back()->withErrors(['msg' => 'Cannot set Finished. There are future dates: ' . $hasfuturedates->date]);
+
+            }
+        }
+        //dump( $request->all());
         $session->update($request->all());
 
         return redirect()->route('admin.sessions.index');

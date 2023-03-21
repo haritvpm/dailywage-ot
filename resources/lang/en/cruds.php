@@ -45,9 +45,11 @@ return [
         'fields'         => [
             'id'                       => 'ID',
             'id_helper'                => ' ',
-            'name'                     => 'Name',
+            'name'                     => 'LoginName',
             'name_helper'              => ' ',
             'email'                    => 'Email',
+            'displayname'                    => 'DisplayName',
+            
             'email_helper'             => ' ',
             'email_verified_at'        => 'Email verified at',
             'email_verified_at_helper' => ' ',

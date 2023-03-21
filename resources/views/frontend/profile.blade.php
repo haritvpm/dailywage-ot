@@ -21,11 +21,11 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="required" for="title">{{ trans('cruds.user.fields.email') }}</label>
-                            <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="text" name="email" id="email" value="{{ old('email', auth()->user()->email) }}" required>
-                            @if($errors->has('email'))
+                            <label class="required" for="title">{{ trans('cruds.user.fields.displayname') }}</label>
+                            <input class="form-control {{ $errors->has('displayname') ? 'is-invalid' : '' }}" type="text" name="displayname" id="displayname" value="{{ old('displayname', auth()->user()->displayname) }}" required>
+                            @if($errors->has('displayname'))
                                 <div class="invalid-feedback">
-                                    {{ $errors->first('email') }}
+                                    {{ $errors->first('displayname') }}
                                 </div>
                             @endif
                         </div>

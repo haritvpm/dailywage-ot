@@ -13,10 +13,10 @@
 
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"                                                                                                                                                                                  no-today :format="format" :enable-time-picker="false">                                                                                                                                                                                                                                                                                </Datepicker> -->
 
-        <div class="row">
+        <div v-if="duty.form_type == 'oneday-multiemp'" class="row">
             <div class="col-sm-1">Date</div>
             <div class="col-sm-4">
-                <v-select v-show="duty.form_type == 'oneday-multiemp'" v-model="duty.date" label="date"
+                <v-select v-if="duty.form_type == 'oneday-multiemp'" v-model="duty.date" label="date"
                     :options="calender"></v-select>
             </div>
         </div>
@@ -113,8 +113,14 @@
 
 
         <!-- whole session -->
-        <v-select v-show="duty.form_type == 'alldays-oneemp'" v-model="duty.employee" label="displayname"
-            :options="sectionEmp"></v-select>
+        <div v-if="form.form_type == 'alldays-oneemp'" class="row">
+            <div class="col-sm-1">Employee</div>
+            <div class="col-sm-4">
+                <v-select v-show="duty.form_type == 'alldays-oneemp'" v-model="duty.employee" label="displayname"
+                    :options="sectionEmp"></v-select>
+            </div>
+        </div>
+
 
         <table v-show="duty.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
             <thead>

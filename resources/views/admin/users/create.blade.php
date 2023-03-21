@@ -18,7 +18,7 @@
                 <span class="help-block">{{ trans('cruds.user.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="displayname">Display Name</label>
+                <label class="required" for="displayname">{{ trans('cruds.user.fields.displayname') }}</label>
                 <input class="form-control {{ $errors->has('displayname') ? 'is-invalid' : '' }}" type="displayname" name="displayname" id="displayname" value="{{ old('displayname') }}" required>
                 @if($errors->has('displayname'))
                     <span class="text-danger">{{ $errors->first('displayname') }}</span>
