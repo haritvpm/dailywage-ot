@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label>{{ trans('cruds.session.fields.status') }}</label>
                 <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
-                    <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    <!-- <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option> -->
                     @foreach(App\Models\Session::STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('status', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
@@ -45,6 +45,16 @@
                     <span class="text-danger">{{ $errors->first('status') }}</span>
                 @endif
                 <span class="help-block">{{ trans('cruds.session.fields.status_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label>{{ trans('cruds.session.fields.over') }}</label>
+                <select class="form-control {{ $errors->has('over') ? 'is-invalid' : '' }}" name="over" id="over">
+                   
+                    @foreach(App\Models\Session::STATUS_OVER as $key => $label)
+                        <option value="{{ $key }}" {{ old('over', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+             
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

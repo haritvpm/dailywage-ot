@@ -18,7 +18,7 @@
                 <span class="help-block">{{ trans('cruds.category.fields.title_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="longtitle">{{ trans('cruds.category.fields.long') }}</label>
+                <label class="required" for="longtitle">Long Title for Excel</label>
                 <input class="form-control {{ $errors->has('longtitle') ? 'is-invalid' : '' }}" type="text" name="longtitle" id="longtitle" value="{{ old('longtitle', '') }}" required>
               
             </div>

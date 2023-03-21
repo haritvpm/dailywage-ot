@@ -16,7 +16,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class=" table table-bordered table-striped table-hover datatable datatable-Session">
+            <table class=" table table-bordered table-striped table-hover ">
                 <thead>
                     <tr>
                         <th width="10">
@@ -36,6 +36,9 @@
                         </th>
                         <th>
                             {{ trans('cruds.session.fields.status') }}
+                        </th>
+                        <th>
+                        {{ trans('cruds.session.fields.over') }}
                         </th>
                         <th>
                             &nbsp;
@@ -62,6 +65,9 @@
                             </td>
                             <td>
                                 {{ App\Models\Session::STATUS_SELECT[$session->status] ?? '' }}
+                            </td>
+                            <td>
+                                {{ App\Models\Session::STATUS_OVER[$session->over] ?? '' }}
                             </td>
                             <td>
                                 @can('session_show')

@@ -11,8 +11,12 @@ class Session extends Model
     use HasFactory;
 
     public const STATUS_SELECT = [
-        'active'   => 'active',
-        'inactive' => 'inactive',
+        'active'   => 'Active',
+        'inactive' => 'Inactive',
+    ];
+    public const STATUS_OVER = [
+        'no' => 'OnGoing',
+        'yes'   => 'Finished',
     ];
 
     public $table = 'sessions';
@@ -28,6 +32,8 @@ class Session extends Model
         'assembly',
         'session',
         'status',
+        'viewstatus',
+        'over',
         'created_at',
         'updated_at',
         'deleted_at',

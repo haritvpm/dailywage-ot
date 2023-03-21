@@ -16,7 +16,7 @@ class SessionController extends Controller
     {
         abort_if(Gate::denies('session_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $sessions = Session::all();
+        $sessions = Session::latest()->get();
 
         return view('admin.sessions.index', compact('sessions'));
     }
@@ -49,12 +49,13 @@ class SessionController extends Controller
 
     public function update(UpdateSessionRequest $request, Session $session)
     {
+   
         if( $request->status == 'active' ){
-            Session::query()->update( 
+            Session::wherenot('id', $session->id)->update( 
                 ['status' => 'inactive']
             );
         }
-
+        dump( $request->all());
         $session->update($request->all());
 
         return redirect()->route('admin.sessions.index');

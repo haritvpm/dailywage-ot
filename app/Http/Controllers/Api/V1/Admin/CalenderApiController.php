@@ -20,6 +20,7 @@ class CalenderApiController extends Controller
             ->whereHas('session', function($s){
                 $s->where('status','active');
             })
+            ->whereDate('date', '<=',  Carbon::now())
             ->orderby('date')
             ->get()
             ->map(function ($d) {
@@ -29,6 +30,7 @@ class CalenderApiController extends Controller
                         'dateShort'=> Carbon::createFromFormat('d/m/Y', $d->date)->format('M d'),
                         'session_id' => $d->session->id,
                         'session_name' => $d->session->name,
+                        'session_over' => $d->session->over,
                     ];
                 //return  Carbon::createFromFormat('d/m/Y', $d)->format('M d, Y');
                 

@@ -11,11 +11,17 @@
 
     <form @submit.prevent="saveDuty">
 
-        <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
-                                                                                                                                                                                                                                                                        no-today :format="format" :enable-time-picker="false">
-                                                                                                                                                                                                                                                                    </Datepicker> -->
-        <v-select v-show="duty.form_type == 'oneday-multiemp'" v-model="duty.date" label="date"
-            :options="calender"></v-select>
+        <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"                                                                                                                                                                                  no-today :format="format" :enable-time-picker="false">                                                                                                                                                                                                                                                                                </Datepicker> -->
+
+        <div class="row">
+            <div class="col-sm-1">Date</div>
+            <div class="col-sm-4">
+                <v-select v-show="duty.form_type == 'oneday-multiemp'" v-model="duty.date" label="date"
+                    :options="calender"></v-select>
+            </div>
+        </div>
+
+
 
         <table v-show="duty.form_type == 'oneday-multiemp'" class="table table-sm table-striped table-bordered">
             <thead>

@@ -10,7 +10,7 @@
     <div v-if="!form.session_id">No Session open for dataentry</div>
     <form v-if="form.session_id" @submit.prevent="saveDuty">
 
-        <div class="form-group">
+        <div v-if="session_over == 'yes'" class="form-group">
 
             <div class="form-check">
 
@@ -19,13 +19,13 @@
                 <label class="form-check-label" for="oneday-multiemp">For Single Day</label>
             </div>
 
-            <div class="form-check">
+            <div v-if="session_over == 'yes'" class="form-check">
 
                 <input class="form-check-input" type="radio" id="alldays-oneemp" value="alldays-oneemp"
                     v-model="form.form_type" />
                 <label class="form-check-label" for="alldays-oneemp">For Whole Session</label>
             </div>
-            <div class="form-check">
+            <div v-if="session_over == 'yes'" class="form-check">
                 <input class="form-check-input" type="radio" id="alldays-multiemp" value="alldays-multiemp"
                     v-model="form.form_type" />
                 <label class="form-check-label" for="alldays-multiemp">For Whole Session, All Employees</label>
@@ -34,8 +34,14 @@
         <!--    <Datepicker v-show="form.form_type == 'oneday-multiemp'" v-model="form.date" auto-apply :allowed-dates="calender"
                                                                                                                                                 no-today :format="format" :enable-time-picker="false">
                                                                                                                                             </Datepicker> -->
-        <v-select v-if="form.form_type == 'oneday-multiemp'" v-model="form.date" label="date"
-            :options="calender"></v-select>
+
+        <div class="row">
+            <div class="col-sm-1">Date</div>
+            <div class="col-sm-4"><v-select v-if="form.form_type == 'oneday-multiemp'" v-model="form.date" label="date"
+                    :options="calender"></v-select>
+            </div>
+        </div>
+
 
         <table v-if="form.form_type == 'oneday-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
             <thead>
@@ -298,6 +304,7 @@ const props = defineProps({
 
 const selectedEmp = ref()
 const sectionEmp = ref([])
+const session_over = ref()
 
 const form = reactive({
     session_id: '',
@@ -314,6 +321,7 @@ onMounted(async () => {
     await getEmployees();
     if (calender.value?.length) {
         form.session_id = calender.value[0].session_id
+        session_over.value = calender.value[0].session_over
     }
 
     for (let i = 0; i < employees.value.length; i++) {
