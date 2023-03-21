@@ -113,7 +113,7 @@
 
 
         <!-- whole session -->
-        <div v-if="form.form_type == 'alldays-oneemp'" class="row">
+        <div v-if="duty.form_type == 'alldays-oneemp'" class="row">
             <div class="col-sm-1">Employee</div>
             <div class="col-sm-4">
                 <v-select v-show="duty.form_type == 'alldays-oneemp'" v-model="duty.employee" label="displayname"

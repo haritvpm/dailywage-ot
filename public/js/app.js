@@ -24769,7 +24769,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: !$setup.selectedEmp,
     "class": "btn btn-primary",
     onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)($setup.addRow, ["prevent"])
-  }, _hoisted_28, 8 /* PROPS */, _hoisted_26)])])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'oneday-multiemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" whole session "), _ctx.form.form_type == 'alldays-oneemp' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
+  }, _hoisted_28, 8 /* PROPS */, _hoisted_26)])])])], 512 /* NEED_PATCH */), [[vue__WEBPACK_IMPORTED_MODULE_0__.vShow, $setup.duty.form_type == 'oneday-multiemp']]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" whole session "), $setup.duty.form_type == 'alldays-oneemp' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, [_hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_v_select, {
     modelValue: $setup.duty.employee,
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $setup.duty.employee = $event;
