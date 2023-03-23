@@ -204,54 +204,55 @@
 
         <!-- whole session all emp-->
         <!-- whole session -->
+        <div class="table-responsive">
+            <table v-if="duty.form_type == 'alldays-multiemp'"
+                class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            Sl.
+                        </th>
+                        <th class="text-left">
+                            Name
+                        </th>
 
-        <table v-if="duty.form_type == 'alldays-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
-            <thead>
-                <tr class="text-center">
-                    <th>
-                        Sl.
-                    </th>
-                    <th style="width: 15%" class="text-left">
-                        Name
-                    </th>
+                        <th class="text-center" v-for="(item, index) in calender">
+                            {{ item.dateShort }}
+                        </th>
 
-                    <th class="text-center" v-for="(item, index) in calender">
-                        {{ item.dateShort }}
-                    </th>
-
-                    <th style="width: 8%">
-                        Total Hours
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-                <template v-for="(item, index) in duty.duty_items" :key="index">
-                    <tr class="bg-white">
-                        <td class="text-center">
-                            {{ index + 1 }}
-                        </td>
-                        <td class="text-left">
-                            {{ item.employee?.displayname ?? item?.added_name }}
-                        </td>
-                        <td v-for="(h, ind) in item.all_ot_hours">
-                            <input class="form-control" type="text" v-model='item.all_ot_hours[ind]'
-                                @change="ontotalhours_form3(index)" autocomplete="off" />
-                        </td>
-                        <td>
-                            <input readonly class="form-control" type="text" v-model='item.total_hours' />
-                        </td>
+                        <th>
+                            Total Hours
+                        </th>
 
                     </tr>
-                </template>
 
-            </tbody>
+                </thead>
 
-        </table>
+                <tbody>
+                    <template v-for="(item, index) in duty.duty_items" :key="index">
+                        <tr class="bg-white">
+                            <td class="text-center">
+                                {{ index + 1 }}
+                            </td>
+                            <td class="text-left">
+                                {{ item.employee?.displayname }}
+                            </td>
+                            <td v-for="(h, ind) in item.all_ot_hours">
+                                <input style="min-width: 55px;" class="form-control" type="text"
+                                    v-model='item.all_ot_hours[ind]' @change="ontotalhours_form3(index)"
+                                    autocomplete="off" />
+                            </td>
+                            <td>
+                                <input readonly class="form-control" type="text" v-model='item.total_hours' />
+                            </td>
 
+                        </tr>
+                    </template>
 
+                </tbody>
+
+            </table>
+        </div>
 
 
         <div class="form-group mt-1">

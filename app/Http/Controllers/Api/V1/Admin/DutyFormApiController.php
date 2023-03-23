@@ -154,8 +154,8 @@ class DutyFormApiController extends Controller
 
     public function store(Request $request)
     {
-       dump($request->all());
-           
+      // dump($request->all());
+        
        
 
        $user = auth()->user();
@@ -294,7 +294,7 @@ class DutyFormApiController extends Controller
                 $dutyitem->all_ot_hours =  $hoursnew;
                 $dutyitem->all_ot_dayids =  $dateids;
               
-                dump($all_ot_dayids);
+               // dump($all_ot_dayids);
             }
 
 
@@ -459,7 +459,7 @@ class DutyFormApiController extends Controller
             if( !$dutyForm->owned_by->IsAdmin )
             {
                 $route = Routing::where( 'user_id', $dutyForm->owned_by_id )->first();
-                dump($route);
+                //dump($route);
                 if($route?->count())
                 {
                   //Forward

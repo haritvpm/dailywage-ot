@@ -43,7 +43,8 @@
         </div>
 
 
-        <table v-if="form.form_type == 'oneday-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+        <table v-if="form.form_type == 'oneday-multiemp'"
+            class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
             <thead>
                 <tr class="text-center">
                     <th rowspan="2">
@@ -145,7 +146,8 @@
 
 
 
-        <table v-if="form.form_type == 'alldays-oneemp'" class=" mt-1 table table-sm table-striped table-bordered">
+        <table v-if="form.form_type == 'alldays-oneemp'"
+            class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
             <thead>
                 <tr class="text-center">
                     <th rowspan="2">
@@ -227,15 +229,16 @@
 
         <!-- whole session all emp-->
         <!-- whole session all emp-->
-        <div class="table-responsive-sm">
+        <div class="table-responsive">
 
-            <table v-if="form.form_type == 'alldays-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+            <table v-if="form.form_type == 'alldays-multiemp'"
+                class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
                 <thead>
                     <tr>
                         <th class="text-center">
                             Sl.
                         </th>
-                        <th style="width: 15%" class="text-left">
+                        <th class="text-left">
                             Name
                         </th>
 
@@ -244,7 +247,7 @@
                         </th>
 
 
-                        <th class="text-center" style="width: 8%">
+                        <th class="text-center">
                             Total Hours
                         </th>
 
@@ -263,8 +266,9 @@
                             </td>
 
                             <td v-for="(h, ind) in item.all_ot_hours">
-                                <input class="form-control" type="text" v-model='item.all_ot_hours[ind]'
-                                    @change="ontotalhours_form3(index)" autocomplete="off" />
+                                <input style="min-width: 55px;" class="form-control" type="text"
+                                    v-model='item.all_ot_hours[ind]' @change="ontotalhours_form3(index)"
+                                    autocomplete="off" />
                             </td>
 
                             <td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\CsvImportTrait;
 use App\Http\Requests\MassDestroyCalenderRequest;
 use App\Http\Requests\StoreCalenderRequest;
 use App\Http\Requests\UpdateCalenderRequest;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CalenderController extends Controller
 {
+    use CsvImportTrait;
     public function index()
     {
         abort_if(Gate::denies('calender_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -34,9 +36,22 @@ class CalenderController extends Controller
 
     public function store(StoreCalenderRequest $request)
     {
+
         $calender = Calender::create($request->all());
 
-        return redirect()->route('admin.calenders.index');
+        switch ($request->input('action')) {
+            case 'save':
+                return redirect()->route('admin.calenders.index');
+                break;
+    
+            case 'saveandnew':
+                return redirect()->route('admin.calenders.create')->withInput($request->only('session_id'))
+                        ->with('message', 'Added date ' . $request->date);;
+                break;
+    
+          
+        }
+
     }
 
     public function edit(Calender $calender)

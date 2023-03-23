@@ -42,6 +42,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('sessions', 'SessionController', ['except' => ['destroy']]);
 
     // Calender
+    Route::post('calenders/parse-csv-import', 'CalenderController@parseCsvImport')->name('calenders.parseCsvImport');
+    Route::post('calenders/process-csv-import', 'CalenderController@processCsvImport')->name('calenders.processCsvImport');
     Route::delete('calenders/destroy', 'CalenderController@massDestroy')->name('calenders.massDestroy');
     Route::resource('calenders', 'CalenderController');
 

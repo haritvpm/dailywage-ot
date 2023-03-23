@@ -206,7 +206,8 @@
     <!-- whole session -->
     <!-- whole session all emp-->
 
-    <table v-if="duty.form_type == 'alldays-multiemp'" class=" mt-1 table table-sm table-striped table-bordered">
+    <table v-if="duty.form_type == 'alldays-multiemp'"
+        class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
         <thead>
             <tr class="text-center">
                 <th>

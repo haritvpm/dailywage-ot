@@ -43,9 +43,10 @@
                 <span class="help-block">{{ trans('cruds.calender.fields.type_helper') }}</span>
             </div>
             <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+                <button class="btn btn-danger" type="submit" name="action"  value="save">
                     {{ trans('global.save') }}
                 </button>
+                <button class="btn btn-primary" type="submit" name="action" value="saveandnew">Save and New</button>
             </div>
         </form>
     </div>
