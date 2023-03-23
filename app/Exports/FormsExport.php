@@ -115,11 +115,11 @@ class FormsExport implements WithMultipleSheets
                 $empinfo[$key]['wage'] = $item->employee->designation->wage;
                 $hours = $item->total_hours;
                 if($this->restrictmaxhours){
-                    $hours = min( $categoryid_to_maxhours[$item->employee->category_id], $item->total_hours );
+                    $hours = min( $categoryid_to_maxhours[$item->employee->category_id], $hours );
                 }
                 $empinfo[$key]['data'][$item->form->date_id] = $hours;
 
-            } else {
+            } else if ('alldays-oneemp' == $item->form->form_type) {
 
                 $key = $item->form->employee->displayname;
          
@@ -130,9 +130,35 @@ class FormsExport implements WithMultipleSheets
                 $empinfo[$key]['wage']  = $item->form->employee->designation->wage;
                 $hours = $item->total_hours;
                 if($this->restrictmaxhours){
-                    $hours = min( $categoryid_to_maxhours[$item->form->employee->category_id], $item->total_hours );
+                    $hours = min( $categoryid_to_maxhours[$item->form->employee->category_id], $hours );
                 }
                 $empinfo[$key]['data'][$item->date_id] = $hours;
+            } else {
+
+                $key = $item->employee->displayname;
+                   
+                $empinfo[$key]['category_id'] = $item->employee->category_id;
+                $empinfo[$key]['name'] = $item->employee->name;
+                $empinfo[$key]['ten'] = $item->employee->ten;
+                $empinfo[$key]['desig'] = $item->employee->designation->title;
+                $empinfo[$key]['wage'] = $item->employee->designation->wage;
+                
+
+                $all_ot_hours = explode( ',',  $item->all_ot_hours);
+                $all_ot_dayids = explode( ',',  $item->all_ot_dayids);
+
+                
+                foreach ($all_ot_dayids as $dateindex => $all_ot_dayid) {
+                
+                    $hours = $all_ot_hours[$dateindex];
+                    if($this->restrictmaxhours){
+                        $hours = min( $categoryid_to_maxhours[$item->employee->category_id], $hours );
+                    }
+                    $empinfo[$key]['data'][$all_ot_dayid] = $hours;
+                }
+                
+
+
             }
             
         }

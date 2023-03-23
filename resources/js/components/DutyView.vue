@@ -205,51 +205,52 @@
     </table>
     <!-- whole session -->
     <!-- whole session all emp-->
+    <div class="table-responsive">
+        <table v-if="duty.form_type == 'alldays-multiemp'"
+            class="text-nowrap mt-1 table table-sm table-striped table-bordered">
+            <thead>
+                <tr class="text-center">
+                    <th>
+                        Sl.
+                    </th>
+                    <th style="width: 15%" class="text-left">
+                        Name
+                    </th>
 
-    <table v-if="duty.form_type == 'alldays-multiemp'"
-        class=" text-nowrap mt-1 table table-sm table-striped table-bordered">
-        <thead>
-            <tr class="text-center">
-                <th>
-                    Sl.
-                </th>
-                <th style="width: 15%" class="text-left">
-                    Name
-                </th>
+                    <th class="text-center" v-for="(item, index) in calender">
+                        {{ item.dateShort }}
+                    </th>
 
-                <th class="text-center" v-for="(item, index) in calender">
-                    {{ item.dateShort }}
-                </th>
-
-                <th style="width: 8%">
-                    Total Hours
-                </th>
-
-            </tr>
-        </thead>
-
-        <tbody>
-            <template v-for="(item, index) in duty.duty_items" :key="index">
-                <tr class="bg-white">
-                    <td class="text-center">
-                        {{ index + 1 }}
-                    </td>
-                    <td class="text-left">
-                        {{ item.employee?.displayname }}
-                    </td>
-                    <td v-for="(h, ind) in item.all_ot_hours" class="text-center">
-                        {{ item.all_ot_hours[ind] }}
-                    </td>
-                    <td class="text-center">
-                        {{ item.total_hours }}
-                    </td>
+                    <th style="width: 8%">
+                        Total Hours
+                    </th>
 
                 </tr>
-            </template>
+            </thead>
 
-        </tbody>
+            <tbody>
+                <template v-for="(item, index) in duty.duty_items" :key="index">
+                    <tr class="bg-white">
+                        <td class="text-center">
+                            {{ index + 1 }}
+                        </td>
+                        <td class="text-left">
+                            {{ item.employee?.displayname }}
+                        </td>
+                        <td v-for="(h, ind) in item.all_ot_hours" class="text-center">
+                            {{ item.all_ot_hours[ind] }}
+                        </td>
+                        <td class="text-center">
+                            {{ item.total_hours }}
+                        </td>
 
-    </table>
+                    </tr>
+                </template>
+
+            </tbody>
+
+        </table>
+    </div>
 
     <div>
         <div class="d-print-none form-group mt-1">
