@@ -16,6 +16,8 @@ use App\Models\DutyFormItem;
 use App\Models\Calender;
 use App\Models\Routing;
 use App\Models\DailyWageEmployee;
+use App\Models\Section;
+use Illuminate\Support\Facades\Log;
 
 class DutyFormApiController extends Controller
 {
@@ -282,6 +284,7 @@ class DutyFormApiController extends Controller
                     $idtohour[$id] =  $all_ot_hours[$index];
                 }
                 
+                //if there are new dates in session calendar, add
                 $hoursnew = [];
                 foreach ($dateids as $key => $id) {
                     if( !array_key_exists( $id,$idtohour) ){
@@ -295,6 +298,36 @@ class DutyFormApiController extends Controller
                 $dutyitem->all_ot_dayids =  $dateids;
               
                // dump($all_ot_dayids);
+            }
+
+            //
+            //also add any new employees mapped to this section/user
+            //
+            $sectionids =  Section::where( 'user_id' , $dutyForm->created_by_id)->pluck('id')->toArray();
+
+            $emps =  DailyWageEmployee::with(['designation', 'category', 'section'])
+            ->where('status','active')
+            ->wherein('section_id', $sectionids)
+            ->get();
+
+            //now if there are new employees, add them to dutyforms
+
+            //$emp_ids = $emps->where('in_usersection',true)->pluck('id');
+            $emps_in_form = $dutyForm->dutyItems->pluck('employee_id');
+            foreach ($emps as $emp) {
+                $empty_arr = array_fill(0, count($dateids), "");
+               // Log::info(count($empty_arr));
+
+                if(!$emps_in_form->contains($emp->id )){
+                    $dutyForm->dutyItems->push( [
+                        'id' =>  -1,
+                        'employee_id' =>  $emp->id,
+                        'employee' =>  $emp,
+                        'total_hours' =>  '',
+                        'all_ot_hours'=>  $empty_arr,
+                        'all_ot_dayids'=>  $dateids,
+                    ] );
+                }
             }
 
 
@@ -331,9 +364,12 @@ class DutyFormApiController extends Controller
 
         if('oneday-multiemp' === $request->form_type){
          
+            //cant just update because some items may be added and removed
             $dutyItems = [];
             foreach ($requestData as $item) {
+              //  $dutyFormItem = DutyFormItem::find( $item['id'] );
                 $dutyItems[] = new DutyFormItem([
+                //$dutyFormItem->update ([
                     'employee_id' => $item['employee_id'],
                     'fn_from' => $item['fn_from'],
                     'fn_to' => $item['fn_to'],
@@ -343,8 +379,8 @@ class DutyFormApiController extends Controller
                 ]);
             }
 
-            $dutyForm->dutyItems()->delete();
-            $dutyForm->dutyItems()->saveMany($dutyItems);
+           $dutyForm->dutyItems()->delete();
+           $dutyForm->dutyItems()->saveMany($dutyItems);
         
        } else if ('alldays-oneemp' === $request->form_type) {
 
@@ -366,8 +402,7 @@ class DutyFormApiController extends Controller
 
                 } else {
                     $dutyFormItem = DutyFormItem::find( $item['id'] );
-                    $dutyFormItem->update (
-                        [
+                    $dutyFormItem->update ([
                         'date_id' => $item['date_id'],
                         'fn_from' => $item['fn_from'],
                         'fn_to' => $item['fn_to'],
@@ -380,21 +415,35 @@ class DutyFormApiController extends Controller
             }
                
        } else{ //all-all
-            
-            $dutyItems = [];
+            //since there may be new items if  edited, add todo
+            //$dutyItems = [];
             foreach ($requestData as $item) {
-                            
-                $dutyItems[] = new DutyFormItem([
-                    'employee_id' => $item['employee_id'],
-                    'total_hours' => $item['total_hours'],
-                    'all_ot_hours' => implode( ',',  $item['all_ot_hours']),
-                    'all_ot_dayids' => implode( ',',  $item['all_ot_dayids']),
-                    
-                ]);
+                if( -1 == $item['id']) //a new employee added. sometimes because we change employee category. or add missing emps
+                {
+                    $newdutyItem = new DutyFormItem([
+                        'employee_id' => $item['employee_id'],
+                        'total_hours' => $item['total_hours'],
+                        'all_ot_hours' => implode( ',',  $item['all_ot_hours']),
+                        'all_ot_dayids' => implode( ',',  $item['all_ot_dayids']),
+                    ]);
+    
+                    $dutyForm->dutyItems()->save($newdutyItem);
+
+                } else{
+                    $dutyFormItem = DutyFormItem::find( $item['id'] );
+                    //$dutyItems[] = new DutyFormItem([
+                    $dutyFormItem->update ([
+                        'employee_id' => $item['employee_id'],
+                        'total_hours' => $item['total_hours'],
+                        'all_ot_hours' => implode( ',',  $item['all_ot_hours']),
+                        'all_ot_dayids' => implode( ',',  $item['all_ot_dayids']),
+                        
+                    ]);
+                }
             }
 
-            $dutyForm->dutyItems()->delete();
-            $dutyForm->dutyItems()->saveMany($dutyItems);
+          //  $dutyForm->dutyItems()->delete();
+          //  $dutyForm->dutyItems()->saveMany($dutyItems);
     }
 
 

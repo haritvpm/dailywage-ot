@@ -35,6 +35,9 @@
                             {{ trans('cruds.session.fields.session') }}
                         </th>
                         <th>
+                           Days
+                        </th>
+                        <th>
                             {{ trans('cruds.session.fields.status') }}
                         </th>
                         <th>
@@ -62,6 +65,9 @@
                             </td>
                             <td>
                                 {{ $session->session ?? '' }}
+                            </td>
+                            <td>
+                                {{ $session->sessionCalenders->count() ?? '' }}
                             </td>
                             <td>
                                 {{ App\Models\Session::STATUS_SELECT[$session->status] ?? '' }}
