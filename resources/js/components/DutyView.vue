@@ -32,14 +32,31 @@
 
                 <tr>
                     <td>
-                        Section
+                        Section:
                     </td>
 
                     <td>
-                        <b> {{ duty.created_by?.name }}</b>
+                        <b> {{ duty.section }}</b>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Created By:
+                    </td>
 
+                    <td>
+                        <b> {{ duty.creator }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Approved By:
+                    </td>
+
+                    <td>
+                        <b> {{ duty.approver }}</b>
+                    </td>
+                </tr>
             </tbody>
 
         </table>
@@ -205,7 +222,7 @@
     </table>
     <!-- whole session -->
     <!-- whole session all emp-->
-    <div class="table-responsive">
+    <div class="">
         <table v-if="duty.form_type == 'alldays-multiemp'"
             class="text-nowrap mt-1 table table-sm table-striped table-bordered">
             <thead>

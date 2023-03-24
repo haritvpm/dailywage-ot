@@ -38,8 +38,13 @@ class DutyForm extends Model
         'updated_at',
         'deleted_at',
         'created_by_id',
+        'creator',
+        'approver',
+      
     ];
 
+    protected $appends = array('section');
+   
     public function date()
     {
         return $this->belongsTo(Calender::class, 'date_id');
@@ -72,6 +77,15 @@ class DutyForm extends Model
     public function dutyItems()
     {
         return $this->hasMany(DutyFormItem::class, 'form_id', 'id');
+    }
+
+    public function getSectionAttribute()
+    {
+        $section = Section::where( 'user_id' ,  $this->created_by_id)->first();
+
+        return  $section?->name ?? '' ;
+
+     
     }
 
 }

@@ -245,7 +245,7 @@ class DutyFormApiController extends Controller
     {
        // abort_if(Gate::denies('duty_form_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-       $dutyForm = $dutyForm->load(['dutyItems', 'dutyItems.date','dutyItems.employee', 'date', 'session', 'employee', 'owned_by', 'created_by']);
+       $dutyForm = $dutyForm->load(['dutyItems', 'dutyItems.date','dutyItems.employee', 'date', 'session', 'employee', 'owned_by', 'created_by', ]);
        
        if('oneday-multiemp' === $dutyForm->form_type)
        {
