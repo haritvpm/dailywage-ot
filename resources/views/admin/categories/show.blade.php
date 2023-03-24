@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            Long{{ trans('cruds.category.fields.title') }}
+                        </th>
+                        <td>
+                            {{ $category->longtitle }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.category.fields.max_hours') }}
                         </th>
                         <td>

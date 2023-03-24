@@ -12,6 +12,7 @@
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.session.title_singular') }} {{ trans('global.list') }}
+        <br>Set 'Finished' to true so whole-session forms are available for entry
     </div>
 
     <div class="card-body">

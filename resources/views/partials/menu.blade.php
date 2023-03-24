@@ -21,8 +21,8 @@
                     </a>
                 </li>
                 @can('user_management_access')
-                    <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }}">
-                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }}" href="#">
+                    <li class="nav-item has-treeview {{ request()->is("admin/permissions*") ? "menu-open" : "" }} {{ request()->is("admin/roles*") ? "menu-open" : "" }} {{ request()->is("admin/users*") ? "menu-open" : "" }} {{ request()->is("admin/routings*") ? "menu-open" : "" }} {{ request()->is("admin/sections*") ? "menu-open" : "" }}">
+                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/permissions*") ? "active" : "" }} {{ request()->is("admin/roles*") ? "active" : "" }} {{ request()->is("admin/users*") ? "active" : "" }} {{ request()->is("admin/routings*") ? "active" : "" }}  {{ request()->is("admin/sections*") ? "active" : "" }}" href="#">
                             <i class="fa-fw nav-icon fas fa-users">
 
                             </i>
@@ -77,6 +77,17 @@
                                         </p>
                                     </a>
                                 </li>
+                               
+                                <li class="nav-item">
+                                    <a href="{{ route("admin.sections.index") }}" class="nav-link {{ request()->is("admin/sections") || request()->is("admin/sections/*") ? "active" : "" }}">
+                                        <i class="fa-fw nav-icon fas fa-puzzle-piece">
+
+                                        </i>
+                                        <p>
+                                            {{ trans('cruds.section.title') }}
+                                        </p>
+                                    </a>
+                                </li>
                             @endcan
                         </ul>
                     </li>
@@ -106,8 +117,8 @@
                     </li>
                 @endcan
                 @can('employee_access')
-                    <li class="nav-item has-treeview {{ request()->is("admin/categories*") ? "menu-open" : "" }} {{ request()->is("admin/daily-wage-employees*") ? "menu-open" : "" }} {{ request()->is("admin/designations*") ? "menu-open" : "" }} {{ request()->is("admin/sections*") ? "menu-open" : "" }}">
-                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/categories*") ? "active" : "" }} {{ request()->is("admin/daily-wage-employees*") ? "active" : "" }} {{ request()->is("admin/designations*") ? "active" : "" }} {{ request()->is("admin/sections*") ? "active" : "" }}" href="#">
+                    <li class="nav-item has-treeview {{ request()->is("admin/categories*") ? "menu-open" : "" }} {{ request()->is("admin/daily-wage-employees*") ? "menu-open" : "" }} {{ request()->is("admin/designations*") ? "menu-open" : "" }} ">
+                        <a class="nav-link nav-dropdown-toggle {{ request()->is("admin/categories*") ? "active" : "" }} {{ request()->is("admin/daily-wage-employees*") ? "active" : "" }} {{ request()->is("admin/designations*") ? "active" : "" }} " href="#">
                             <i class="fa-fw nav-icon fas fa-address-book">
 
                             </i>
@@ -153,18 +164,7 @@
                                     </a>
                                 </li>
                             @endcan
-                            @can('section_access')
-                                <li class="nav-item">
-                                    <a href="{{ route("admin.sections.index") }}" class="nav-link {{ request()->is("admin/sections") || request()->is("admin/sections/*") ? "active" : "" }}">
-                                        <i class="fa-fw nav-icon fas fa-puzzle-piece">
-
-                                        </i>
-                                        <p>
-                                            {{ trans('cruds.section.title') }}
-                                        </p>
-                                    </a>
-                                </li>
-                            @endcan
+                           
                         </ul>
                     </li>
                 @endcan

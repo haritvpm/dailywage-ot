@@ -38,7 +38,7 @@ class DutyForm extends Model
         'updated_at',
         'deleted_at',
         'created_by_id',
-        'creator',
+        'creator', //need separate field from created_by, because created_by_id can change later. but we need the original approver
         'approver',
       
     ];
