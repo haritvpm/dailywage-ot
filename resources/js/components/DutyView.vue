@@ -284,10 +284,10 @@
             <button v-if="routes['return']" @click="routeForm('return')" class="mr-1 btn btn-warning">{{
                 routes['return'] }}</button>
 
-            <!-- <router-link :to="{ name: 'duty.index' }" class="btn btn-success ml-1">Go Back</router-link> -->
-            <button type="button" @click.prevent="$router.go(-1)" class="ml-1 btn btn-outline-success">
+            <router-link :to="{ name: 'duty.index' }" class="btn btn-success ml-1">Cancel</router-link>
+            <!--  <button type="button" @click.prevent="$router.go(-1)" class="ml-1 btn btn-outline-success">
                 Cancel
-            </button>
+            </button> -->
 
 
         </div>

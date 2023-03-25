@@ -39,9 +39,21 @@ export default function useDailyWageForm() {
         try {
 
 
-            await axios.post('/api/v1/duty-forms', data)
-            await router.push({ name: 'duty.index' })
-            // await router.push({ name: 'duty.view' }, duty.id )
+            let response = await axios.post('/api/v1/duty-forms', data)
+
+            if (response?.status === 201) {
+                // console.log(response?.data.data.id)
+                try {
+                    router.push({ name: 'duty.view', params: { id: response?.data.data.id } })
+                }
+                catch (e) {
+                    console.log(e)
+
+                }
+            } else {
+                await router.push({ name: 'duty.index' })
+            }
+            //
         } catch (e) {
             if (e.response.status === 422) {
                 //for (const key in e.response.data.errors) 
@@ -58,7 +70,10 @@ export default function useDailyWageForm() {
         try {
             await axios.patch(`/api/v1/duty-forms/${id}`, duty.value)
             await router.push({ name: 'duty.view' }, duty.id)
-            await router.push({ name: 'duty.index' })
+            //router.push({ name: 'duty.view', params: { id: duty.id } })
+
+
+            // await router.push({ name: 'duty.index' })
         } catch (e) {
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {

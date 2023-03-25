@@ -25095,6 +25095,7 @@ var _hoisted_35 = {
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _$setup$duty$session, _$setup$duty$session2, _$setup$duty$date, _$setup$duty$employee, _$setup$duty$total_ho;
+  var _component_router_link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("router-link");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$setup.errors ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.errors, function (v, k) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
       key: k,
@@ -25142,13 +25143,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $setup.routeForm('return');
     }),
     "class": "mr-1 btn btn-warning"
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['return']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <router-link :to=\"{ name: 'duty.index' }\" class=\"btn btn-success ml-1\">Go Back</router-link> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    type: "button",
-    onClick: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
-      return _ctx.$router.go(-1);
-    }, ["prevent"])),
-    "class": "ml-1 btn btn-outline-success"
-  }, " Cancel ")])])], 64 /* STABLE_FRAGMENT */);
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($setup.routes['return']), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_router_link, {
+    to: {
+      name: 'duty.index'
+    },
+    "class": "btn btn-success ml-1"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Cancel")];
+    }),
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["to"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("  <button type=\"button\" @click.prevent=\"$router.go(-1)\" class=\"ml-1 btn btn-outline-success\">\n                Cancel\n            </button> ")])])], 64 /* STABLE_FRAGMENT */);
 }
 
 /***/ }),
@@ -25398,6 +25403,7 @@ function useDailyWageForm() {
   }();
   var storeDuty = /*#__PURE__*/function () {
     var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(data) {
+      var response;
       return _regeneratorRuntime().wrap(function _callee5$(_context5) {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
@@ -25406,15 +25412,34 @@ function useDailyWageForm() {
             _context5.next = 4;
             return axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/v1/duty-forms', data);
           case 4:
-            _context5.next = 6;
+            response = _context5.sent;
+            if (!((response === null || response === void 0 ? void 0 : response.status) === 201)) {
+              _context5.next = 9;
+              break;
+            }
+            // console.log(response?.data.data.id)
+            try {
+              router.push({
+                name: 'duty.view',
+                params: {
+                  id: response === null || response === void 0 ? void 0 : response.data.data.id
+                }
+              });
+            } catch (e) {
+              console.log(e);
+            }
+            _context5.next = 11;
+            break;
+          case 9:
+            _context5.next = 11;
             return router.push({
               name: 'duty.index'
             });
-          case 6:
-            _context5.next = 11;
+          case 11:
+            _context5.next = 16;
             break;
-          case 8:
-            _context5.prev = 8;
+          case 13:
+            _context5.prev = 13;
             _context5.t0 = _context5["catch"](1);
             if (_context5.t0.response.status === 422) {
               //for (const key in e.response.data.errors) 
@@ -25422,11 +25447,11 @@ function useDailyWageForm() {
                 errors.value = _context5.t0.response.data.errors;
               }
             }
-          case 11:
+          case 16:
           case "end":
             return _context5.stop();
         }
-      }, _callee5, null, [[1, 8]]);
+      }, _callee5, null, [[1, 13]]);
     }));
     return function storeDuty(_x5) {
       return _ref5.apply(this, arguments);
@@ -25448,26 +25473,21 @@ function useDailyWageForm() {
               name: 'duty.view'
             }, duty.id);
           case 6:
-            _context6.next = 8;
-            return router.push({
-              name: 'duty.index'
-            });
-          case 8:
-            _context6.next = 13;
+            _context6.next = 11;
             break;
-          case 10:
-            _context6.prev = 10;
+          case 8:
+            _context6.prev = 8;
             _context6.t0 = _context6["catch"](1);
             if (_context6.t0.response.status === 422) {
               for (key in _context6.t0.response.data.errors) {
                 errors.value = _context6.t0.response.data.errors;
               }
             }
-          case 13:
+          case 11:
           case "end":
             return _context6.stop();
         }
-      }, _callee6, null, [[1, 10]]);
+      }, _callee6, null, [[1, 8]]);
     }));
     return function updateDuty(_x6) {
       return _ref6.apply(this, arguments);
